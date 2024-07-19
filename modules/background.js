@@ -1,6 +1,6 @@
 /* global chrome */
 console.log('background service worker initiated')
-const fnet = chrome.fnet = require('./aux/fnetwork.js')
+const fnet = chrome.fnet = require('./aux/fnetworks.js')
 
 let currentTabId
 let currentStep

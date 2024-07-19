@@ -1,8 +1,8 @@
 /* global chrome */
 console.log('popup (script) initiated')
 const $ = window.$ = require('jquery')
-const fAll = require('../aux/transfer.js').fAll
-const { stdDiv, mkGrid, gridDividere } = require('./aux/utils.js')
+const fAll = require('./aux/transfer.js').fAll
+const { stdDiv, mkGrid, gridDivider } = require('./aux/utils.js')
 
 let cDiv
 

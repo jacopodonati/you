@@ -1,0 +1,4 @@
+{
+  "ignore": ["dist/modules/pop.js", "dist/modules/content.js", "dist/modules/background.js"]
+}
+

@@ -11,16 +11,13 @@
     "buildEzip": "standard you/pop.js you/contentScript.js you/background.js you/fnetwork.js && npm run buildAux && npm run buildAux2 && browserify you/pop.js > you/pop_ok.js"
   },
   "dependencies": {
-    "browserify": "^17.0.0",
     "graphology": "^0.17.1",
     "jquery": "^3.5.1",
-    "mongodb-stitch-browser-sdk": "^4.8.0",
-    "nodemon": "^2.0.3"
+    "mongodb-stitch-browser-sdk": "^4.8.0"
   },
   "standard": {
     "ignore": [
-      "**/bundle.js",
-      "modules/**/*.js"
+      "dist/**/*.js"
     ]
   }
 }

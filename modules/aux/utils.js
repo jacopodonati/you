@@ -1,4 +1,3 @@
-/* global wand */
 const e = module.exports
 const $ = require('jquery')
 
@@ -30,4 +29,40 @@ e.gridDivider = (r, g, b, grid, sec, after, count) => {
   }
 }
 
+e.chooseUnique = (marray, nelements) => {
+  nelements = nelements || 1
+  let i = marray.length
+  marray = [...marray]
+  if (i === 0) { return false }
+  let c = 0
+  const choice = []
+  while (i) {
+    const j = Math.floor(Math.random() * i)
+    const tempi = marray[--i]
+    const tempj = marray[j]
+    choice.push(tempj)
+    marray[i] = tempj
+    marray[j] = tempi
+    c++
+    if (c === nelements) { return choice }
+  }
+  console.log({ choice })
+  return choice
+}
+
 e.stdDiv = () => e.centerDiv(undefined, undefined, e.chooseUnique(['#eeeeff', '#eeffee', '#ffeeee'], 1)[0], 3, 2)
+
+e.centerDiv = (width, container, color, margin, padding) => {
+  return $('<div/>', {
+    css: {
+      'background-color': color || '#c2F6c3',
+      // margin: `0px auto ${d(margin, 0)}%`,
+      margin: `0px auto ${d(margin, 0)}%`,
+      padding: `${d(padding, 1)}%`,
+      width: d(width, '50%'),
+      'border-radius': '5%'
+    }
+  }).appendTo(container || 'body')
+}
+
+const d = e.defaultArg = (arg, def) => arg === undefined ? def : arg

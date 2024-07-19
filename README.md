@@ -5,6 +5,9 @@ include whatsapp and telegram
 enhance fb workings
 add documentation about anthropological physics
 
+limitare i host nel manifest
+vedere le network
+
 # structure
 repo/
   README.md
