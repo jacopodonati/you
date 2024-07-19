@@ -1,0 +1,2 @@
+d:
+	npm run dev
