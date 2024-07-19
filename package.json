@@ -20,7 +20,7 @@
   "standard": {
     "ignore": [
       "**/bundle.js",
-      "you/scripts/ok/*.js"
+      "modules/**/*.js"
     ]
   }
 }

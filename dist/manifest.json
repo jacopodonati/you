@@ -22,7 +22,7 @@
     "default_icon": "imgs2/person16.ico"
   },
   "background": {
-    "service_worker": "scripts/ok/background.js"
+    "service_worker": "modules/background.js"
   },
   "host_permissions": [
     "http://*/*",

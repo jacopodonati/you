@@ -77,7 +77,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   if (tabId !== currentTabId || changeInfo.status !== 'complete') return
   chrome.scripting.executeScript({
     target: { tabId },
-    files: ['scripts/ok/content.js']
+    files: ['modules/content.js']
   }, () => {
     chrome.tabs.sendMessage(tabId, { command: currentStep, content: true })
   })
