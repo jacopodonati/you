@@ -63,6 +63,7 @@ class FNetwork {
   addFriendships (struct) {
     struct.forEach(s => {
       const { name, sid, nid, mutual, nfriends } = s
+      if (name === '') return // if there's no name, the div is bogus
       let id = this.findNode(name, sid, nid)
       let a = {}
       let exists = true
