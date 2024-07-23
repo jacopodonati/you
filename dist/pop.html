@@ -1,7 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <body style="width:600px;text-align:center">
-    <h1>~ Your social self ~</h1>
+  <head>
+    <link rel="stylesheet" href="css/pop.css">
     <script src="modules/pop.js"></script>
+  </head>
+  <body>
+    <select id="social-selector">
+      <option value="facebook" selected>Facebook</option>
+    </select>
+    <div id="facebook" class="section">
+      <div class="data">
+        <div class="name label">name:</div>
+        <div class="name value">--</div>
+        <div class="id label">id:</div>
+        <div class="id value">--</div>
+        <div class="separator"></div>
+        <div class="friends label">friends:</div>
+        <div class="friends value">--</div>
+        <div class="friendships label">friendships:</div>
+        <div class="friendships value">--</div>
+        <div class="scraped label">scraped:</div>
+        <div class="scraped value">--</div>
+        <div class="separator"></div>
+        <div class="last-scrape label">last scrape:</div>
+        <div class="last-scrape value">--</div>
+        <div class="round label">round:</div>
+        <div class="round value">--</div>
+      </div>
+      <div class="action-bar">
+        <button class="login">Login</button>
+        <button class="get-friends" disabled>Get friends</button>
+        <button class="get-friendships" disabled>Get friendships</button>
+        <button class="see-yourself" disabled>See yourself</button>
+      </div>
+    </div>
   </body>
 </html>
