@@ -126,7 +126,6 @@ class FNetwork {
     // TODO: visit string ids to have the small components as well
     const nodeIds = []
     this.graph.forEachNode((n, a) => {
-      if (a.nid === undefined) return
       nodeIds.push({
         nid: a.nid,
         sid: a.sid,
@@ -137,8 +136,10 @@ class FNetwork {
     let url
     nodeIds.some(i => {
       if (!i.scrapped) {
+        if (i.nid !== undefined) url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
+        else url = `https://www.facebook.com/${i.sid}/friends_mutual`
         // url = `https://www.facebook.com/browse/mutual_friends/?uid=${i.nid}`  // old
-        url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
+        // url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
         this.lastId = i.id
       }
       return Boolean(url)
