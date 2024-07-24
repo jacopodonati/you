@@ -69,9 +69,8 @@ function setFacebook () {
         }
       })
 
-      const disabled = command === 'login'
       const getFriendsButton = section.querySelector('.get-friends')
-      getFriendsButton.disabled = disabled
+      getFriendsButton.disabled = userData.id === undefined
       getFriendsButton.addEventListener('click', function () {
         chrome.runtime.sendMessage({
           command: 'scrappeFriends',
@@ -80,7 +79,7 @@ function setFacebook () {
       })
 
       const getFriendshipsButton = section.querySelector('.get-friendships')
-      getFriendshipsButton.disabled = disabled
+      getFriendshipsButton.disabled = nfriends === undefined
       getFriendshipsButton.addEventListener('click', function () {
         chrome.runtime.sendMessage({
           command: 'scrappeFriendships',
@@ -88,8 +87,8 @@ function setFacebook () {
         })
       })
 
-      const seeYourselfButton = section.querySelector('.see-yourself')
-      seeYourselfButton.disabled = disabled
+      const seeYourselfButton = section.querySelector('.ext-see-yourself')
+      seeYourselfButton.disabled = !(nfriendships > 0)
       seeYourselfButton.addEventListener('click', function () {
         chrome.runtime.sendMessage({
           command: 'seeNetwork',
