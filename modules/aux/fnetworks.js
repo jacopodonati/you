@@ -10,11 +10,19 @@ class FNetwork {
   }
 
   restart () {
-    this.graph = new Graph()
-    this.graph.setAttribute('preclude', [])
-    this.anonString = 'inactive-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + '-'
-    this.graph.setAttribute('anonString', this.anonString)
-    this.defineRound()
+    const net = this
+    chrome.storage.local.get('net', function (data) {
+      net.graph = new Graph()
+      if (typeof data.net === 'undefined') {
+        net.graph.setAttribute('preclude', [])
+        net.anonString = 'inactive-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + '-'
+        net.graph.setAttribute('anonString', net.anonString)
+      } else {
+        net.graph.import(data.net)
+        net.anonString = net.graph.getAttribute('anonString')
+      }
+      net.defineRound()
+    })
   }
 
   defineRound () {

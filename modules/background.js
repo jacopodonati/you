@@ -51,6 +51,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const { structs } = request
     console.log('absorb', { structs })
     fnet.absorb(structs)
+    chrome.storage.local.set({ net: fnet.graph.export() })
     chrome.storage.sync.set({
       nfriends: fnet.graph.order,
       nfriendships: fnet.graph.size,

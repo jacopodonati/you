@@ -61,6 +61,7 @@ function setFacebook () {
             console.log('yeah, logged out')
             setTimeout(() => window.close(), 1000)
           })
+          chrome.storage.local.remove(['net'])
         } else {
           chrome.runtime.sendMessage({
             command,
