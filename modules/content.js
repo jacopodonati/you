@@ -161,7 +161,7 @@ function scrappeFriends (userData, isFriends) {
     if (isFriends) {
       window.alert('friends registered.')
     } else {
-      window.alert('friendships registered for 1 more friend.')
+      console.log('friendships registered for 1 more friend.')
     }
   })
 }
