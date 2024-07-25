@@ -80,7 +80,7 @@ function setFacebook () {
       })
 
       const getFriendshipsButton = section.querySelector('.get-friendships')
-      getFriendshipsButton.disabled = nfriends === undefined
+      getFriendshipsButton.disabled = (nfriends === undefined || nfriends === nscrapped)
       getFriendshipsButton.addEventListener('click', function () {
         chrome.runtime.sendMessage({
           command: 'scrappeFriendships',
