@@ -89,6 +89,10 @@ function seeNetwork () {
 function absorbNetwork (request) {
   const { structs } = request
   console.log('absorb', { structs })
+  let lastFriendships
+  chrome.storage.sync.get(['nfriendships'], ({ nfriendships }) => {
+    lastFriendships = nfriendships
+  })
   fnet.absorb(structs)
   chrome.storage.local.set({ net: fnet.graph.export() })
   chrome.storage.sync.set({
@@ -97,6 +101,7 @@ function absorbNetwork (request) {
     nscrapped: fnet.nScrapped()
   }, () => {
     console.log('friends(ships) absorbed in network, and their number written to storage:', { structs })
-    scrapeFacebookRelatioships()
+    // check if we've scraped friends or mutual friends
+    if (lastFriendships < fnet.graph.size) scrapeFacebookRelatioships()
   })
 }
