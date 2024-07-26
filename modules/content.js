@@ -69,6 +69,7 @@ function loginFB () {
       advance()
     }
   }, 200)
+
   function advance () {
     const membername = h1el.innerText
     const parts = membername.match(/[^\r\n]+/g)
