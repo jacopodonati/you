@@ -24,6 +24,10 @@
   "background": {
     "service_worker": "modules/background.js"
   },
+  "options_ui": {
+    "page": "see_yourself.html",
+    "open_in_tab": true
+  },
   "host_permissions": [
     "https://www.facebook.com/*"
   ]

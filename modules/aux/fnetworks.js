@@ -91,7 +91,10 @@ class FNetwork {
         a.foundInRound = this.round
         this.graph.addNode(id, a)
       }
-      if (!this.graph.hasEdge(this.lastId, id)) this.graph.addUndirectedEdge(this.lastId, id)
+      if (!this.graph.hasEdge(this.lastId, id)) {
+        console.log(`adding ${this.lastId}, ${id}`)
+        this.graph.addUndirectedEdge(this.lastId, id)
+      }
     })
     this.graph.setNodeAttribute(this.lastId, 'scrapped', this.round)
   }

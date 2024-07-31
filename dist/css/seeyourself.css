@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+}
+
+#toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+}
+
+#toolbar button {
+    height: 2rem;
+    width: 4rem;
+    padding: .4rem;
+}
+
+button svg {
+    height: 100%;
+}
+
+button .tooltip-text {
+    display: none;
+    font-size: 1.2rem;
+    background: #00000080;
+    color: white;
+    padding: .4rem 1rem;
+    z-index: 1;
+    position: relative;
+    width: 8rem;
+    text-align: center;
+    border-radius: .2rem;
+    left: -100%;
+}
+
+button:hover .tooltip-text {
+    display: block;
+}
+
+#record-setup, #cycle-communities {
+    display: none;
+}
+
+.error {
+    background-color: #ff0000;
+}
+
+.mgrid {
+    display: grid;
+    /* grid-template-columns: Array(cols).fill('auto').join(' '), */
+    grid-template-columns: auto;
+    background-color: #21F693;
+    padding: 8px;
+    margin: 0 auto;
+    /* height: Math.floor(wand.artist.use.height * 0.065) + 'px', */
+    width: 60%;
+    border-radius: 2%;
+}

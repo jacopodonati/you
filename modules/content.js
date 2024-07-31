@@ -32,7 +32,8 @@ const scrollTillEnd = (call, isFriends = false) => {
     criterion = () => document.getElementsByClassName('morePager').length === 0
   } else {
     // criterion = () => getElementsByXPath('//*/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div/div[@role="progressbar"]').length === 0
-    criterion = () => getElementsByXPath('/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div/div/div[2]/div/div/div/div').length > 0
+    // criterion = () => getElementsByXPath('/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div/div/div[2]/div/div/div/div').length > 0
+    criterion = () => document.querySelectorAll('.x1xzczws').length < 2
   }
 
   monload(() => {

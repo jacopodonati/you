@@ -1,6 +1,5 @@
 /* global chrome */
 console.log('popup (script) initiated')
-const fAll = require('./aux/transfer.js').fAll
 
 function formatDate (date) {
   if (!date) {
@@ -88,13 +87,10 @@ function setFacebook () {
         })
       })
 
-      const seeYourselfButton = section.querySelector('.ext-see-yourself')
+      const seeYourselfButton = section.querySelector('.see-yourself')
       seeYourselfButton.disabled = !(nfriendships > 0)
       seeYourselfButton.addEventListener('click', function () {
-        chrome.runtime.sendMessage({
-          command: 'seeNetwork',
-          background: true
-        })
+        chrome.runtime.openOptionsPage()
       })
     }
   )
@@ -113,17 +109,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (!request.popup) return
   const { command } = request
   if (command === 'writeNet') {
-    chrome.storage.sync.get(
-      ['userData'],
-      ({ userData }) => {
-        fAll.df4b({ 'userData.id': userData.id }).then(() => {
-          userData.net = request.net
-          fAll.wf4b({ userData }).then(() => {
-            console.log('net written')
-            chrome.tabs.create({ url: `http://audiovisualmedicine.github.io?you&fid=${userData.id}&deg=true` })
-          })
-        })
-      }
-    )
+    chrome.storage.sync.get(['userData'])
   }
 })

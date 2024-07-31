@@ -4,16 +4,26 @@
     "standard": "*"
   },
   "scripts": {
-    "dev": "nodemon --exec 'standard && npm run buildAux && npm run buildAux2 && npm run buildAux3'",
-    "buildAux": "browserify modules/content.js > dist/modules/content.js",
-    "buildAux2": "browserify modules/background.js > dist/modules/background.js",
-    "buildAux3": "browserify modules/pop.js > dist/modules/pop.js",
-    "buildEzip": "standard you/pop.js you/contentScript.js you/background.js you/fnetwork.js && npm run buildAux && npm run buildAux2 && browserify you/pop.js > you/pop_ok.js"
+    "dev": "nodemon --exec 'standard && npm run content && npm run background && npm run pop && npm run seeYourself'",
+    "content": "browserify modules/content.js > dist/modules/content.js",
+    "background": "browserify modules/background.js > dist/modules/background.js",
+    "pop": "browserify modules/pop.js > dist/modules/pop.js",
+    "seeYourself": "browserify modules/seeYourself.js > dist/modules/seeYourself.js",
+    "buildEzip": "standard you/pop.js you/contentScript.js you/background.js you/fnetwork.js && npm run content && npm run background && npm run pop && npm run seeYourself"
   },
   "dependencies": {
+    "@pixi/unsafe-eval": "^7.4.2",
+    "browser-resolve": "^2.0.0",
+    "chroma-js": "^2.4.2",
+    "copy-to-clipboard": "^3.3.3",
     "graphology": "^0.17.1",
+    "graphology-communities-louvain": "^2.0.1",
+    "graphology-components": "^0.1.0",
+    "graphology-layout": "^0.2.0",
+    "graphology-layout-forceatlas2": "^0.4.4",
+    "graphology-metrics": "^1.8.0",
     "jquery": "^3.5.1",
-    "mongodb-stitch-browser-sdk": "^4.8.0"
+    "pixi.js": "^7.4.2"
   },
   "standard": {
     "ignore": [
