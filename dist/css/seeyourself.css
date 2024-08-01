@@ -56,6 +56,38 @@ button:hover .tooltip-text {
     padding: .2rem .4rem;
 }
 
+#modal-backdrop {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+#modal {
+    max-width: 40vw;
+    height: 80vh;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: .8rem;
+    padding: 1rem;
+    position: relative;
+}
+
+#modal-closer {
+    width: 2rem;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+}
+
+#modal-content {
+    overflow: auto;
+    height: 100%;
+}
+
 .mgrid {
     display: grid;
     /* grid-template-columns: Array(cols).fill('auto').join(' '), */

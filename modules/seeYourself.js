@@ -15,7 +15,21 @@ const { ParticleNet2 } = require('./aux/ParticleNet2')
 
 document.addEventListener('DOMContentLoaded', () => {
   const you = new You()
-  console.log(you)
+  console.log('You', you)
+
+  const modalBackdrop = document.querySelector('#modal-backdrop')
+  function closeModal () {
+    modalBackdrop.style.zIndex = -1
+  }
+
+  modalBackdrop.addEventListener('click', (event) => {
+    if (event.target === modalBackdrop) closeModal()
+  })
+
+  const modal = modalBackdrop.querySelector('#modal')
+  modal.style.top = `${(window.innerHeight - modal.offsetHeight) / 2}px`
+  const modalCloser = modal.querySelector('#modal-closer')
+  modalCloser.addEventListener('click', closeModal)
 })
 
 class You {
@@ -208,6 +222,8 @@ class You {
 
   setupButtons () {
     this.calcs()
+    this.setSize = 50
+    this.setMembers()
     this.setupRemoveUserButton()
     this.setupRecordSetupButton()
     this.setupGroupMembersButton()
@@ -224,9 +240,6 @@ class You {
     this.setupShowMembersetsButton()
     this.setupShowMembersetColorsKeys()
     this.setupNamesAlphaButton()
-    this.setSize = 50
-    const groupMembersButton = document.querySelector('#group-members')
-    groupMembersButton.click()
   }
 
   setupRemoveUserButton () {
@@ -295,36 +308,42 @@ class You {
     })
   }
 
+  setMembers () {
+    const n = window.pfm.net
+    const members = []
+    n.forEachNode((n, a) => {
+      members.push({
+        origId: n,
+        degree: a.origDegree || a.degree,
+        name: a.name,
+        id: a.sid || a.nid || a.name,
+        url: a.sid ? `https://www.facebook.com/${a.sid}` : `https://www.facebook.com/profile.php?id=${a.nid}`
+      })
+    })
+    window.members = members
+    members.sort((a, b) => {
+      if (a.degree !== b.degree) return a.degree - b.degree
+      const [ai, bi] = [a.id, b.id]
+      return ai.split('').reverse().join('') > bi.split('').reverse().join('') ? 1 : -1
+    })
+    window.memberSets = chunkArray(members, this.setSize || window.prompt('Enter the size of set (default = 50):'))
+    delete this.setSize
+  }
+
   setupGroupMembersButton () {
     const groupMembersButton = document.querySelector('#group-members')
     groupMembersButton.addEventListener('click', () => {
-      const n = window.pfm.net
-      const members = []
-      n.forEachNode((n, a) => {
-        members.push({
-          origId: n,
-          degree: a.origDegree || a.degree,
-          name: a.name,
-          id: a.sid || a.nid || a.name,
-          url: a.sid ? `https://www.facebook.com/${a.sid}` : `https://www.facebook.com/profile.php?id=${a.nid}`
-        })
-      })
-      window.members = members
-      members.sort((a, b) => {
-        if (a.degree !== b.degree) return a.degree - b.degree
-        const [ai, bi] = [a.id, b.id]
-        return ai.split('').reverse().join('') > bi.split('').reverse().join('') ? 1 : -1
-      })
-      const memberSets = window.memberSets = chunkArray(members, this.setSize || window.prompt('Size of set:'))
-      console.log('memberSets', memberSets)
-      // TODO: la modale dovrebbe apparire solo dopo la pressione di un pulsante
-      // let str
-      // if (window.confirm('inline list?')) {
-      //   str = memberSets.map((set, count) => `-> ${count} (${set[0].degree}...${set[set.length - 1].degree}) <-<br>` + set.map(member => `${member.name}`).join(', ')).join('<br>=====<br><br>')
-      // } else {
-      //   str = memberSets.map((set, count) => count + ' |||<br>' + set.map(member => `<a target="_blank" href="${member.url}">${member.name}</a> ${member.degree}`).join('<br>')).join('<br>=====<br><br>')
-      // }
-      // window.wand.modal.show(10, str)
+      this.setMembers()
+      let str
+      if (window.confirm('inline list?')) {
+        str = window.memberSets.map((set, count) => `-> ${count} (${set[0].degree}...${set[set.length - 1].degree}) <-<br>` + set.map(member => `${member.name}`).join(', ')).join('<br>=====<br><br>')
+      } else {
+        str = window.memberSets.map((set, count) => count + ' |||<br>' + set.map(member => `<a target="_blank" href="${member.url}">${member.name}</a> ${member.degree}`).join('<br>')).join('<br>=====<br><br>')
+      }
+      const modalBackdrop = document.querySelector('#modal-backdrop')
+      modalBackdrop.style.zIndex = 1
+      const modalContent = modalBackdrop.querySelector('#modal-content')
+      modalContent.innerHTML = str
       delete this.setSize
     })
   }
@@ -824,6 +843,7 @@ const randScale2 = (bezier = false) => {
 }
 
 const chunkArray = (array, chunkSize) => {
+  if (isNaN(chunkSize) || !chunkSize) chunkSize = 50
   const results = []
   array = array.slice()
   while (array.length) {
