@@ -51,10 +51,10 @@ class ParticleNet2 { // using graphology net and positions as given by forceatla
     net.forEachNode((k, a) => {
       const p = atlas[k]
       const circle = new PIXI.Sprite(this.circleTexture)
-      circle.x = p.x
-      circle.y = p.y
-      circle.anchor.x = 0.5
-      circle.anchor.y = 0.5
+      circle.x = p.x / window.devicePixelRatio
+      circle.y = p.y / window.devicePixelRatio
+      circle.anchor.x = 0.5 / window.devicePixelRatio
+      circle.anchor.y = 0.5 / window.devicePixelRatio
       circle.tint = 0x00ffff
       circle.scale.set(0.1)
       circle.interactive = this.interactive
@@ -68,8 +68,8 @@ class ParticleNet2 { // using graphology net and positions as given by forceatla
         )
 
         texto.tint = 0xffffff
-        texto.x = p.x
-        texto.y = p.y
+        texto.x = p.x / window.devicePixelRatio
+        texto.y = p.y / window.devicePixelRatio
         texto.zIndex = 1000
         texto.alpha = 0
         texto.interactive = this.interactive
@@ -112,14 +112,14 @@ class ParticleNet2 { // using graphology net and positions as given by forceatla
 
   makeEdge (pos1, pos2) {
     const line = new PIXI.Sprite(this.lineTexture)
-    const dx = pos2.x - pos1.x
-    const dy = pos2.y - pos1.y
+    const dx = pos2.x / window.devicePixelRatio - pos1.x / window.devicePixelRatio
+    const dy = pos2.y / window.devicePixelRatio - pos1.y / window.devicePixelRatio
     const length = (dx ** 2 + dy ** 2) ** 0.5
     line.scale.set(length / 1000, 1)
     const angle = Math.atan2(dy, dx)
     line.rotation = angle
-    line.x = pos1.x
-    line.y = pos1.y
+    line.x = pos1.x / window.devicePixelRatio
+    line.y = pos1.y / window.devicePixelRatio
     line.tint = 0xff00ff
     this.edgeContainer.addChild(line)
     return line
@@ -164,7 +164,21 @@ const { ParticleNet2 } = require('./aux/ParticleNet2')
 
 document.addEventListener('DOMContentLoaded', () => {
   const you = new You()
-  console.log(you)
+  console.log('You', you)
+
+  const modalBackdrop = document.querySelector('#modal-backdrop')
+  function closeModal () {
+    modalBackdrop.style.zIndex = -1
+  }
+
+  modalBackdrop.addEventListener('click', (event) => {
+    if (event.target === modalBackdrop) closeModal()
+  })
+
+  const modal = modalBackdrop.querySelector('#modal')
+  modal.style.top = `${(window.innerHeight - modal.offsetHeight) / 2}px`
+  const modalCloser = modal.querySelector('#modal-closer')
+  modalCloser.addEventListener('click', closeModal)
 })
 
 class You {
@@ -181,15 +195,17 @@ class You {
   initializeGraph () {
     const toolbar = document.querySelector('#toolbar')
     const toolbarHeight = toolbar.offsetHeight
+    const canvas = document.querySelector('#canvas')
     this.app = new PIXI.Application({
       width: window.innerWidth,
-      height: window.innerHeight - toolbarHeight,
-      // transparent: true
+      height: (window.innerHeight) - toolbarHeight,
       backgroundColor: 0x000000,
-      antialias: true
+      antialias: true,
+      autoDensity: true,
+      resolution: window.devicePixelRatio,
+      view: canvas
     })
     this.app.stage.sortableChildren = true
-    document.querySelector('#canvas').appendChild(this.app.view)
     chrome.storage.local.get(['net'], (net) => {
       const pfm = window.pfm = this.plot(net.net, this.app)
       const dn = new ParticleNet2(this.app, pfm.net, pfm.atlas, true, true)
@@ -235,7 +251,6 @@ class You {
   plot (socialNetwork, app) {
     let net = new Graph()
     net.import(socialNetwork)
-    console.log('plot', net, socialNetwork)
     net = this.getLargestComponent(net, true)
     netdegree.assign(net)
     random.assign(net)
@@ -287,7 +302,7 @@ class You {
   }
 
   makeInfo (text, info) {
-    if (info === undefined) this.sinfo.text(text)
+    if (info === undefined) this.sinfo.textContent = text
     else this.sinfo.textContent = `${text}: ${info}`
   }
 
@@ -295,7 +310,9 @@ class You {
     const anet = window.pfm.net
     this.sinfo = document.createElement('span')
     this.sinfo.id = 'sinfo'
-    document.body.appendChild(this.sinfo)
+    const toolbar = document.querySelector('#toolbar')
+    this.sinfo.style.top = `${toolbar.offsetHeight}px`
+    toolbar.appendChild(this.sinfo)
     // sinfo.addEventListener('click', () => {
     //   FIXME: names è undefined
     //   if (!names || names.length === 0) return
@@ -355,6 +372,8 @@ class You {
 
   setupButtons () {
     this.calcs()
+    this.setSize = 50
+    this.setMembers()
     this.setupRemoveUserButton()
     this.setupRecordSetupButton()
     this.setupGroupMembersButton()
@@ -371,9 +390,7 @@ class You {
     this.setupShowMembersetsButton()
     this.setupShowMembersetColorsKeys()
     this.setupNamesAlphaButton()
-    this.setSize = 50
-    const groupMembersButton = document.querySelector('#group-members')
-    groupMembersButton.click()
+    this.setupExportImageButton()
   }
 
   setupRemoveUserButton () {
@@ -382,7 +399,7 @@ class You {
     removeUserButton.addEventListener('click', () => {
       // FIXME: ensure no isolated node or group is left behind
       const n = window.pfm.net
-      const uid = window.prompt('enter user string id:')
+      const uid = window.prompt('Enter user string ID:')
       if (!n.hasNode(uid)) return window.alert('network has no such member')
       this.removeNode(n, uid)
       const newNet = this.getLargestComponent(n)
@@ -442,36 +459,42 @@ class You {
     })
   }
 
+  setMembers () {
+    const n = window.pfm.net
+    const members = []
+    n.forEachNode((n, a) => {
+      members.push({
+        origId: n,
+        degree: a.origDegree || a.degree,
+        name: a.name,
+        id: a.sid || a.nid || a.name,
+        url: a.sid ? `https://www.facebook.com/${a.sid}` : `https://www.facebook.com/profile.php?id=${a.nid}`
+      })
+    })
+    window.members = members
+    members.sort((a, b) => {
+      if (a.degree !== b.degree) return a.degree - b.degree
+      const [ai, bi] = [a.id, b.id]
+      return ai.split('').reverse().join('') > bi.split('').reverse().join('') ? 1 : -1
+    })
+    window.memberSets = chunkArray(members, this.setSize || window.prompt('Enter the size of set (default = 50):'))
+    delete this.setSize
+  }
+
   setupGroupMembersButton () {
     const groupMembersButton = document.querySelector('#group-members')
     groupMembersButton.addEventListener('click', () => {
-      const n = window.pfm.net
-      const members = []
-      n.forEachNode((n, a) => {
-        members.push({
-          origId: n,
-          degree: a.origDegree || a.degree,
-          name: a.name,
-          id: a.sid || a.nid || a.name,
-          url: a.sid ? `https://www.facebook.com/${a.sid}` : `https://www.facebook.com/profile.php?id=${a.nid}`
-        })
-      })
-      window.members = members
-      members.sort((a, b) => {
-        if (a.degree !== b.degree) return a.degree - b.degree
-        const [ai, bi] = [a.id, b.id]
-        return ai.split('').reverse().join('') > bi.split('').reverse().join('') ? 1 : -1
-      })
-      const memberSets = window.memberSets = chunkArray(members, this.setSize || window.prompt('Size of set:'))
-      console.log('memberSets', memberSets)
-      // TODO: la modale dovrebbe apparire solo dopo la pressione di un pulsante
-      // let str
-      // if (window.confirm('inline list?')) {
-      //   str = memberSets.map((set, count) => `-> ${count} (${set[0].degree}...${set[set.length - 1].degree}) <-<br>` + set.map(member => `${member.name}`).join(', ')).join('<br>=====<br><br>')
-      // } else {
-      //   str = memberSets.map((set, count) => count + ' |||<br>' + set.map(member => `<a target="_blank" href="${member.url}">${member.name}</a> ${member.degree}`).join('<br>')).join('<br>=====<br><br>')
-      // }
-      // window.wand.modal.show(10, str)
+      this.setMembers()
+      let str
+      if (window.confirm('inline list?')) {
+        str = window.memberSets.map((set, count) => `-> ${count} (${set[0].degree}...${set[set.length - 1].degree}) <-<br>` + set.map(member => `${member.name}`).join(', ')).join('<br>=====<br><br>')
+      } else {
+        str = window.memberSets.map((set, count) => count + ' |||<br>' + set.map(member => `<a target="_blank" href="${member.url}">${member.name}</a> ${member.degree}`).join('<br>')).join('<br>=====<br><br>')
+      }
+      const modalBackdrop = document.querySelector('#modal-backdrop')
+      modalBackdrop.style.zIndex = 1
+      const modalContent = modalBackdrop.querySelector('#modal-content')
+      modalContent.innerHTML = str
       delete this.setSize
     })
   }
@@ -517,13 +540,13 @@ class You {
           this.showCom(i)
         })
         addItem(c).click(() => {
-          const mergeIndex = window.prompt(`enter index to merge ${i}:`)
+          const mergeIndex = window.prompt(`Enter index to merge ${i}:`)
           if (existingComms.includes(parseInt(mergeIndex))) {
             mergeCommunities(i, mergeIndex)
           }
         })
         const me = addItem(window.comNames[i]).click(() => {
-          window.comNames[i] = window.prompt(`enter name for com ${i}:`)
+          window.comNames[i] = window.prompt(`Enter a name for community ${i}:`)
           me.text(window.comNames[i])
         })
       })
@@ -583,7 +606,7 @@ class You {
     changeNodesColorScaleButton.addEventListener('click', () => {
       this.cscale = this.getScale()
       window.pfm.net.forEachNode((n, a) => {
-        a.pixiElement.tint = a.pixiElement.btint = this.getScale(this.cCriteria(a)).num()
+        a.pixiElement.tint = a.pixiElement.btint = this.cscale(this.cCriteria(a)).num()
       })
       // wand.app.renderer.backgroundColor = 0xc3a06
     })
@@ -592,7 +615,7 @@ class You {
   setupChangeNodesColorModeButton () {
     const changeNodesColorModeButton = document.querySelector('#nodes-color-mode')
     changeNodesColorModeButton.addEventListener('click', () => {
-      this.cscale = this.applyColorMode(this.getScale)
+      this.cscale = this.applyColorMode(this.getScale())
       window.pfm.net.forEachNode((n, a) => {
         a.pixiElement.tint = this.cscale(this.cCriteria(a)).num()
       })
@@ -685,7 +708,6 @@ class You {
 
   setupChangeEdgeColorButton () {
     // TODO: color with respect to difference between nodes
-    // FIXME: non funziona dopo il primo click
     let methodCount = 0
     const methods = ['multiply', 'darken', 'lighten', 'screen', 'overlay', 'burn', 'dodge']
     const changeEdgeColorButton = document.querySelector('#edge-color')
@@ -773,11 +795,11 @@ class You {
   }
 
   setupShowMembersetColorsKeys () {
-    console.log('yeah, started')
     const rgbm = [0, 0, 0, 0, 0, 0.8]
     const calc = (i, h) => Math.floor(rgbm[i] * 0xff / 10) * h
     const mix = chroma.mix
     const update = (color, up = true) => {
+      if (this.mm === undefined) return
       const val = rgbm[color] + up
       if (color === 5) { // actually size
         rgbm[color] = val > 1.3 ? 0.3 : (val < 0.3 ? 1.3 : val)
@@ -796,71 +818,71 @@ class You {
       this.makeInfo('names color', `${chroma(color_).hex()} (${[rgbm[0], rgbm[1], rgbm[2], rgbm[3].toFixed(2), rgbm[4].toFixed(2)]})`)
     }
 
+    const youClass = this
+
     document.onkeydown = function (e) {
       if (!window.memberSets) return
-      console.log('yeah, turned on')
-      e = e || window.event
-      console.log(e, e.keyCode)
-      switch (e.keyCode) {
-        case 114: // r
+      e = e || window.KeyboardEvent
+      switch (e.key) {
+        case 'r': // r
           update(0)
           break
-        case 82: // R
+        case 'R': // R
           update(0, -1)
           break
-        case 103: // g
+        case 'g': // g
           update(1)
           break
-        case 71: // G
+        case 'G': // G
           update(1, -1)
           break
-        case 98: // b
+        case 'b': // b
           update(2)
           break
-        case 66: // B
+        case 'B': // B
           update(2, -1)
           break
-        case 109: // m
+        case 'm': // m
           update(3, 0.1)
           break
-        case 77: // M
+        case 'M': // M
           update(3, -0.1)
           break
-        case 110: // n
+        case 'n': // n
           update(4, 0.1)
           break
-        case 78: // N
+        case 'N': // N
           update(4, -0.1)
           break
-        case 115: // s
+        case 's': // s
           update(5, 0.1)
           break
-        case 83: // S
+        case 'S': // S
           update(5, -0.1)
           break
-        case 101: // e
+        case 'e': // e
           spread()
           break
-        case 69: // E
+        case 'E': // E
           spread(false)
           break
-        case 99: // c
+        case 'c': // c
           tagHelper()
           break
-        case 67: // C
+        case 'C': // C
           tagHelper(false)
           break
-        case 97: // a
+        case 'a': // a
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = a.pixiElement.tint })
-          this.mkInfo('node colors for names')
+          youClass.makeInfo('node colors for names')
           break
-        case 122: // z
+        case 'z': // z
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = 0xffffff * Math.random() })
-          this.mkInfo('random colors for names (Math.random)')
+          youClass.makeInfo('random colors for names (Math.random)')
           break
-        case 90: // Z
+        case 'Z': // Z
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = chroma.random().num() })
-          this.mkInfo('random colors for names (chroma)')
+          youClass.makeInfo('random colors for names (chroma)')
           break
       }
       // if (e.keyCode === 99) ff()
@@ -868,6 +890,7 @@ class You {
     }
     let scounter = 0
     const spread = (real = true) => {
+      if (this.mm === undefined) return
       if (!real) {
         return this.mm.forEach(m => {
           const a = window.pfm.net.getNodeAttributes(m)
@@ -891,6 +914,7 @@ class You {
     }
     let counter = 0
     const tagHelper = (next = 1) => {
+      if (this.mm === undefined) return
       this.mm.forEach(m => {
         window.pfm.net.getNodeAttribute(m, 'textElement').alpha = 0
       })
@@ -916,6 +940,20 @@ class You {
         window.pfm.net.getNodeAttribute(m, 'textElement').alpha = alpha
       })
       this.makeInfo('names alpha', alpha.toFixed(2))
+    })
+  }
+
+  setupExportImageButton () {
+    const exportImageButton = document.querySelector('#export-image')
+    exportImageButton.addEventListener('click', () => {
+      chrome.storage.sync.get(['userData'], ({ userData }) => {
+        this.app.renderer.extract.base64(this.app.stage).then((blob) => {
+          const downloadLink = document.createElement('a')
+          downloadLink.download = `${userData.id}-${Date.now()}.png`
+          downloadLink.href = blob
+          downloadLink.click()
+        })
+      })
     })
   }
 }
@@ -971,6 +1009,7 @@ const randScale2 = (bezier = false) => {
 }
 
 const chunkArray = (array, chunkSize) => {
+  if (isNaN(chunkSize) || !chunkSize) chunkSize = 50
   const results = []
   array = array.slice()
   while (array.length) {

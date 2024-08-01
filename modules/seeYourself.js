@@ -241,6 +241,7 @@ class You {
     this.setupShowMembersetsButton()
     this.setupShowMembersetColorsKeys()
     this.setupNamesAlphaButton()
+    this.setupExportImageButton()
   }
 
   setupRemoveUserButton () {
@@ -790,6 +791,20 @@ class You {
         window.pfm.net.getNodeAttribute(m, 'textElement').alpha = alpha
       })
       this.makeInfo('names alpha', alpha.toFixed(2))
+    })
+  }
+
+  setupExportImageButton () {
+    const exportImageButton = document.querySelector('#export-image')
+    exportImageButton.addEventListener('click', () => {
+      chrome.storage.sync.get(['userData'], ({ userData }) => {
+        this.app.renderer.extract.base64(this.app.stage).then((blob) => {
+          const downloadLink = document.createElement('a')
+          downloadLink.download = `${userData.id}-${Date.now()}.png`
+          downloadLink.href = blob
+          downloadLink.click()
+        })
+      })
     })
   }
 }
