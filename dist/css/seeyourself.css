@@ -3,6 +3,7 @@ body {
 }
 
 #toolbar {
+    background-color: #f0f8ff;
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -30,7 +31,7 @@ button .tooltip-text {
     position: relative;
     width: 8rem;
     text-align: center;
-    border-radius: .2rem;
+    border-radius: .4rem;
     left: -100%;
 }
 
@@ -44,6 +45,15 @@ button:hover .tooltip-text {
 
 .error {
     background-color: #ff0000;
+}
+
+#sinfo {
+    left: 0;
+    top: -1.2rem;
+    position: absolute;
+    background-color: #000000;
+    color: #ffffff;
+    padding: .2rem .4rem;
 }
 
 .mgrid {
