@@ -645,7 +645,6 @@ class You {
   }
 
   setupShowMembersetColorsKeys () {
-    console.log('yeah, started')
     const rgbm = [0, 0, 0, 0, 0, 0.8]
     const calc = (i, h) => Math.floor(rgbm[i] * 0xff / 10) * h
     const mix = chroma.mix
@@ -673,9 +672,7 @@ class You {
 
     document.onkeydown = function (e) {
       if (!window.memberSets) return
-      console.log('yeah, turned on')
-      e = e || window.event
-      console.log(e, e.keyCode)
+      e = e || window.KeyboardEvent
       switch (e.key) {
         case 'r': // r
           update(0)
