@@ -650,6 +650,7 @@ class You {
     const calc = (i, h) => Math.floor(rgbm[i] * 0xff / 10) * h
     const mix = chroma.mix
     const update = (color, up = true) => {
+      if (this.mm === undefined) return
       const val = rgbm[color] + up
       if (color === 5) { // actually size
         rgbm[color] = val > 1.3 ? 0.3 : (val < 0.3 ? 1.3 : val)
@@ -668,71 +669,73 @@ class You {
       this.makeInfo('names color', `${chroma(color_).hex()} (${[rgbm[0], rgbm[1], rgbm[2], rgbm[3].toFixed(2), rgbm[4].toFixed(2)]})`)
     }
 
+    const youClass = this
+
     document.onkeydown = function (e) {
       if (!window.memberSets) return
       console.log('yeah, turned on')
       e = e || window.event
       console.log(e, e.keyCode)
-      switch (e.keyCode) {
-        case 114: // r
+      switch (e.key) {
+        case 'r': // r
           update(0)
           break
-        case 82: // R
+        case 'R': // R
           update(0, -1)
           break
-        case 103: // g
+        case 'g': // g
           update(1)
           break
-        case 71: // G
+        case 'G': // G
           update(1, -1)
           break
-        case 98: // b
+        case 'b': // b
           update(2)
           break
-        case 66: // B
+        case 'B': // B
           update(2, -1)
           break
-        case 109: // m
+        case 'm': // m
           update(3, 0.1)
           break
-        case 77: // M
+        case 'M': // M
           update(3, -0.1)
           break
-        case 110: // n
+        case 'n': // n
           update(4, 0.1)
           break
-        case 78: // N
+        case 'N': // N
           update(4, -0.1)
           break
-        case 115: // s
+        case 's': // s
           update(5, 0.1)
           break
-        case 83: // S
+        case 'S': // S
           update(5, -0.1)
           break
-        case 101: // e
+        case 'e': // e
           spread()
           break
-        case 69: // E
+        case 'E': // E
           spread(false)
           break
-        case 99: // c
+        case 'c': // c
           tagHelper()
           break
-        case 67: // C
+        case 'C': // C
           tagHelper(false)
           break
-        case 97: // a
+        case 'a': // a
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = a.pixiElement.tint })
-          this.makeInfo('node colors for names')
+          youClass.makeInfo('node colors for names')
           break
-        case 122: // z
+        case 'z': // z
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = 0xffffff * Math.random() })
-          this.makeInfo('random colors for names (Math.random)')
+          youClass.makeInfo('random colors for names (Math.random)')
           break
-        case 90: // Z
+        case 'Z': // Z
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = chroma.random().num() })
-          this.makeInfo('random colors for names (chroma)')
+          youClass.makeInfo('random colors for names (chroma)')
           break
       }
       // if (e.keyCode === 99) ff()
@@ -740,6 +743,7 @@ class You {
     }
     let scounter = 0
     const spread = (real = true) => {
+      if (this.mm === undefined) return
       if (!real) {
         return this.mm.forEach(m => {
           const a = window.pfm.net.getNodeAttributes(m)
@@ -763,6 +767,7 @@ class You {
     }
     let counter = 0
     const tagHelper = (next = 1) => {
+      if (this.mm === undefined) return
       this.mm.forEach(m => {
         window.pfm.net.getNodeAttribute(m, 'textElement').alpha = 0
       })
