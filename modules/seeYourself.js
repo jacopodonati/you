@@ -32,15 +32,17 @@ class You {
   initializeGraph () {
     const toolbar = document.querySelector('#toolbar')
     const toolbarHeight = toolbar.offsetHeight
+    const canvas = document.querySelector('#canvas')
     this.app = new PIXI.Application({
       width: window.innerWidth,
-      height: window.innerHeight - toolbarHeight,
-      // transparent: true
+      height: (window.innerHeight) - toolbarHeight,
       backgroundColor: 0x000000,
-      antialias: true
+      antialias: true,
+      autoDensity: true,
+      resolution: window.devicePixelRatio,
+      view: canvas
     })
     this.app.stage.sortableChildren = true
-    document.querySelector('#canvas').appendChild(this.app.view)
     chrome.storage.local.get(['net'], (net) => {
       const pfm = window.pfm = this.plot(net.net, this.app)
       const dn = new ParticleNet2(this.app, pfm.net, pfm.atlas, true, true)

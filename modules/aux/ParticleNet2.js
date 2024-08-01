@@ -50,10 +50,10 @@ class ParticleNet2 { // using graphology net and positions as given by forceatla
     net.forEachNode((k, a) => {
       const p = atlas[k]
       const circle = new PIXI.Sprite(this.circleTexture)
-      circle.x = p.x
-      circle.y = p.y
-      circle.anchor.x = 0.5
-      circle.anchor.y = 0.5
+      circle.x = p.x / window.devicePixelRatio
+      circle.y = p.y / window.devicePixelRatio
+      circle.anchor.x = 0.5 / window.devicePixelRatio
+      circle.anchor.y = 0.5 / window.devicePixelRatio
       circle.tint = 0x00ffff
       circle.scale.set(0.1)
       circle.interactive = this.interactive
@@ -67,8 +67,8 @@ class ParticleNet2 { // using graphology net and positions as given by forceatla
         )
 
         texto.tint = 0xffffff
-        texto.x = p.x
-        texto.y = p.y
+        texto.x = p.x / window.devicePixelRatio
+        texto.y = p.y / window.devicePixelRatio
         texto.zIndex = 1000
         texto.alpha = 0
         texto.interactive = this.interactive
@@ -111,14 +111,14 @@ class ParticleNet2 { // using graphology net and positions as given by forceatla
 
   makeEdge (pos1, pos2) {
     const line = new PIXI.Sprite(this.lineTexture)
-    const dx = pos2.x - pos1.x
-    const dy = pos2.y - pos1.y
+    const dx = pos2.x / window.devicePixelRatio - pos1.x / window.devicePixelRatio
+    const dy = pos2.y / window.devicePixelRatio - pos1.y / window.devicePixelRatio
     const length = (dx ** 2 + dy ** 2) ** 0.5
     line.scale.set(length / 1000, 1)
     const angle = Math.atan2(dy, dx)
     line.rotation = angle
-    line.x = pos1.x
-    line.y = pos1.y
+    line.x = pos1.x / window.devicePixelRatio
+    line.y = pos1.y / window.devicePixelRatio
     line.tint = 0xff00ff
     this.edgeContainer.addChild(line)
     return line
