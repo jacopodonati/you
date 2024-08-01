@@ -102,7 +102,6 @@ class You {
   plot (socialNetwork, app) {
     let net = new Graph()
     net.import(socialNetwork)
-    console.log('plot', net, socialNetwork)
     net = this.getLargestComponent(net, true)
     netdegree.assign(net)
     random.assign(net)
@@ -162,7 +161,9 @@ class You {
     const anet = window.pfm.net
     this.sinfo = document.createElement('span')
     this.sinfo.id = 'sinfo'
-    document.body.appendChild(this.sinfo)
+    const toolbar = document.querySelector('#toolbar')
+    this.sinfo.style.top = `${toolbar.offsetHeight}px`
+    toolbar.appendChild(this.sinfo)
     // sinfo.addEventListener('click', () => {
     //   FIXME: names è undefined
     //   if (!names || names.length === 0) return
@@ -248,7 +249,7 @@ class You {
     removeUserButton.addEventListener('click', () => {
       // FIXME: ensure no isolated node or group is left behind
       const n = window.pfm.net
-      const uid = window.prompt('enter user string id:')
+      const uid = window.prompt('Enter user string ID:')
       if (!n.hasNode(uid)) return window.alert('network has no such member')
       this.removeNode(n, uid)
       const newNet = this.getLargestComponent(n)
@@ -389,13 +390,13 @@ class You {
           this.showCom(i)
         })
         addItem(c).click(() => {
-          const mergeIndex = window.prompt(`enter index to merge ${i}:`)
+          const mergeIndex = window.prompt(`Enter index to merge ${i}:`)
           if (existingComms.includes(parseInt(mergeIndex))) {
             mergeCommunities(i, mergeIndex)
           }
         })
         const me = addItem(window.comNames[i]).click(() => {
-          window.comNames[i] = window.prompt(`enter name for com ${i}:`)
+          window.comNames[i] = window.prompt(`Enter a name for community ${i}:`)
           me.text(window.comNames[i])
         })
       })
@@ -455,7 +456,7 @@ class You {
     changeNodesColorScaleButton.addEventListener('click', () => {
       this.cscale = this.getScale()
       window.pfm.net.forEachNode((n, a) => {
-        a.pixiElement.tint = a.pixiElement.btint = this.getScale(this.cCriteria(a)).num()
+        a.pixiElement.tint = a.pixiElement.btint = this.cscale(this.cCriteria(a)).num()
       })
       // wand.app.renderer.backgroundColor = 0xc3a06
     })
@@ -464,7 +465,7 @@ class You {
   setupChangeNodesColorModeButton () {
     const changeNodesColorModeButton = document.querySelector('#nodes-color-mode')
     changeNodesColorModeButton.addEventListener('click', () => {
-      this.cscale = this.applyColorMode(this.getScale)
+      this.cscale = this.applyColorMode(this.getScale())
       window.pfm.net.forEachNode((n, a) => {
         a.pixiElement.tint = this.cscale(this.cCriteria(a)).num()
       })
@@ -557,7 +558,6 @@ class You {
 
   setupChangeEdgeColorButton () {
     // TODO: color with respect to difference between nodes
-    // FIXME: non funziona dopo il primo click
     let methodCount = 0
     const methods = ['multiply', 'darken', 'lighten', 'screen', 'overlay', 'burn', 'dodge']
     const changeEdgeColorButton = document.querySelector('#edge-color')
@@ -724,15 +724,15 @@ class You {
           break
         case 97: // a
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = a.pixiElement.tint })
-          this.mkInfo('node colors for names')
+          this.makeInfo('node colors for names')
           break
         case 122: // z
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = 0xffffff * Math.random() })
-          this.mkInfo('random colors for names (Math.random)')
+          this.makeInfo('random colors for names (Math.random)')
           break
         case 90: // Z
           window.pfm.net.forEachNode((n, a) => { a.textElement.tint = chroma.random().num() })
-          this.mkInfo('random colors for names (chroma)')
+          this.makeInfo('random colors for names (chroma)')
           break
       }
       // if (e.keyCode === 99) ff()
