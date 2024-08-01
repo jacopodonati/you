@@ -153,7 +153,7 @@ class You {
   }
 
   makeInfo (text, info) {
-    if (info === undefined) this.sinfo.text(text)
+    if (info === undefined) this.sinfo.textContent = text
     else this.sinfo.textContent = `${text}: ${info}`
   }
 
