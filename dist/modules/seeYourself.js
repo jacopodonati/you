@@ -374,6 +374,7 @@ class You {
     this.calcs()
     this.setSize = 50
     this.setMembers()
+    this.cscale = this.getScale()
     this.setupRemoveUserButton()
     this.setupRecordSetupButton()
     this.setupGroupMembersButton()
@@ -628,7 +629,7 @@ class You {
     changeNodesColorCriteriaButton.addEventListener('click', () => {
       this.cCriteria = this.setCCriteria()
       window.pfm.net.forEachNode((n, a) => {
-        a.pixiElement.tint = a.pixiElement.btint = this.getScale(this.cCriteria(a)).num()
+        a.pixiElement.tint = a.pixiElement.btint = this.cscale(this.cCriteria(a)).num()
       })
       this.makeInfo('color node criteria:', `${this.cFuncCount}, ${this.cFuncCount % 3}`)
     })
