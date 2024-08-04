@@ -92,7 +92,6 @@ class FNetwork {
         this.graph.addNode(id, a)
       }
       if (!this.graph.hasEdge(this.lastId, id)) {
-        console.log(`adding ${this.lastId}, ${id}`)
         this.graph.addUndirectedEdge(this.lastId, id)
       }
     })

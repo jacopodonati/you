@@ -88,7 +88,6 @@ function seeNetwork () {
 
 function absorbNetwork (request) {
   const { structs } = request
-  console.log('absorb', { structs })
   let lastFriendships
   chrome.storage.sync.get(['nfriendships'], ({ nfriendships }) => {
     lastFriendships = nfriendships

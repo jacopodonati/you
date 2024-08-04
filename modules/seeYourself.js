@@ -12,6 +12,7 @@ const louvain = require('graphology-communities-louvain')
 const chroma = require('chroma-js')
 const copyToClipboard = require('copy-to-clipboard')
 const { ParticleNet2 } = require('./aux/ParticleNet2')
+const fAll = require('./aux/transfer.js').fAll
 
 document.addEventListener('DOMContentLoaded', () => {
   const you = new You()
@@ -58,6 +59,7 @@ class You {
     })
     this.app.stage.sortableChildren = true
     chrome.storage.local.get(['net'], (net) => {
+      this.net = net
       const pfm = window.pfm = this.plot(net.net, this.app)
       const dn = new ParticleNet2(this.app, pfm.net, pfm.atlas, true, true)
       pfm.dn = dn
@@ -243,6 +245,7 @@ class You {
     this.setupShowMembersetColorsKeys()
     this.setupNamesAlphaButton()
     this.setupExportImageButton()
+    this.setupUploadNetworkButton()
   }
 
   setupRemoveUserButton () {
@@ -354,6 +357,10 @@ class You {
   setupDetectCommunitiesButton () {
     const detectCommunitiesButton = document.querySelector('#detect-communities')
     detectCommunitiesButton.addEventListener('click', () => {
+      const cycleThroughCommunitiesButton = document.querySelector('#cycle-communities')
+      cycleThroughCommunitiesButton.style.display = 'block'
+      const recordSetupButton = document.querySelector('#record-setup')
+      recordSetupButton.style.display = 'block'
       const n = window.pfm.net
       makeCommunities(n)
       this.cycleCom.show()
@@ -808,6 +815,28 @@ class You {
       })
     })
   }
+
+  setupUploadNetworkButton () {
+    const uploadNetworkButton = document.querySelector('#upload-network')
+    uploadNetworkButton.addEventListener('click', () => {
+      console.log('un: click')
+      chrome.storage.sync.get(
+        ['userData'],
+        ({ userData }) => {
+          console.log('un: ottenuto lo userId', userData.id)
+          fAll.df4b({ 'userData.id': userData.id }).then(() => {
+            console.log('un: fatto non so cosa')
+            userData.net = this.net
+            console.log('un: quasi alla fine')
+            fAll.wf4b({ userData }).then(() => {
+              console.log('net written')
+              this.makeInfo('data uploaded', 'successfully')
+            })
+          })
+        }
+      )
+    })
+  }
 }
 
 const assignCC = net => net.forEachNode((n, a) => {
@@ -882,6 +911,7 @@ const makeCommunities = g => {
   const sg = g
   netdegree.assign(sg)
   netmetrics.centrality.degree.assign(sg)
+  console.log(sg.communities)
   sg.communities = louvain.detailed(sg)
   const communitySizes = new Array(sg.communities.count).fill(0)
   for (const key in sg.communities.communities) {

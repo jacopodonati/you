@@ -4,7 +4,7 @@
     "standard": "*"
   },
   "scripts": {
-    "dev": "nodemon --exec 'standard && npm run content && npm run background && npm run pop && npm run seeYourself'",
+    "dev": "nodemon --exec 'npm run content && npm run background && npm run pop && npm run seeYourself'",
     "content": "browserify modules/content.js > dist/modules/content.js",
     "background": "browserify modules/background.js > dist/modules/background.js",
     "pop": "browserify modules/pop.js > dist/modules/pop.js",
@@ -23,6 +23,7 @@
     "graphology-layout-forceatlas2": "^0.4.4",
     "graphology-metrics": "^1.8.0",
     "jquery": "^3.5.1",
+    "mongodb-stitch-browser-sdk": "^4.9.0",
     "pixi.js": "^7.4.2"
   },
   "standard": {

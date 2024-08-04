@@ -93,7 +93,6 @@ class FNetwork {
         this.graph.addNode(id, a)
       }
       if (!this.graph.hasEdge(this.lastId, id)) {
-        console.log(`adding ${this.lastId}, ${id}`)
         this.graph.addUndirectedEdge(this.lastId, id)
       }
     })
@@ -278,7 +277,6 @@ function seeNetwork () {
 
 function absorbNetwork (request) {
   const { structs } = request
-  console.log('absorb', { structs })
   let lastFriendships
   chrome.storage.sync.get(['nfriendships'], ({ nfriendships }) => {
     lastFriendships = nfriendships
