@@ -363,8 +363,6 @@ class You {
       recordSetupButton.style.display = 'block'
       const n = window.pfm.net
       makeCommunities(n)
-      this.cycleCom.show()
-      this.rec.show()
       window.comNames = new Array(n.communities.count).fill('')
       makeCommunitiesTable()
     })
@@ -386,6 +384,7 @@ class You {
         item.classList.add('community-item')
         item.innerHTML = text
         grid.appendChild(item)
+        return item
       }
 
       addItem('index', 1)
@@ -394,17 +393,17 @@ class You {
       const existingComms = []
       n.communities.sizes.all.forEach((c, i) => {
         existingComms.push(i)
-        addItem(i).click(() => {
+        addItem(i).addEventListener('click', () => {
           console.log(`activate com ${i} on the visualization`)
           this.showCom(i)
         })
-        addItem(c).click(() => {
+        addItem(i).addEventListener('click', () => {
           const mergeIndex = window.prompt(`Enter index to merge ${i}:`)
           if (existingComms.includes(parseInt(mergeIndex))) {
             mergeCommunities(i, mergeIndex)
           }
         })
-        const me = addItem(window.comNames[i]).click(() => {
+        const me = addItem(window.comNames[i]).addEventListener('click', () => {
           window.comNames[i] = window.prompt(`Enter a name for community ${i}:`)
           me.text(window.comNames[i])
         })
@@ -819,15 +818,11 @@ class You {
   setupUploadNetworkButton () {
     const uploadNetworkButton = document.querySelector('#upload-network')
     uploadNetworkButton.addEventListener('click', () => {
-      console.log('un: click')
       chrome.storage.sync.get(
         ['userData'],
         ({ userData }) => {
-          console.log('un: ottenuto lo userId', userData.id)
           fAll.df4b({ 'userData.id': userData.id }).then(() => {
-            console.log('un: fatto non so cosa')
-            userData.net = this.net
-            console.log('un: quasi alla fine')
+            userData.net = this.net.net
             fAll.wf4b({ userData }).then(() => {
               console.log('net written')
               this.makeInfo('data uploaded', 'successfully')

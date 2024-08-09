@@ -146,7 +146,7 @@ function setBezier (bezier, xd = 1000, yd = 0, dx1 = 0.25, dy1 = 30, dx2 = 0.75,
 
 module.exports = { ParticleNet2 }
 
-},{"pixi.js":648}],2:[function(require,module,exports){
+},{"pixi.js":647}],2:[function(require,module,exports){
 // mongo:
 const s = require('mongodb-stitch-browser-sdk')
 const e = module.exports
@@ -262,7 +262,7 @@ class FindAll {
 e.fAll = new FindAll()
 // fAll.ttm({ sid: { $exists: true } }, { sid: 1 }, 'test').then(r => console.log(r.map(i => i.sid)))
 
-},{"mongodb-stitch-browser-sdk":552}],3:[function(require,module,exports){
+},{"mongodb-stitch-browser-sdk":549}],3:[function(require,module,exports){
 /* global chrome */
 const PIXI = require('pixi.js')
 require('@pixi/unsafe-eval') // non fa il patch, quindi ho copiato manualmente il file e importato nell'HTML
@@ -628,8 +628,6 @@ class You {
       recordSetupButton.style.display = 'block'
       const n = window.pfm.net
       makeCommunities(n)
-      this.cycleCom.show()
-      this.rec.show()
       window.comNames = new Array(n.communities.count).fill('')
       makeCommunitiesTable()
     })
@@ -651,6 +649,7 @@ class You {
         item.classList.add('community-item')
         item.innerHTML = text
         grid.appendChild(item)
+        return item
       }
 
       addItem('index', 1)
@@ -659,17 +658,17 @@ class You {
       const existingComms = []
       n.communities.sizes.all.forEach((c, i) => {
         existingComms.push(i)
-        addItem(i).click(() => {
+        addItem(i).addEventListener('click', () => {
           console.log(`activate com ${i} on the visualization`)
           this.showCom(i)
         })
-        addItem(c).click(() => {
+        addItem(i).addEventListener('click', () => {
           const mergeIndex = window.prompt(`Enter index to merge ${i}:`)
           if (existingComms.includes(parseInt(mergeIndex))) {
             mergeCommunities(i, mergeIndex)
           }
         })
-        const me = addItem(window.comNames[i]).click(() => {
+        const me = addItem(window.comNames[i]).addEventListener('click', () => {
           window.comNames[i] = window.prompt(`Enter a name for community ${i}:`)
           me.text(window.comNames[i])
         })
@@ -1084,15 +1083,11 @@ class You {
   setupUploadNetworkButton () {
     const uploadNetworkButton = document.querySelector('#upload-network')
     uploadNetworkButton.addEventListener('click', () => {
-      console.log('un: click')
       chrome.storage.sync.get(
         ['userData'],
         ({ userData }) => {
-          console.log('un: ottenuto lo userId', userData.id)
           fAll.df4b({ 'userData.id': userData.id }).then(() => {
-            console.log('un: fatto non so cosa')
-            userData.net = this.net
-            console.log('un: quasi alla fine')
+            userData.net = this.net.net
             fAll.wf4b({ userData }).then(() => {
               console.log('net written')
               this.makeInfo('data uploaded', 'successfully')
@@ -1192,7 +1187,7 @@ const makeCommunities = g => {
   return sg
 }
 
-},{"./aux/ParticleNet2":1,"./aux/transfer.js":2,"@pixi/unsafe-eval":346,"chroma-js":378,"copy-to-clipboard":379,"graphology":417,"graphology-communities-louvain":383,"graphology-components":393,"graphology-layout":402,"graphology-layout-forceatlas2":399,"graphology-metrics":410,"graphology-metrics/degree":407,"graphology-utils/subgraph":416,"pixi.js":648}],4:[function(require,module,exports){
+},{"./aux/ParticleNet2":1,"./aux/transfer.js":2,"@pixi/unsafe-eval":346,"chroma-js":378,"copy-to-clipboard":379,"graphology":414,"graphology-communities-louvain":383,"graphology-components":389,"graphology-layout":398,"graphology-layout-forceatlas2":395,"graphology-metrics":406,"graphology-metrics/degree":403,"graphology-utils/subgraph":413,"pixi.js":647}],4:[function(require,module,exports){
 "use strict";
 var core = require("@pixi/core"), display = require("@pixi/display"), events = require("@pixi/events"), accessibleTarget = require("./accessibleTarget.js");
 display.DisplayObject.mixin(accessibleTarget.accessibleTarget);
@@ -21220,7 +21215,7 @@ const isMobileCall = isMobileJs.default ?? isMobileJs, isMobile = isMobileCall(g
 exports.isMobile = isMobile;
 
 
-},{"ismobilejs":418}],299:[function(require,module,exports){
+},{"ismobilejs":415}],299:[function(require,module,exports){
 "use strict";
 var core = require("@pixi/core"), sprite = require("@pixi/sprite");
 class AnimatedSprite extends sprite.Sprite {
@@ -26230,7 +26225,7 @@ const url = {
 exports.url = url;
 
 
-},{"./logging/deprecation.js":363,"url":686}],376:[function(require,module,exports){
+},{"./logging/deprecation.js":363,"url":685}],376:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -32269,7 +32264,7 @@ function fromByteArray (uint8) {
 })));
 
 }).call(this)}).call(this,{"isBuffer":require("../../../../../../../opt/homebrew/lib/node_modules/browserify/node_modules/is-buffer/index.js")},typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../../../../../../opt/homebrew/lib/node_modules/browserify/node_modules/is-buffer/index.js":675,"buffer":653,"long":519}],378:[function(require,module,exports){
+},{"../../../../../../../opt/homebrew/lib/node_modules/browserify/node_modules/is-buffer/index.js":674,"buffer":652,"long":516}],378:[function(require,module,exports){
 /**
  * chroma.js - JavaScript library for color conversions
  *
@@ -35971,7 +35966,7 @@ function copy(text, options) {
 
 module.exports = copy;
 
-},{"toggle-selection":649}],380:[function(require,module,exports){
+},{"toggle-selection":648}],380:[function(require,module,exports){
 (function (process){(function (){
 function detect() {
   if (typeof navigator !== 'undefined') {
@@ -36106,7 +36101,7 @@ module.exports = {
 };
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":677}],381:[function(require,module,exports){
+},{"_process":676}],381:[function(require,module,exports){
 'use strict';
 
 module.exports = earcut;
@@ -37133,11 +37128,11 @@ if ('undefined' !== typeof module) {
  * =============================
  *
  * JavaScript implementation of the famous Louvain community detection
- * algorithm for graphology.
+ * algorithms for graphology.
  *
  * [Articles]
  * M. E. J. Newman, « Modularity and community structure in networks »,
- * Proc. Natl. Acad. Sci. USA, vol. 103, no 23, 2006, p. 8577–8582
+ * Proc. Natl. Acad. Sci. USA, vol. 103, no 23,‎ 2006, p. 8577–8582
  * https://dx.doi.org/10.1073%2Fpnas.0601602103
  *
  * Newman, M. E. J. « Community detection in networks: Modularity optimization
@@ -37165,93 +37160,92 @@ if ('undefined' !== typeof module) {
  * DOI.org (Crossref), doi:10.1038/s41598-019-41695-z.
  * https://arxiv.org/abs/1810.08473
  */
-var resolveDefaults = require('graphology-utils/defaults');
-var isGraph = require('graphology-utils/is-graph');
-var inferType = require('graphology-utils/infer-type');
-var SparseMap = require('mnemonist/sparse-map');
-var SparseQueueSet = require('mnemonist/sparse-queue-set');
-var createRandomIndex = require('pandemonium/random-index').createRandomIndex;
+var defaults = require('lodash/defaultsDeep'),
+    isGraph = require('graphology-utils/is-graph'),
+    inferType = require('graphology-utils/infer-type'),
+    SparseMap = require('mnemonist/sparse-map'),
+    SparseQueueSet = require('mnemonist/sparse-queue-set'),
+    createRandomIndex = require('pandemonium/random-index').createRandomIndex;
 
-var indices = require('graphology-indices/louvain');
+var indices = require('graphology-indices/neighborhood/louvain');
 
-var UndirectedLouvainIndex = indices.UndirectedLouvainIndex;
-var DirectedLouvainIndex = indices.DirectedLouvainIndex;
+var UndirectedLouvainIndex = indices.UndirectedLouvainIndex,
+    DirectedLouvainIndex = indices.DirectedLouvainIndex;
 
 var DEFAULTS = {
-  nodeCommunityAttribute: 'community',
-  getEdgeWeight: 'weight',
+  attributes: {
+    community: 'community',
+    weight: 'weight'
+  },
   fastLocalMoves: true,
   randomWalk: true,
   resolution: 1,
-  rng: Math.random
+  rng: Math.random,
+  weighted: false
 };
 
 function addWeightToCommunity(map, community, weight) {
   var currentWeight = map.get(community);
 
-  if (typeof currentWeight === 'undefined') currentWeight = 0;
+  if (typeof currentWeight === 'undefined')
+    currentWeight = 0;
 
   currentWeight += weight;
 
   map.set(community, currentWeight);
 }
 
-var EPSILON = 1e-10;
-
-function tieBreaker(
-  bestCommunity,
-  currentCommunity,
-  targetCommunity,
-  delta,
-  bestDelta
-) {
-  if (Math.abs(delta - bestDelta) < EPSILON) {
-    if (bestCommunity === currentCommunity) {
-      return false;
-    } else {
-      return targetCommunity > bestCommunity;
-    }
-  } else if (delta > bestDelta) {
-    return true;
-  }
-
-  return false;
-}
-
 function undirectedLouvain(detailed, graph, options) {
   var index = new UndirectedLouvainIndex(graph, {
-    getEdgeWeight: options.getEdgeWeight,
+    attributes: {
+      weight: options.attributes.weight
+    },
     keepDendrogram: detailed,
-    resolution: options.resolution
+    resolution: options.resolution,
+    weighted: options.weighted
   });
 
   var randomIndex = createRandomIndex(options.rng);
 
   // State variables
   var moveWasMade = true,
-    localMoveWasMade = true;
+      localMoveWasMade = true;
 
   // Communities
-  var currentCommunity, targetCommunity;
+  var currentCommunity, targetCommunity, singletonCommunity;
   var communities = new SparseMap(Float64Array, index.C);
 
   // Traversal
-  var queue, start, end, weight, ci, ri, s, i, j, l;
+  var queue,
+      start,
+      end,
+      weight,
+      ci,
+      ri,
+      s,
+      i,
+      j,
+      l;
 
   // Metrics
-  var degree, targetCommunityDegree;
+  var degree,
+      targetCommunityDegree;
 
   // Moves
-  var bestCommunity, bestDelta, deltaIsBetter, delta;
+  var bestCommunity,
+      bestDelta,
+      deltaIsBetter,
+      delta;
 
   // Details
   var deltaComputations = 0,
-    nodesVisited = 0,
-    moves = [],
-    localMoves,
-    currentMoves;
+      nodesVisited = 0,
+      moves = [],
+      localMoves,
+      currentMoves;
 
-  if (options.fastLocalMoves) queue = new SparseQueueSet(index.C);
+  if (options.fastLocalMoves)
+    queue = new SparseQueueSet(index.C);
 
   while (moveWasMade) {
     l = index.C;
@@ -37294,8 +37288,13 @@ function undirectedLouvain(detailed, graph, options) {
           addWeightToCommunity(communities, targetCommunity, weight);
         }
 
+        singletonCommunity = index.isolate(i, degree);
+
+        if (singletonCommunity !== currentCommunity)
+          communities.set(singletonCommunity, 0);
+
         // Finding best community to move to
-        bestDelta = index.fastDeltaWithOwnCommunity(
+        bestDelta = index.fastDelta(
           i,
           degree,
           communities.get(currentCommunity) || 0,
@@ -37306,7 +37305,8 @@ function undirectedLouvain(detailed, graph, options) {
         for (ci = 0; ci < communities.size; ci++) {
           targetCommunity = communities.dense[ci];
 
-          if (targetCommunity === currentCommunity) continue;
+          if (targetCommunity === currentCommunity)
+            continue;
 
           targetCommunityDegree = communities.vals[ci];
 
@@ -37319,13 +37319,20 @@ function undirectedLouvain(detailed, graph, options) {
             targetCommunity
           );
 
-          deltaIsBetter = tieBreaker(
-            bestCommunity,
-            currentCommunity,
-            targetCommunity,
-            delta,
-            bestDelta
-          );
+          // NOTE: tie breaker here for better determinism
+          deltaIsBetter = false;
+
+          if (delta === bestDelta) {
+            if (bestCommunity === currentCommunity) {
+              deltaIsBetter = false;
+            }
+            else {
+              deltaIsBetter = targetCommunity > bestCommunity;
+            }
+          }
+          else if (delta > bestDelta) {
+            deltaIsBetter = true;
+          }
 
           if (deltaIsBetter) {
             bestDelta = delta;
@@ -37333,55 +37340,44 @@ function undirectedLouvain(detailed, graph, options) {
           }
         }
 
-        // Should we move the node?
-        if (bestDelta < 0) {
-          // NOTE: this is to allow nodes to move back to their own singleton
-          // This code however only deals with modularity (e.g. the condition
-          // about bestDelta < 0, which is the delta for moving back to
-          // singleton wrt. modularity). Indeed, rarely, the Louvain
-          // algorithm can produce such cases when a node would be better in
-          // a singleton that in its own community when considering self loops
-          // or a resolution != 1. In this case, delta with your own community
-          // is indeed less than 0. To handle different metrics, one should
-          // consider computing the delta for going back to singleton because
-          // it might not be 0.
-          bestCommunity = index.isolate(i, degree);
-
-          // If the node was already in a singleton community, we don't consider
-          // a move was made
-          if (bestCommunity === currentCommunity) continue;
-        } else {
-          // If no move was made, we continue to next node
-          if (bestCommunity === currentCommunity) {
-            continue;
-          } else {
-            // Actually moving the node to a new community
-            index.move(i, degree, bestCommunity);
-          }
+        // Should we move the node back into its community or into a
+        // different community?
+        if (bestCommunity === currentCommunity || bestDelta <= 0) {
+          if (currentCommunity !== singletonCommunity)
+            index.move(i, degree, currentCommunity);
         }
 
-        moveWasMade = true;
-        currentMoves++;
+        else if (bestCommunity !== singletonCommunity)
+          index.move(i, degree, bestCommunity);
 
-        // Adding neighbors from other communities to the queue
-        start = index.starts[i];
-        end = index.starts[i + 1];
+        if (bestDelta > 0 && bestCommunity !== currentCommunity) {
+          moveWasMade = true;
+          currentMoves++;
 
-        for (; start < end; start++) {
-          j = index.neighborhood[start];
-          targetCommunity = index.belongings[j];
+          // Adding neighbors from other communities to the queue
+          start = index.starts[i];
+          end = index.starts[i + 1];
 
-          if (targetCommunity !== bestCommunity) queue.enqueue(j);
+          for (; start < end; start++) {
+            j = index.neighborhood[start];
+            targetCommunity = index.belongings[j];
+
+            if (targetCommunity !== bestCommunity)
+              queue.enqueue(j);
+          }
         }
       }
 
       moves.push(currentMoves);
-    } else {
+    }
+    else {
+
       localMoves = [];
       moves.push(localMoves);
 
       // Traditional Louvain iterative traversal of the graph
       while (localMoveWasMade) {
+
         localMoveWasMade = false;
         currentMoves = 0;
 
@@ -37412,8 +37408,13 @@ function undirectedLouvain(detailed, graph, options) {
             addWeightToCommunity(communities, targetCommunity, weight);
           }
 
+          singletonCommunity = index.isolate(i, degree);
+
+          if (singletonCommunity !== currentCommunity)
+            communities.set(singletonCommunity, 0);
+
           // Finding best community to move to
-          bestDelta = index.fastDeltaWithOwnCommunity(
+          bestDelta = index.fastDelta(
             i,
             degree,
             communities.get(currentCommunity) || 0,
@@ -37424,7 +37425,8 @@ function undirectedLouvain(detailed, graph, options) {
           for (ci = 0; ci < communities.size; ci++) {
             targetCommunity = communities.dense[ci];
 
-            if (targetCommunity === currentCommunity) continue;
+            if (targetCommunity === currentCommunity)
+              continue;
 
             targetCommunityDegree = communities.vals[ci];
 
@@ -37437,13 +37439,20 @@ function undirectedLouvain(detailed, graph, options) {
               targetCommunity
             );
 
-            deltaIsBetter = tieBreaker(
-              bestCommunity,
-              currentCommunity,
-              targetCommunity,
-              delta,
-              bestDelta
-            );
+            // NOTE: tie breaker here for better determinism
+            deltaIsBetter = false;
+
+            if (delta === bestDelta) {
+              if (bestCommunity === currentCommunity) {
+                deltaIsBetter = false;
+              }
+              else {
+                deltaIsBetter = targetCommunity > bestCommunity;
+              }
+            }
+            else if (delta > bestDelta) {
+              deltaIsBetter = true;
+            }
 
             if (deltaIsBetter) {
               bestDelta = delta;
@@ -37451,35 +37460,20 @@ function undirectedLouvain(detailed, graph, options) {
             }
           }
 
-          // Should we move the node?
-          if (bestDelta < 0) {
-            // NOTE: this is to allow nodes to move back to their own singleton
-            // This code however only deals with modularity (e.g. the condition
-            // about bestDelta < 0, which is the delta for moving back to
-            // singleton wrt. modularity). Indeed, rarely, the Louvain
-            // algorithm can produce such cases when a node would be better in
-            // a singleton that in its own community when considering self loops
-            // or a resolution != 1. In this case, delta with your own community
-            // is indeed less than 0. To handle different metrics, one should
-            // consider computing the delta for going back to singleton because
-            // it might not be 0.
-            bestCommunity = index.isolate(i, degree);
-
-            // If the node was already in a singleton community, we don't consider
-            // a move was made
-            if (bestCommunity === currentCommunity) continue;
-          } else {
-            // If no move was made, we continue to next node
-            if (bestCommunity === currentCommunity) {
-              continue;
-            } else {
-              // Actually moving the node to a new community
-              index.move(i, degree, bestCommunity);
-            }
+          // Should we move the node back into its community or into a
+          // different community?
+          if (bestCommunity === currentCommunity || bestDelta <= 0) {
+            if (currentCommunity !== singletonCommunity)
+              index.move(i, degree, currentCommunity);
           }
 
-          localMoveWasMade = true;
-          currentMoves++;
+          else if (bestCommunity !== singletonCommunity)
+            index.move(i, degree, bestCommunity);
+
+          if (bestDelta > 0 && bestCommunity !== currentCommunity) {
+            localMoveWasMade = true;
+            currentMoves++;
+          }
         }
 
         localMoves.push(currentMoves);
@@ -37489,7 +37483,8 @@ function undirectedLouvain(detailed, graph, options) {
     }
 
     // We continue working on the induced graph
-    if (moveWasMade) index.zoomOut();
+    if (moveWasMade)
+      index.zoomOut();
   }
 
   var results = {
@@ -37504,38 +37499,58 @@ function undirectedLouvain(detailed, graph, options) {
 
 function directedLouvain(detailed, graph, options) {
   var index = new DirectedLouvainIndex(graph, {
-    getEdgeWeight: options.getEdgeWeight,
+    attributes: {
+      weight: options.attributes.weight
+    },
     keepDendrogram: detailed,
-    resolution: options.resolution
+    resolution: options.resolution,
+    weighted: options.weighted
   });
 
   var randomIndex = createRandomIndex(options.rng);
 
   // State variables
   var moveWasMade = true,
-    localMoveWasMade = true;
+      localMoveWasMade = true;
 
   // Communities
-  var currentCommunity, targetCommunity;
+  var currentCommunity, targetCommunity, singletonCommunity;
   var communities = new SparseMap(Float64Array, index.C);
 
   // Traversal
-  var queue, start, end, offset, out, weight, ci, ri, s, i, j, l;
+  var queue,
+      start,
+      end,
+      offset,
+      out,
+      weight,
+      ci,
+      ri,
+      s,
+      i,
+      j,
+      l;
 
   // Metrics
-  var inDegree, outDegree, targetCommunityDegree;
+  var inDegree,
+      outDegree,
+      targetCommunityDegree;
 
   // Moves
-  var bestCommunity, bestDelta, deltaIsBetter, delta;
+  var bestCommunity,
+      bestDelta,
+      deltaIsBetter,
+      delta;
 
   // Details
   var deltaComputations = 0,
-    nodesVisited = 0,
-    moves = [],
-    localMoves,
-    currentMoves;
+      nodesVisited = 0,
+      moves = [],
+      localMoves,
+      currentMoves;
 
-  if (options.fastLocalMoves) queue = new SparseQueueSet(index.C);
+  if (options.fastLocalMoves)
+    queue = new SparseQueueSet(index.C);
 
   while (moveWasMade) {
     l = index.C;
@@ -37577,14 +37592,21 @@ function directedLouvain(detailed, graph, options) {
           targetCommunity = index.belongings[j];
 
           // Incrementing metrics
-          if (out) outDegree += weight;
-          else inDegree += weight;
+          if (out)
+            outDegree += weight;
+          else
+            inDegree += weight;
 
           addWeightToCommunity(communities, targetCommunity, weight);
         }
 
+        singletonCommunity = index.isolate(i, inDegree, outDegree);
+
+        if (singletonCommunity !== currentCommunity)
+          communities.set(singletonCommunity, 0);
+
         // Finding best community to move to
-        bestDelta = index.deltaWithOwnCommunity(
+        bestDelta = index.delta(
           i,
           inDegree,
           outDegree,
@@ -37596,7 +37618,8 @@ function directedLouvain(detailed, graph, options) {
         for (ci = 0; ci < communities.size; ci++) {
           targetCommunity = communities.dense[ci];
 
-          if (targetCommunity === currentCommunity) continue;
+          if (targetCommunity === currentCommunity)
+            continue;
 
           targetCommunityDegree = communities.vals[ci];
 
@@ -37610,13 +37633,20 @@ function directedLouvain(detailed, graph, options) {
             targetCommunity
           );
 
-          deltaIsBetter = tieBreaker(
-            bestCommunity,
-            currentCommunity,
-            targetCommunity,
-            delta,
-            bestDelta
-          );
+          // NOTE: tie breaker here for better determinism
+          deltaIsBetter = false;
+
+          if (delta === bestDelta) {
+            if (bestCommunity === currentCommunity) {
+              deltaIsBetter = false;
+            }
+            else {
+              deltaIsBetter = targetCommunity > bestCommunity;
+            }
+          }
+          else if (delta > bestDelta) {
+            deltaIsBetter = true;
+          }
 
           if (deltaIsBetter) {
             bestDelta = delta;
@@ -37624,55 +37654,44 @@ function directedLouvain(detailed, graph, options) {
           }
         }
 
-        // Should we move the node?
-        if (bestDelta < 0) {
-          // NOTE: this is to allow nodes to move back to their own singleton
-          // This code however only deals with modularity (e.g. the condition
-          // about bestDelta < 0, which is the delta for moving back to
-          // singleton wrt. modularity). Indeed, rarely, the Louvain
-          // algorithm can produce such cases when a node would be better in
-          // a singleton that in its own community when considering self loops
-          // or a resolution != 1. In this case, delta with your own community
-          // is indeed less than 0. To handle different metrics, one should
-          // consider computing the delta for going back to singleton because
-          // it might not be 0.
-          bestCommunity = index.isolate(i, inDegree, outDegree);
-
-          // If the node was already in a singleton community, we don't consider
-          // a move was made
-          if (bestCommunity === currentCommunity) continue;
-        } else {
-          // If no move was made, we continue to next node
-          if (bestCommunity === currentCommunity) {
-            continue;
-          } else {
-            // Actually moving the node to a new community
-            index.move(i, inDegree, outDegree, bestCommunity);
-          }
+        // Should we move the node back into its community or into a
+        // different community?
+        if (bestCommunity === currentCommunity || bestDelta <= 0) {
+          if (currentCommunity !== singletonCommunity)
+            index.move(i, inDegree, outDegree, currentCommunity);
         }
 
-        moveWasMade = true;
-        currentMoves++;
+        else if (bestCommunity !== singletonCommunity)
+          index.move(i, inDegree, outDegree, bestCommunity);
 
-        // Adding neighbors from other communities to the queue
-        start = index.starts[i];
-        end = index.starts[i + 1];
+        if (bestDelta > 0 && bestCommunity !== currentCommunity) {
+          moveWasMade = true;
+          currentMoves++;
 
-        for (; start < end; start++) {
-          j = index.neighborhood[start];
-          targetCommunity = index.belongings[j];
+          // Adding neighbors from other communities to the queue
+          start = index.starts[i];
+          end = index.starts[i + 1];
 
-          if (targetCommunity !== bestCommunity) queue.enqueue(j);
+          for (; start < end; start++) {
+            j = index.neighborhood[start];
+            targetCommunity = index.belongings[j];
+
+            if (targetCommunity !== bestCommunity)
+              queue.enqueue(j);
+          }
         }
       }
 
       moves.push(currentMoves);
-    } else {
+    }
+    else {
+
       localMoves = [];
       moves.push(localMoves);
 
       // Traditional Louvain iterative traversal of the graph
       while (localMoveWasMade) {
+
         localMoveWasMade = false;
         currentMoves = 0;
 
@@ -37702,14 +37721,21 @@ function directedLouvain(detailed, graph, options) {
             targetCommunity = index.belongings[j];
 
             // Incrementing metrics
-            if (out) outDegree += weight;
-            else inDegree += weight;
+            if (out)
+              outDegree += weight;
+            else
+              inDegree += weight;
 
             addWeightToCommunity(communities, targetCommunity, weight);
           }
 
+          singletonCommunity = index.isolate(i, inDegree, outDegree);
+
+          if (singletonCommunity !== currentCommunity)
+            communities.set(singletonCommunity, 0);
+
           // Finding best community to move to
-          bestDelta = index.deltaWithOwnCommunity(
+          bestDelta = index.delta(
             i,
             inDegree,
             outDegree,
@@ -37721,7 +37747,8 @@ function directedLouvain(detailed, graph, options) {
           for (ci = 0; ci < communities.size; ci++) {
             targetCommunity = communities.dense[ci];
 
-            if (targetCommunity === currentCommunity) continue;
+            if (targetCommunity === currentCommunity)
+              continue;
 
             targetCommunityDegree = communities.vals[ci];
 
@@ -37735,13 +37762,20 @@ function directedLouvain(detailed, graph, options) {
               targetCommunity
             );
 
-            deltaIsBetter = tieBreaker(
-              bestCommunity,
-              currentCommunity,
-              targetCommunity,
-              delta,
-              bestDelta
-            );
+            // NOTE: tie breaker here for better determinism
+            deltaIsBetter = false;
+
+            if (delta === bestDelta) {
+              if (bestCommunity === currentCommunity) {
+                deltaIsBetter = false;
+              }
+              else {
+                deltaIsBetter = targetCommunity > bestCommunity;
+              }
+            }
+            else if (delta > bestDelta) {
+              deltaIsBetter = true;
+            }
 
             if (deltaIsBetter) {
               bestDelta = delta;
@@ -37749,35 +37783,20 @@ function directedLouvain(detailed, graph, options) {
             }
           }
 
-          // Should we move the node?
-          if (bestDelta < 0) {
-            // NOTE: this is to allow nodes to move back to their own singleton
-            // This code however only deals with modularity (e.g. the condition
-            // about bestDelta < 0, which is the delta for moving back to
-            // singleton wrt. modularity). Indeed, rarely, the Louvain
-            // algorithm can produce such cases when a node would be better in
-            // a singleton that in its own community when considering self loops
-            // or a resolution != 1. In this case, delta with your own community
-            // is indeed less than 0. To handle different metrics, one should
-            // consider computing the delta for going back to singleton because
-            // it might not be 0.
-            bestCommunity = index.isolate(i, inDegree, outDegree);
-
-            // If the node was already in a singleton community, we don't consider
-            // a move was made
-            if (bestCommunity === currentCommunity) continue;
-          } else {
-            // If no move was made, we continue to next node
-            if (bestCommunity === currentCommunity) {
-              continue;
-            } else {
-              // Actually moving the node to a new community
-              index.move(i, inDegree, outDegree, bestCommunity);
-            }
+          // Should we move the node back into its community or into a
+          // different community?
+          if (bestCommunity === currentCommunity || bestDelta <= 0) {
+            if (currentCommunity !== singletonCommunity)
+              index.move(i, inDegree, outDegree, currentCommunity);
           }
 
-          localMoveWasMade = true;
-          currentMoves++;
+          else if (bestCommunity !== singletonCommunity)
+            index.move(i, inDegree, outDegree, bestCommunity);
+
+          if (bestDelta > 0 && bestCommunity !== currentCommunity) {
+            localMoveWasMade = true;
+            currentMoves++;
+          }
         }
 
         localMoves.push(currentMoves);
@@ -37787,7 +37806,8 @@ function directedLouvain(detailed, graph, options) {
     }
 
     // We continue working on the induced graph
-    if (moveWasMade) index.zoomOut();
+    if (moveWasMade)
+      index.zoomOut();
   }
 
   var results = {
@@ -37807,38 +37827,39 @@ function directedLouvain(detailed, graph, options) {
  * @param  {boolean} detailed           - Whether to return detailed information.
  * @param  {Graph}   graph              - Target graph.
  * @param  {object}  options            - Options:
- * @param  {string}    nodeCommunityAttribute - Community node attribute name.
- * @param  {string}    getEdgeWeight          - Weight edge attribute name or getter function.
- * @param  {string}    deltaComputation       - Method to use to compute delta computations.
- * @param  {boolean}   fastLocalMoves         - Whether to use the fast local move optimization.
- * @param  {boolean}   randomWalk             - Whether to traverse the graph in random order.
- * @param  {number}    resolution             - Resolution parameter.
- * @param  {function}  rng                    - RNG function to use.
+ * @param  {object}    attributes         - Attribute names:
+ * @param  {string}      community          - Community node attribute name.
+ * @param  {string}      weight             - Weight edge attribute name.
+ * @param  {string}    deltaComputation   - Method to use to compute delta computations.
+ * @param  {boolean}   fastLocalMoves     - Whether to use the fast local move optimization.
+ * @param  {boolean}   randomWalk         - Whether to traverse the graph in random order.
+ * @param  {number}    resolution         - Resolution parameter.
+ * @param  {function}  rng                - RNG function to use.
+ * @param  {boolean}   weighted           - Whether to compute the weighted version.
  * @return {object}
  */
 function louvain(assign, detailed, graph, options) {
   if (!isGraph(graph))
-    throw new Error(
-      'graphology-communities-louvain: the given graph is not a valid graphology instance.'
-    );
+    throw new Error('graphology-communities-louvain: the given graph is not a valid graphology instance.');
+
+  if (graph.multi)
+    throw new Error('graphology-communities-louvain: cannot run the algorithm on a multi graph. Cast it to a simple one before (graphology-operators/to-simple).');
 
   var type = inferType(graph);
 
   if (type === 'mixed')
-    throw new Error(
-      'graphology-communities-louvain: cannot run the algorithm on a true mixed graph.'
-    );
+    throw new Error('graphology-communities-louvain: cannor run the algorithm on a true mixed graph.');
 
   // Attributes name
-  options = resolveDefaults(options, DEFAULTS);
+  options = defaults({}, options, DEFAULTS);
 
   // Empty graph case
   var c = 0;
 
   if (graph.size === 0) {
     if (assign) {
-      graph.forEachNode(function (node) {
-        graph.setNodeAttribute(node, options.nodeCommunityAttribute, c++);
+      graph.forEachNode(function(node) {
+        graph.setNodeAttribute(node, options.attributes.communities, c++);
       });
 
       return;
@@ -37846,11 +37867,12 @@ function louvain(assign, detailed, graph, options) {
 
     var communities = {};
 
-    graph.forEachNode(function (node) {
+    graph.forEachNode(function(node) {
       communities[node] = c++;
     });
 
-    if (!detailed) return communities;
+    if (!detailed)
+      return communities;
 
     return {
       communities: communities,
@@ -37874,7 +37896,7 @@ function louvain(assign, detailed, graph, options) {
   // Standard output
   if (!detailed) {
     if (assign) {
-      index.assign(options.nodeCommunityAttribute);
+      index.assign(options.attributes.community);
       return;
     }
 
@@ -37894,7 +37916,7 @@ function louvain(assign, detailed, graph, options) {
   };
 
   if (assign) {
-    index.assign(options.nodeCommunityAttribute);
+    index.assign(options.attributes.community);
     return output;
   }
 
@@ -37913,7 +37935,7 @@ fn.defaults = DEFAULTS;
 
 module.exports = fn;
 
-},{"graphology-indices/louvain":384,"graphology-utils/defaults":385,"graphology-utils/infer-type":387,"graphology-utils/is-graph":388,"mnemonist/sparse-map":389,"mnemonist/sparse-queue-set":390,"pandemonium/random-index":646}],384:[function(require,module,exports){
+},{"graphology-indices/neighborhood/louvain":384,"graphology-utils/infer-type":411,"graphology-utils/is-graph":412,"lodash/defaultsDeep":498,"mnemonist/sparse-map":386,"mnemonist/sparse-queue-set":387,"pandemonium/random-index":644}],384:[function(require,module,exports){
 /**
  * Graphology Louvain Indices
  * ===========================
@@ -37929,7 +37951,7 @@ module.exports = fn;
  *
  * [Articles]
  * M. E. J. Newman, « Modularity and community structure in networks »,
- * Proc. Natl. Acad. Sci. USA, vol. 103, no 23, 2006, p. 8577–8582
+ * Proc. Natl. Acad. Sci. USA, vol. 103, no 23,‎ 2006, p. 8577–8582
  * https://dx.doi.org/10.1073%2Fpnas.0601602103
  *
  * Newman, M. E. J. « Community detection in networks: Modularity optimization
@@ -37973,55 +37995,70 @@ module.exports = fn;
  * does not affect delta comparisons.
  */
 var typed = require('mnemonist/utils/typed-arrays');
-var resolveDefaults = require('graphology-utils/defaults');
-var createEdgeWeightGetter =
-  require('graphology-utils/getters').createEdgeWeightGetter;
 
 var INSPECT = Symbol.for('nodejs.util.inspect.custom');
 
 var DEFAULTS = {
-  getEdgeWeight: 'weight',
+  attributes: {
+    weight: 'weight'
+  },
   keepDendrogram: false,
-  resolution: 1
+  resolution: 1,
+  weighted: false
 };
 
 function UndirectedLouvainIndex(graph, options) {
-  // Solving options
-  options = resolveDefaults(options, DEFAULTS);
 
-  var resolution = options.resolution;
+  // Solving options
+  options = options || {};
+  var attributes = options.attributes || {};
+
+  var keepDendrogram = options.keepDendrogram === true;
+
+  var resolution = typeof options.resolution === 'number' ?
+    options.resolution :
+    DEFAULTS.resolution;
 
   // Weight getters
-  var getEdgeWeight = createEdgeWeightGetter(options.getEdgeWeight).fromEntry;
+  var weighted = options.weighted === true;
+
+  var weightAttribute = attributes.weight || DEFAULTS.attributes.weight;
+
+  var getWeight = function(attr) {
+    if (!weighted)
+      return 1;
+
+    var weight = attr[weightAttribute];
+
+    if (typeof weight !== 'number' || isNaN(weight))
+      return 1;
+
+    return weight;
+  };
 
   // Building the index
-  var size = (graph.size - graph.selfLoopCount) * 2;
+  var upperBound = graph.size * 2;
 
-  var NeighborhoodPointerArray = typed.getPointerArray(size);
+  var NeighborhoodPointerArray = typed.getPointerArray(upperBound);
   var NodesPointerArray = typed.getPointerArray(graph.order + 1);
-
-  // NOTE: this memory optimization can yield overflow deopt when computing deltas
-  var WeightsArray = options.getEdgeWeight
-    ? Float64Array
-    : typed.getPointerArray(graph.size * 2);
 
   // Properties
   this.C = graph.order;
   this.M = 0;
-  this.E = size;
+  this.E = graph.size * 2;
   this.U = 0;
   this.resolution = resolution;
   this.level = 0;
   this.graph = graph;
   this.nodes = new Array(graph.order);
-  this.keepDendrogram = options.keepDendrogram;
+  this.keepDendrogram = keepDendrogram;
 
   // Edge-level
-  this.neighborhood = new NodesPointerArray(size);
-  this.weights = new WeightsArray(size);
+  this.neighborhood = new NodesPointerArray(upperBound);
+  this.weights = new Float64Array(upperBound);
 
   // Node-level
-  this.loops = new WeightsArray(graph.order);
+  this.loops = new Float64Array(graph.order);
   this.starts = new NeighborhoodPointerArray(graph.order + 1);
   this.belongings = new NodesPointerArray(graph.order);
   this.dendrogram = [];
@@ -38030,25 +38067,26 @@ function UndirectedLouvainIndex(graph, options) {
   // Community-level
   this.counts = new NodesPointerArray(graph.order);
   this.unused = new NodesPointerArray(graph.order);
-  this.totalWeights = new WeightsArray(graph.order);
+  this.totalWeights = new Float64Array(graph.order);
 
   var ids = {};
 
   var weight;
 
   var i = 0,
-    n = 0;
+      n = 0;
 
   var self = this;
 
-  graph.forEachNode(function (node) {
+  // TODO: this is implementation specific
+  graph._nodes.forEach(function(nodeData, node) {
     self.nodes[i] = node;
 
     // Node map to index
     ids[node] = i;
 
     // Initializing starts
-    n += graph.undirectedDegreeWithoutSelfLoops(node);
+    n += nodeData.undirectedDegree;
     self.starts[i] = n;
 
     // Belongings
@@ -38058,8 +38096,8 @@ function UndirectedLouvainIndex(graph, options) {
   });
 
   // Single sweep over the edges
-  graph.forEachEdge(function (edge, attr, source, target, sa, ta, u) {
-    weight = getEdgeWeight(edge, attr, source, target, sa, ta, u);
+  graph.forEachEdge(function(edge, attr, source, target) {
+    weight = getWeight(attr);
 
     source = ids[source];
     target = ids[target];
@@ -38068,14 +38106,16 @@ function UndirectedLouvainIndex(graph, options) {
 
     // Self loop?
     if (source === target) {
+      self.E -= 2;
       self.totalWeights[source] += weight * 2;
       self.loops[source] = weight * 2;
-    } else {
+    }
+    else {
       self.totalWeights[source] += weight;
       self.totalWeights[target] += weight;
 
       var startSource = --self.starts[source],
-        startTarget = --self.starts[target];
+          startTarget = --self.starts[target];
 
       self.neighborhood[startSource] = target;
       self.neighborhood[startTarget] = source;
@@ -38087,15 +38127,18 @@ function UndirectedLouvainIndex(graph, options) {
 
   this.starts[i] = this.E;
 
-  if (this.keepDendrogram) this.dendrogram.push(this.belongings.slice());
-  else this.mapping = this.belongings.slice();
+  if (this.keepDendrogram)
+    this.dendrogram.push(this.belongings.slice());
+  else
+    this.mapping = this.belongings.slice();
 }
 
-UndirectedLouvainIndex.prototype.isolate = function (i, degree) {
+UndirectedLouvainIndex.prototype.isolate = function(i, degree) {
   var currentCommunity = this.belongings[i];
 
   // The node is already isolated
-  if (this.counts[currentCommunity] === 1) return currentCommunity;
+  if (this.counts[currentCommunity] === 1)
+    return currentCommunity;
 
   var newCommunity = this.unused[--this.U];
 
@@ -38112,9 +38155,13 @@ UndirectedLouvainIndex.prototype.isolate = function (i, degree) {
   return newCommunity;
 };
 
-UndirectedLouvainIndex.prototype.move = function (i, degree, targetCommunity) {
+UndirectedLouvainIndex.prototype.move = function(
+  i,
+  degree,
+  targetCommunity
+) {
   var currentCommunity = this.belongings[i],
-    loops = this.loops[i];
+      loops = this.loops[i];
 
   this.totalWeights[currentCommunity] -= degree + loops;
   this.totalWeights[targetCommunity] += degree + loops;
@@ -38124,10 +38171,11 @@ UndirectedLouvainIndex.prototype.move = function (i, degree, targetCommunity) {
   var nowEmpty = this.counts[currentCommunity]-- === 1;
   this.counts[targetCommunity]++;
 
-  if (nowEmpty) this.unused[this.U++] = currentCommunity;
+  if (nowEmpty)
+    this.unused[this.U++] = currentCommunity;
 };
 
-UndirectedLouvainIndex.prototype.computeNodeDegree = function (i) {
+UndirectedLouvainIndex.prototype.expensiveMove = function(i, ci, dryRun) {
   var o, l, weight;
 
   var degree = 0;
@@ -38138,27 +38186,22 @@ UndirectedLouvainIndex.prototype.computeNodeDegree = function (i) {
     degree += weight;
   }
 
-  return degree;
+  var args = [i, degree, ci];
+
+  if (dryRun)
+    return args;
+
+  this.move.apply(this, args);
 };
 
-UndirectedLouvainIndex.prototype.expensiveIsolate = function (i) {
-  var degree = this.computeNodeDegree(i);
-  return this.isolate(i, degree);
-};
-
-UndirectedLouvainIndex.prototype.expensiveMove = function (i, ci) {
-  var degree = this.computeNodeDegree(i);
-  this.move(i, degree, ci);
-};
-
-UndirectedLouvainIndex.prototype.zoomOut = function () {
-  var inducedGraph = new Array(this.C - this.U),
-    newLabels = {};
+UndirectedLouvainIndex.prototype.zoomOut = function() {
+  var inducedGraph = {},
+      newLabels = {};
 
   var N = this.nodes.length;
 
   var C = 0,
-    E = 0;
+      E = 0;
 
   var i, j, l, m, n, ci, cj, data, adj;
 
@@ -38187,11 +38230,14 @@ UndirectedLouvainIndex.prototype.zoomOut = function () {
     currentLevel = this.dendrogram[this.level];
     nextLevel = new (typed.getPointerArray(C))(N);
 
-    for (i = 0; i < N; i++) nextLevel[i] = this.belongings[currentLevel[i]];
+    for (i = 0; i < N; i++)
+      nextLevel[i] = this.belongings[currentLevel[i]];
 
     this.dendrogram.push(nextLevel);
-  } else {
-    for (i = 0; i < N; i++) this.mapping[i] = this.belongings[this.mapping[i]];
+  }
+  else {
+    for (i = 0; i < N; i++)
+      this.mapping[i] = this.belongings[this.mapping[i]];
   }
 
   // Building induced graph matrix
@@ -38211,7 +38257,8 @@ UndirectedLouvainIndex.prototype.zoomOut = function () {
         continue;
       }
 
-      if (!(cj in adj)) adj[cj] = 0;
+      if (!(cj in adj))
+        adj[cj] = 0;
 
       adj[cj] += this.weights[j];
     }
@@ -38222,7 +38269,7 @@ UndirectedLouvainIndex.prototype.zoomOut = function () {
 
   n = 0;
 
-  for (ci = 0; ci < C; ci++) {
+  for (ci in inducedGraph) {
     data = inducedGraph[ci];
     adj = data.adj;
 
@@ -38236,7 +38283,7 @@ UndirectedLouvainIndex.prototype.zoomOut = function () {
     this.belongings[ci] = ci;
 
     for (cj in adj) {
-      this.neighborhood[n] = +cj;
+      this.neighborhood[n] = cj;
       this.weights[n] = adj[cj];
 
       E++;
@@ -38249,11 +38296,9 @@ UndirectedLouvainIndex.prototype.zoomOut = function () {
   this.E = E;
   this.U = 0;
   this.level++;
-
-  return newLabels;
 };
 
-UndirectedLouvainIndex.prototype.modularity = function () {
+UndirectedLouvainIndex.prototype.modularity = function() {
   var ci, cj, i, j, m;
 
   var Q = 0;
@@ -38267,27 +38312,24 @@ UndirectedLouvainIndex.prototype.modularity = function () {
     for (j = this.starts[i], m = this.starts[i + 1]; j < m; j++) {
       cj = this.belongings[this.neighborhood[j]];
 
-      if (ci !== cj) continue;
+      if (ci !== cj)
+        continue;
 
       internalWeights[ci] += this.weights[j];
     }
   }
 
   for (i = 0; i < this.C; i++) {
-    Q +=
+    Q += (
       internalWeights[i] / M2 -
-      Math.pow(this.totalWeights[i] / M2, 2) * this.resolution;
+      Math.pow(this.totalWeights[i] / M2, 2) * this.resolution
+    );
   }
 
   return Q;
 };
 
-UndirectedLouvainIndex.prototype.delta = function (
-  i,
-  degree,
-  targetCommunityDegree,
-  targetCommunity
-) {
+UndirectedLouvainIndex.prototype.delta = function(i, degree, targetCommunityDegree, targetCommunity) {
   var M = this.M;
 
   var targetCommunityTotalWeight = this.totalWeights[targetCommunity];
@@ -38295,17 +38337,15 @@ UndirectedLouvainIndex.prototype.delta = function (
   degree += this.loops[i];
 
   return (
-    targetCommunityDegree / M - // NOTE: formula is a bit different here because targetCommunityDegree is passed without * 2
-    (targetCommunityTotalWeight * degree * this.resolution) / (2 * M * M)
+    (targetCommunityDegree / M) - // NOTE: formula is a bit different here because targetCommunityDegree is passed without * 2
+    (
+      (targetCommunityTotalWeight * degree * this.resolution) /
+      (2 * M * M)
+    )
   );
 };
 
-UndirectedLouvainIndex.prototype.deltaWithOwnCommunity = function (
-  i,
-  degree,
-  targetCommunityDegree,
-  targetCommunity
-) {
+UndirectedLouvainIndex.prototype.deltaWithOwnCommunity = function(i, degree, targetCommunityDegree, targetCommunity) {
   var M = this.M;
 
   var targetCommunityTotalWeight = this.totalWeights[targetCommunity];
@@ -38313,20 +38353,17 @@ UndirectedLouvainIndex.prototype.deltaWithOwnCommunity = function (
   degree += this.loops[i];
 
   return (
-    targetCommunityDegree / M - // NOTE: formula is a bit different here because targetCommunityDegree is passed without * 2
-    ((targetCommunityTotalWeight - degree) * degree * this.resolution) /
+    (targetCommunityDegree / M) - // NOTE: formula is a bit different here because targetCommunityDegree is passed without * 2
+    (
+      ((targetCommunityTotalWeight - degree) * degree * this.resolution) /
       (2 * M * M)
+    )
   );
 };
 
 // NOTE: this is just a faster but equivalent version of #.delta
 // It is just off by a constant factor and is just faster to compute
-UndirectedLouvainIndex.prototype.fastDelta = function (
-  i,
-  degree,
-  targetCommunityDegree,
-  targetCommunity
-) {
+UndirectedLouvainIndex.prototype.fastDelta = function(i, degree, targetCommunityDegree, targetCommunity) {
   var M = this.M;
 
   var targetCommunityTotalWeight = this.totalWeights[targetCommunity];
@@ -38339,12 +38376,7 @@ UndirectedLouvainIndex.prototype.fastDelta = function (
   );
 };
 
-UndirectedLouvainIndex.prototype.fastDeltaWithOwnCommunity = function (
-  i,
-  degree,
-  targetCommunityDegree,
-  targetCommunity
-) {
+UndirectedLouvainIndex.prototype.fastDeltaWithOwnCommunity = function(i, degree, targetCommunityDegree, targetCommunity) {
   var M = this.M;
 
   var targetCommunityTotalWeight = this.totalWeights[targetCommunity];
@@ -38357,19 +38389,19 @@ UndirectedLouvainIndex.prototype.fastDeltaWithOwnCommunity = function (
   );
 };
 
-UndirectedLouvainIndex.prototype.bounds = function (i) {
+UndirectedLouvainIndex.prototype.bounds = function(i) {
   return [this.starts[i], this.starts[i + 1]];
 };
 
-UndirectedLouvainIndex.prototype.project = function () {
+UndirectedLouvainIndex.prototype.project = function() {
   var self = this;
 
   var projection = {};
 
-  self.nodes.slice(0, this.C).forEach(function (node, i) {
+  self.nodes.slice(0, this.C).forEach(function(node, i) {
     projection[node] = Array.from(
       self.neighborhood.slice(self.starts[i], self.starts[i + 1])
-    ).map(function (j) {
+    ).map(function(j) {
       return self.nodes[j];
     });
   });
@@ -38377,8 +38409,9 @@ UndirectedLouvainIndex.prototype.project = function () {
   return projection;
 };
 
-UndirectedLouvainIndex.prototype.collect = function (level) {
-  if (arguments.length < 1) level = this.level;
+UndirectedLouvainIndex.prototype.collect = function(level) {
+  if (arguments.length < 1)
+    level = this.level;
 
   var o = {};
 
@@ -38386,13 +38419,15 @@ UndirectedLouvainIndex.prototype.collect = function (level) {
 
   var i, l;
 
-  for (i = 0, l = mapping.length; i < l; i++) o[this.nodes[i]] = mapping[i];
+  for (i = 0, l = mapping.length; i < l; i++)
+    o[this.nodes[i]] = mapping[i];
 
   return o;
 };
 
-UndirectedLouvainIndex.prototype.assign = function (prop, level) {
-  if (arguments.length < 2) level = this.level;
+UndirectedLouvainIndex.prototype.assign = function(prop, level) {
+  if (arguments.length < 2)
+    level = this.level;
 
   var mapping = this.keepDendrogram ? this.dendrogram[level] : this.mapping;
 
@@ -38402,7 +38437,7 @@ UndirectedLouvainIndex.prototype.assign = function (prop, level) {
     this.graph.setNodeAttribute(this.nodes[i], prop, mapping[i]);
 };
 
-UndirectedLouvainIndex.prototype[INSPECT] = function () {
+UndirectedLouvainIndex.prototype[INSPECT] = function() {
   var proxy = {};
 
   // Trick so that node displays the name of the constructor
@@ -38425,60 +38460,77 @@ UndirectedLouvainIndex.prototype[INSPECT] = function () {
 
   var self = this;
 
-  eTruncated.forEach(function (key) {
+  eTruncated.forEach(function(key) {
     proxy[key] = self[key].slice(0, proxy.E);
   });
 
-  cTruncated.forEach(function (key) {
+  cTruncated.forEach(function(key) {
     proxy[key] = self[key].slice(0, proxy.C);
   });
 
   proxy.unused = this.unused.slice(0, this.U);
 
-  if (this.keepDendrogram) proxy.dendrogram = this.dendrogram;
-  else proxy.mapping = this.mapping;
+  if (this.keepDendrogram)
+    proxy.dendrogram = this.dendrogram;
+  else
+    proxy.mapping = this.mapping;
 
   return proxy;
 };
 
 function DirectedLouvainIndex(graph, options) {
-  // Solving options
-  options = resolveDefaults(options, DEFAULTS);
 
-  var resolution = options.resolution;
+  // Solving options
+  options = options || {};
+  var attributes = options.attributes || {};
+
+  var keepDendrogram = options.keepDendrogram === true;
+
+  var resolution = typeof options.resolution === 'number' ?
+    options.resolution :
+    DEFAULTS.resolution;
 
   // Weight getters
-  var getEdgeWeight = createEdgeWeightGetter(options.getEdgeWeight).fromEntry;
+  var weighted = options.weighted === true;
+
+  var weightAttribute = attributes.weight || DEFAULTS.attributes.weight;
+
+  var getWeight = function(attr) {
+    if (!weighted)
+      return 1;
+
+    var weight = attr[weightAttribute];
+
+    if (typeof weight !== 'number' || isNaN(weight))
+      return 1;
+
+    return weight;
+  };
 
   // Building the index
-  var size = (graph.size - graph.selfLoopCount) * 2;
+  var upperBound = graph.size * 2;
 
-  var NeighborhoodPointerArray = typed.getPointerArray(size);
+  var NeighborhoodPointerArray = typed.getPointerArray(upperBound);
   var NodesPointerArray = typed.getPointerArray(graph.order + 1);
-
-  // NOTE: this memory optimization can yield overflow deopt when computing deltas
-  var WeightsArray = options.getEdgeWeight
-    ? Float64Array
-    : typed.getPointerArray(graph.size * 2);
 
   // Properties
   this.C = graph.order;
   this.M = 0;
-  this.E = size;
+  this.E = graph.size * 2;
   this.U = 0;
   this.resolution = resolution;
   this.level = 0;
   this.graph = graph;
   this.nodes = new Array(graph.order);
-  this.keepDendrogram = options.keepDendrogram;
+  this.keepDendrogram = keepDendrogram;
 
   // Edge-level
   // NOTE: edges are stored out then in, in this order
-  this.neighborhood = new NodesPointerArray(size);
-  this.weights = new WeightsArray(size);
+  this.neighborhood = new NodesPointerArray(upperBound);
+  this.weights = new Float64Array(upperBound);
 
   // Node-level
-  this.loops = new WeightsArray(graph.order);
+  this.loops = new Float64Array(graph.order);
   this.starts = new NeighborhoodPointerArray(graph.order + 1);
   this.offsets = new NeighborhoodPointerArray(graph.order);
   this.belongings = new NodesPointerArray(graph.order);
@@ -38487,29 +38539,30 @@ function DirectedLouvainIndex(graph, options) {
   // Community-level
   this.counts = new NodesPointerArray(graph.order);
   this.unused = new NodesPointerArray(graph.order);
-  this.totalInWeights = new WeightsArray(graph.order);
-  this.totalOutWeights = new WeightsArray(graph.order);
+  this.totalInWeights = new Float64Array(graph.order);
+  this.totalOutWeights = new Float64Array(graph.order);
 
   var ids = {};
 
   var weight;
 
   var i = 0,
-    n = 0;
+      n = 0;
 
   var self = this;
 
-  graph.forEachNode(function (node) {
+  // TODO: this is implementation specific
+  graph._nodes.forEach(function(nodeData, node) {
     self.nodes[i] = node;
 
     // Node map to index
     ids[node] = i;
 
     // Initializing starts & offsets
-    n += graph.outDegreeWithoutSelfLoops(node);
+    n += nodeData.outDegree;
     self.starts[i] = n;
 
-    n += graph.inDegreeWithoutSelfLoops(node);
+    n += nodeData.inDegree;
     self.offsets[i] = n;
 
     // Belongings
@@ -38519,8 +38572,8 @@ function DirectedLouvainIndex(graph, options) {
   });
 
   // Single sweep over the edges
-  graph.forEachEdge(function (edge, attr, source, target, sa, ta, u) {
-    weight = getEdgeWeight(edge, attr, source, target, sa, ta, u);
+  graph.forEachEdge(function(edge, attr, source, target) {
+    weight = getWeight(attr);
 
     source = ids[source];
     target = ids[target];
@@ -38529,15 +38582,17 @@ function DirectedLouvainIndex(graph, options) {
 
     // Self loop?
     if (source === target) {
+      self.E -= 2;
       self.loops[source] += weight;
       self.totalInWeights[source] += weight;
       self.totalOutWeights[source] += weight;
-    } else {
+    }
+    else {
       self.totalOutWeights[source] += weight;
       self.totalInWeights[target] += weight;
 
       var startSource = --self.starts[source],
-        startTarget = --self.offsets[target];
+          startTarget = --self.offsets[target];
 
       self.neighborhood[startSource] = target;
       self.neighborhood[startTarget] = source;
@@ -38549,32 +38604,33 @@ function DirectedLouvainIndex(graph, options) {
 
   this.starts[i] = this.E;
 
-  if (this.keepDendrogram) this.dendrogram.push(this.belongings.slice());
-  else this.mapping = this.belongings.slice();
+  if (this.keepDendrogram)
+    this.dendrogram.push(this.belongings.slice());
+  else
+    this.mapping = this.belongings.slice();
 }
 
 DirectedLouvainIndex.prototype.bounds = UndirectedLouvainIndex.prototype.bounds;
 
-DirectedLouvainIndex.prototype.inBounds = function (i) {
+DirectedLouvainIndex.prototype.inBounds = function(i) {
   return [this.offsets[i], this.starts[i + 1]];
 };
 
-DirectedLouvainIndex.prototype.outBounds = function (i) {
+DirectedLouvainIndex.prototype.outBounds = function(i) {
   return [this.starts[i], this.offsets[i]];
 };
 
-DirectedLouvainIndex.prototype.project =
-  UndirectedLouvainIndex.prototype.project;
+DirectedLouvainIndex.prototype.project = UndirectedLouvainIndex.prototype.project;
 
-DirectedLouvainIndex.prototype.projectIn = function () {
+DirectedLouvainIndex.prototype.projectIn = function() {
   var self = this;
 
   var projection = {};
 
-  self.nodes.slice(0, this.C).forEach(function (node, i) {
+  self.nodes.slice(0, this.C).forEach(function(node, i) {
     projection[node] = Array.from(
       self.neighborhood.slice(self.offsets[i], self.starts[i + 1])
-    ).map(function (j) {
+    ).map(function(j) {
       return self.nodes[j];
     });
   });
@@ -38582,15 +38638,15 @@ DirectedLouvainIndex.prototype.projectIn = function () {
   return projection;
 };
 
-DirectedLouvainIndex.prototype.projectOut = function () {
+DirectedLouvainIndex.prototype.projectOut = function() {
   var self = this;
 
   var projection = {};
 
-  self.nodes.slice(0, this.C).forEach(function (node, i) {
+  self.nodes.slice(0, this.C).forEach(function(node, i) {
     projection[node] = Array.from(
       self.neighborhood.slice(self.starts[i], self.offsets[i])
-    ).map(function (j) {
+    ).map(function(j) {
       return self.nodes[j];
     });
   });
@@ -38598,11 +38654,12 @@ DirectedLouvainIndex.prototype.projectOut = function () {
   return projection;
 };
 
-DirectedLouvainIndex.prototype.isolate = function (i, inDegree, outDegree) {
+DirectedLouvainIndex.prototype.isolate = function(i, inDegree, outDegree) {
   var currentCommunity = this.belongings[i];
 
   // The node is already isolated
-  if (this.counts[currentCommunity] === 1) return currentCommunity;
+  if (this.counts[currentCommunity] === 1)
+    return currentCommunity;
 
   var newCommunity = this.unused[--this.U];
 
@@ -38622,14 +38679,14 @@ DirectedLouvainIndex.prototype.isolate = function (i, inDegree, outDegree) {
   return newCommunity;
 };
 
-DirectedLouvainIndex.prototype.move = function (
+DirectedLouvainIndex.prototype.move = function(
   i,
   inDegree,
   outDegree,
   targetCommunity
 ) {
   var currentCommunity = this.belongings[i],
-    loops = this.loops[i];
+      loops = this.loops[i];
 
   this.totalInWeights[currentCommunity] -= inDegree + loops;
   this.totalInWeights[targetCommunity] += inDegree + loops;
@@ -38642,52 +38699,49 @@ DirectedLouvainIndex.prototype.move = function (
   var nowEmpty = this.counts[currentCommunity]-- === 1;
   this.counts[targetCommunity]++;
 
-  if (nowEmpty) this.unused[this.U++] = currentCommunity;
+  if (nowEmpty)
+    this.unused[this.U++] = currentCommunity;
 };
 
-DirectedLouvainIndex.prototype.computeNodeInDegree = function (i) {
-  var o, l, weight;
+DirectedLouvainIndex.prototype.expensiveMove = function(i, ci, dryRun) {
+  var o, l, out, weight;
 
-  var inDegree = 0;
+  var inDegree = 0,
+      outDegree = 0;
 
-  for (o = this.offsets[i], l = this.starts[i + 1]; o < l; o++) {
+  var s = this.offsets[i];
+
+  for (o = this.starts[i], l = this.starts[i + 1]; o < l; o++) {
+    out = o < s;
     weight = this.weights[o];
 
-    inDegree += weight;
+    if (out)
+      outDegree += weight;
+    else
+      inDegree += weight;
   }
 
-  return inDegree;
+  var args = [
+    i,
+    inDegree,
+    outDegree,
+    ci
+  ];
+
+  if (dryRun)
+    return args;
+
+  this.move.apply(this, args);
 };
 
-DirectedLouvainIndex.prototype.computeNodeOutDegree = function (i) {
-  var o, l, weight;
-
-  var outDegree = 0;
-
-  for (o = this.starts[i], l = this.offsets[i]; o < l; o++) {
-    weight = this.weights[o];
-
-    outDegree += weight;
-  }
-
-  return outDegree;
-};
-
-DirectedLouvainIndex.prototype.expensiveMove = function (i, ci) {
-  var inDegree = this.computeNodeInDegree(i),
-    outDegree = this.computeNodeOutDegree(i);
-
-  this.move(i, inDegree, outDegree, ci);
-};
-
-DirectedLouvainIndex.prototype.zoomOut = function () {
-  var inducedGraph = new Array(this.C - this.U),
-    newLabels = {};
+DirectedLouvainIndex.prototype.zoomOut = function() {
+  var inducedGraph = {},
+      newLabels = {};
 
   var N = this.nodes.length;
 
   var C = 0,
-    E = 0;
+      E = 0;
 
   var i, j, l, m, n, ci, cj, data, offset, out, adj, inAdj, outAdj;
 
@@ -38718,11 +38772,14 @@ DirectedLouvainIndex.prototype.zoomOut = function () {
     currentLevel = this.dendrogram[this.level];
     nextLevel = new (typed.getPointerArray(C))(N);
 
-    for (i = 0; i < N; i++) nextLevel[i] = this.belongings[currentLevel[i]];
+    for (i = 0; i < N; i++)
+      nextLevel[i] = this.belongings[currentLevel[i]];
 
     this.dendrogram.push(nextLevel);
-  } else {
-    for (i = 0; i < N; i++) this.mapping[i] = this.belongings[this.mapping[i]];
+  }
+  else {
+    for (i = 0; i < N; i++)
+      this.mapping[i] = this.belongings[this.mapping[i]];
   }
 
   // Building induced graph matrix
@@ -38743,12 +38800,14 @@ DirectedLouvainIndex.prototype.zoomOut = function () {
       adj = out ? outAdj : inAdj;
 
       if (ci === cj) {
-        if (out) data.internalWeights += this.weights[j];
+        if (out)
+          data.internalWeights += this.weights[j];
 
         continue;
       }
 
-      if (!(cj in adj)) adj[cj] = 0;
+      if (!(cj in adj))
+        adj[cj] = 0;
 
       adj[cj] += this.weights[j];
     }
@@ -38759,7 +38818,7 @@ DirectedLouvainIndex.prototype.zoomOut = function () {
 
   n = 0;
 
-  for (ci = 0; ci < C; ci++) {
+  for (ci in inducedGraph) {
     data = inducedGraph[ci];
     inAdj = data.inAdj;
     outAdj = data.outAdj;
@@ -38775,7 +38834,7 @@ DirectedLouvainIndex.prototype.zoomOut = function () {
     this.belongings[ci] = ci;
 
     for (cj in outAdj) {
-      this.neighborhood[n] = +cj;
+      this.neighborhood[n] = cj;
       this.weights[n] = outAdj[cj];
 
       E++;
@@ -38785,7 +38844,7 @@ DirectedLouvainIndex.prototype.zoomOut = function () {
     this.offsets[ci] = n;
 
     for (cj in inAdj) {
-      this.neighborhood[n] = +cj;
+      this.neighborhood[n] = cj;
       this.weights[n] = inAdj[cj];
 
       E++;
@@ -38798,11 +38857,9 @@ DirectedLouvainIndex.prototype.zoomOut = function () {
   this.E = E;
   this.U = 0;
   this.level++;
-
-  return newLabels;
 };
 
-DirectedLouvainIndex.prototype.modularity = function () {
+DirectedLouvainIndex.prototype.modularity = function() {
   var ci, cj, i, j, m;
 
   var Q = 0;
@@ -38816,22 +38873,24 @@ DirectedLouvainIndex.prototype.modularity = function () {
     for (j = this.starts[i], m = this.offsets[i]; j < m; j++) {
       cj = this.belongings[this.neighborhood[j]];
 
-      if (ci !== cj) continue;
+      if (ci !== cj)
+        continue;
 
       internalWeights[ci] += this.weights[j];
     }
   }
 
   for (i = 0; i < this.C; i++)
-    Q +=
-      internalWeights[i] / M -
-      ((this.totalInWeights[i] * this.totalOutWeights[i]) / Math.pow(M, 2)) *
-        this.resolution;
+    Q += (
+      (internalWeights[i] / M) -
+      (this.totalInWeights[i] * this.totalOutWeights[i] / Math.pow(M, 2)) *
+      this.resolution
+    );
 
   return Q;
 };
 
-DirectedLouvainIndex.prototype.delta = function (
+DirectedLouvainIndex.prototype.delta = function(
   i,
   inDegree,
   outDegree,
@@ -38841,7 +38900,7 @@ DirectedLouvainIndex.prototype.delta = function (
   var M = this.M;
 
   var targetCommunityTotalInWeight = this.totalInWeights[targetCommunity],
-    targetCommunityTotalOutWeight = this.totalOutWeights[targetCommunity];
+      targetCommunityTotalOutWeight = this.totalOutWeights[targetCommunity];
 
   var loops = this.loops[i];
 
@@ -38849,15 +38908,18 @@ DirectedLouvainIndex.prototype.delta = function (
   outDegree += loops;
 
   return (
-    targetCommunityDegree / M -
-    ((outDegree * targetCommunityTotalInWeight +
-      inDegree * targetCommunityTotalOutWeight) *
-      this.resolution) /
+    (targetCommunityDegree / M) -
+    (
+      (
+        (outDegree * targetCommunityTotalInWeight) +
+        (inDegree * targetCommunityTotalOutWeight)
+      ) * this.resolution /
       (M * M)
+    )
   );
 };
 
-DirectedLouvainIndex.prototype.deltaWithOwnCommunity = function (
+DirectedLouvainIndex.prototype.deltaWithOwnCommunity = function(
   i,
   inDegree,
   outDegree,
@@ -38867,7 +38929,7 @@ DirectedLouvainIndex.prototype.deltaWithOwnCommunity = function (
   var M = this.M;
 
   var targetCommunityTotalInWeight = this.totalInWeights[targetCommunity],
-    targetCommunityTotalOutWeight = this.totalOutWeights[targetCommunity];
+      targetCommunityTotalOutWeight = this.totalOutWeights[targetCommunity];
 
   var loops = this.loops[i];
 
@@ -38875,19 +38937,21 @@ DirectedLouvainIndex.prototype.deltaWithOwnCommunity = function (
   outDegree += loops;
 
   return (
-    targetCommunityDegree / M -
-    ((outDegree * (targetCommunityTotalInWeight - inDegree) +
-      inDegree * (targetCommunityTotalOutWeight - outDegree)) *
-      this.resolution) /
+    (targetCommunityDegree / M) -
+    (
+      (
+        (outDegree * (targetCommunityTotalInWeight - inDegree)) +
+        (inDegree * (targetCommunityTotalOutWeight - outDegree))
+      ) * this.resolution /
       (M * M)
+    )
   );
 };
 
-DirectedLouvainIndex.prototype.collect =
-  UndirectedLouvainIndex.prototype.collect;
+DirectedLouvainIndex.prototype.collect = UndirectedLouvainIndex.prototype.collect;
 DirectedLouvainIndex.prototype.assign = UndirectedLouvainIndex.prototype.assign;
 
-DirectedLouvainIndex.prototype[INSPECT] = function () {
+DirectedLouvainIndex.prototype[INSPECT] = function() {
   var proxy = {};
 
   // Trick so that node displays the name of the constructor
@@ -38906,29 +38970,24 @@ DirectedLouvainIndex.prototype[INSPECT] = function () {
   proxy.starts = this.starts.slice(0, proxy.C + 1);
 
   var eTruncated = ['neighborhood', 'weights'];
-  var cTruncated = [
-    'counts',
-    'offsets',
-    'loops',
-    'belongings',
-    'totalInWeights',
-    'totalOutWeights'
-  ];
+  var cTruncated = ['counts', 'offsets', 'loops', 'belongings', 'totalInWeights', 'totalOutWeights'];
 
   var self = this;
 
-  eTruncated.forEach(function (key) {
+  eTruncated.forEach(function(key) {
     proxy[key] = self[key].slice(0, proxy.E);
   });
 
-  cTruncated.forEach(function (key) {
+  cTruncated.forEach(function(key) {
     proxy[key] = self[key].slice(0, proxy.C);
   });
 
   proxy.unused = this.unused.slice(0, this.U);
 
-  if (this.keepDendrogram) proxy.dendrogram = this.dendrogram;
-  else proxy.mapping = this.mapping;
+  if (this.keepDendrogram)
+    proxy.dendrogram = this.dendrogram;
+  else
+    proxy.mapping = this.mapping;
 
   return proxy;
 };
@@ -38936,257 +38995,196 @@ DirectedLouvainIndex.prototype[INSPECT] = function () {
 exports.UndirectedLouvainIndex = UndirectedLouvainIndex;
 exports.DirectedLouvainIndex = DirectedLouvainIndex;
 
-},{"graphology-utils/defaults":385,"graphology-utils/getters":386,"mnemonist/utils/typed-arrays":391}],385:[function(require,module,exports){
+},{"mnemonist/utils/typed-arrays":385}],385:[function(require,module,exports){
 /**
- * Graphology Defaults
- * ====================
+ * Mnemonist Typed Array Helpers
+ * ==============================
  *
- * Helper function used throughout the standard lib to resolve defaults.
+ * Miscellaneous helpers related to typed arrays.
  */
-function isLeaf(o) {
-  return (
-    !o ||
-    typeof o !== 'object' ||
-    typeof o === 'function' ||
-    Array.isArray(o) ||
-    o instanceof Set ||
-    o instanceof Map ||
-    o instanceof RegExp ||
-    o instanceof Date
-  );
-}
 
-function resolveDefaults(target, defaults) {
-  target = target || {};
+/**
+ * When using an unsigned integer array to store pointers, one might want to
+ * choose the optimal word size in regards to the actual numbers of pointers
+ * to store.
+ *
+ * This helpers does just that.
+ *
+ * @param  {number} size - Expected size of the array to map.
+ * @return {TypedArray}
+ */
+var MAX_8BIT_INTEGER = Math.pow(2, 8) - 1,
+    MAX_16BIT_INTEGER = Math.pow(2, 16) - 1,
+    MAX_32BIT_INTEGER = Math.pow(2, 32) - 1;
 
-  var output = {};
+var MAX_SIGNED_8BIT_INTEGER = Math.pow(2, 7) - 1,
+    MAX_SIGNED_16BIT_INTEGER = Math.pow(2, 15) - 1,
+    MAX_SIGNED_32BIT_INTEGER = Math.pow(2, 31) - 1;
 
-  for (var k in defaults) {
-    var existing = target[k];
-    var def = defaults[k];
+exports.getPointerArray = function(size) {
+  var maxIndex = size - 1;
 
-    // Recursion
-    if (!isLeaf(def)) {
-      output[k] = resolveDefaults(existing, def);
+  if (maxIndex <= MAX_8BIT_INTEGER)
+    return Uint8Array;
 
-      continue;
+  if (maxIndex <= MAX_16BIT_INTEGER)
+    return Uint16Array;
+
+  if (maxIndex <= MAX_32BIT_INTEGER)
+    return Uint32Array;
+
+  return Float64Array;
+};
+
+exports.getSignedPointerArray = function(size) {
+  var maxIndex = size - 1;
+
+  if (maxIndex <= MAX_SIGNED_8BIT_INTEGER)
+    return Int8Array;
+
+  if (maxIndex <= MAX_SIGNED_16BIT_INTEGER)
+    return Int16Array;
+
+  if (maxIndex <= MAX_SIGNED_32BIT_INTEGER)
+    return Int32Array;
+
+  return Float64Array;
+};
+
+/**
+ * Function returning the minimal type able to represent the given number.
+ *
+ * @param  {number} value - Value to test.
+ * @return {TypedArrayClass}
+ */
+exports.getNumberType = function(value) {
+
+  // <= 32 bits itnteger?
+  if (value === (value | 0)) {
+
+    // Negative
+    if (Math.sign(value) === -1) {
+      if (value <= 127 && value >= -128)
+        return Int8Array;
+
+      if (value <= 32767 && value >= -32768)
+        return Int16Array;
+
+      return Int32Array;
     }
+    else {
 
-    // Leaf
-    if (existing === undefined) {
-      output[k] = def;
-    } else {
-      output[k] = existing;
+      if (value <= 255)
+        return Uint8Array;
+
+      if (value <= 65535)
+        return Uint16Array;
+
+      return Uint32Array;
     }
   }
 
-  return output;
-}
+  // 53 bits integer & floats
+  // NOTE: it's kinda hard to tell whether we could use 32bits or not...
+  return Float64Array;
+};
 
-module.exports = resolveDefaults;
+/**
+ * Function returning the minimal type able to represent the given array
+ * of JavaScript numbers.
+ *
+ * @param  {array}    array  - Array to represent.
+ * @param  {function} getter - Optional getter.
+ * @return {TypedArrayClass}
+ */
+var TYPE_PRIORITY = {
+  Uint8Array: 1,
+  Int8Array: 2,
+  Uint16Array: 3,
+  Int16Array: 4,
+  Uint32Array: 5,
+  Int32Array: 6,
+  Float32Array: 7,
+  Float64Array: 8
+};
+
+// TODO: make this a one-shot for one value
+exports.getMinimalRepresentation = function(array, getter) {
+  var maxType = null,
+      maxPriority = 0,
+      p,
+      t,
+      v,
+      i,
+      l;
+
+  for (i = 0, l = array.length; i < l; i++) {
+    v = getter ? getter(array[i]) : array[i];
+    t = exports.getNumberType(v);
+    p = TYPE_PRIORITY[t.name];
+
+    if (p > maxPriority) {
+      maxPriority = p;
+      maxType = t;
+    }
+  }
+
+  return maxType;
+};
+
+/**
+ * Function returning whether the given value is a typed array.
+ *
+ * @param  {any} value - Value to test.
+ * @return {boolean}
+ */
+exports.isTypedArray = function(value) {
+  return typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView(value);
+};
+
+/**
+ * Function used to concat byte arrays.
+ *
+ * @param  {...ByteArray}
+ * @return {ByteArray}
+ */
+exports.concat = function() {
+  var length = 0,
+      i,
+      o,
+      l;
+
+  for (i = 0, l = arguments.length; i < l; i++)
+    length += arguments[i].length;
+
+  var array = new (arguments[0].constructor)(length);
+
+  for (i = 0, o = 0; i < l; i++) {
+    array.set(arguments[i], o);
+    o += arguments[i].length;
+  }
+
+  return array;
+};
+
+/**
+ * Function used to initialize a byte array of indices.
+ *
+ * @param  {number}    length - Length of target.
+ * @return {ByteArray}
+ */
+exports.indices = function(length) {
+  var PointerArray = exports.getPointerArray(length);
+
+  var array = new PointerArray(length);
+
+  for (var i = 0; i < length; i++)
+    array[i] = i;
+
+  return array;
+};
 
 },{}],386:[function(require,module,exports){
-/**
- * Graphology Weight Getter
- * =========================
- *
- * Function creating weight getters.
- */
-function coerceWeight(value) {
-  // Ensuring target value is a correct number
-  if (typeof value !== 'number' || isNaN(value)) return 1;
-
-  return value;
-}
-
-function createNodeValueGetter(nameOrFunction, defaultValue) {
-  var getter = {};
-
-  var coerceToDefault = function (v) {
-    if (typeof v === 'undefined') return defaultValue;
-
-    return v;
-  };
-
-  if (typeof defaultValue === 'function') coerceToDefault = defaultValue;
-
-  var get = function (attributes) {
-    return coerceToDefault(attributes[nameOrFunction]);
-  };
-
-  var returnDefault = function () {
-    return coerceToDefault(undefined);
-  };
-
-  if (typeof nameOrFunction === 'string') {
-    getter.fromAttributes = get;
-    getter.fromGraph = function (graph, node) {
-      return get(graph.getNodeAttributes(node));
-    };
-    getter.fromEntry = function (node, attributes) {
-      return get(attributes);
-    };
-  } else if (typeof nameOrFunction === 'function') {
-    getter.fromAttributes = function () {
-      throw new Error(
-        'graphology-utils/getters/createNodeValueGetter: irrelevant usage.'
-      );
-    };
-    getter.fromGraph = function (graph, node) {
-      return coerceToDefault(
-        nameOrFunction(node, graph.getNodeAttributes(node))
-      );
-    };
-    getter.fromEntry = function (node, attributes) {
-      return coerceToDefault(nameOrFunction(node, attributes));
-    };
-  } else {
-    getter.fromAttributes = returnDefault;
-    getter.fromGraph = returnDefault;
-    getter.fromEntry = returnDefault;
-  }
-
-  return getter;
-}
-
-function createEdgeValueGetter(nameOrFunction, defaultValue) {
-  var getter = {};
-
-  var coerceToDefault = function (v) {
-    if (typeof v === 'undefined') return defaultValue;
-
-    return v;
-  };
-
-  if (typeof defaultValue === 'function') coerceToDefault = defaultValue;
-
-  var get = function (attributes) {
-    return coerceToDefault(attributes[nameOrFunction]);
-  };
-
-  var returnDefault = function () {
-    return coerceToDefault(undefined);
-  };
-
-  if (typeof nameOrFunction === 'string') {
-    getter.fromAttributes = get;
-    getter.fromGraph = function (graph, edge) {
-      return get(graph.getEdgeAttributes(edge));
-    };
-    getter.fromEntry = function (edge, attributes) {
-      return get(attributes);
-    };
-    getter.fromPartialEntry = getter.fromEntry;
-    getter.fromMinimalEntry = getter.fromEntry;
-  } else if (typeof nameOrFunction === 'function') {
-    getter.fromAttributes = function () {
-      throw new Error(
-        'graphology-utils/getters/createEdgeValueGetter: irrelevant usage.'
-      );
-    };
-    getter.fromGraph = function (graph, edge) {
-      // TODO: we can do better, check #310
-      var extremities = graph.extremities(edge);
-      return coerceToDefault(
-        nameOrFunction(
-          edge,
-          graph.getEdgeAttributes(edge),
-          extremities[0],
-          extremities[1],
-          graph.getNodeAttributes(extremities[0]),
-          graph.getNodeAttributes(extremities[1]),
-          graph.isUndirected(edge)
-        )
-      );
-    };
-    getter.fromEntry = function (e, a, s, t, sa, ta, u) {
-      return coerceToDefault(nameOrFunction(e, a, s, t, sa, ta, u));
-    };
-    getter.fromPartialEntry = function (e, a, s, t) {
-      return coerceToDefault(nameOrFunction(e, a, s, t));
-    };
-    getter.fromMinimalEntry = function (e, a) {
-      return coerceToDefault(nameOrFunction(e, a));
-    };
-  } else {
-    getter.fromAttributes = returnDefault;
-    getter.fromGraph = returnDefault;
-    getter.fromEntry = returnDefault;
-    getter.fromMinimalEntry = returnDefault;
-  }
-
-  return getter;
-}
-
-exports.createNodeValueGetter = createNodeValueGetter;
-exports.createEdgeValueGetter = createEdgeValueGetter;
-exports.createEdgeWeightGetter = function (name) {
-  return createEdgeValueGetter(name, coerceWeight);
-};
-
-},{}],387:[function(require,module,exports){
-/**
- * Graphology inferType
- * =====================
- *
- * Useful function used to "guess" the real type of the given Graph using
- * introspection.
- */
-var isGraph = require('./is-graph.js');
-
-/**
- * Returning the inferred type of the given graph.
- *
- * @param  {Graph}   graph - Target graph.
- * @return {boolean}
- */
-module.exports = function inferType(graph) {
-  if (!isGraph(graph))
-    throw new Error(
-      'graphology-utils/infer-type: expecting a valid graphology instance.'
-    );
-
-  var declaredType = graph.type;
-
-  if (declaredType !== 'mixed') return declaredType;
-
-  if (
-    (graph.directedSize === 0 && graph.undirectedSize === 0) ||
-    (graph.directedSize > 0 && graph.undirectedSize > 0)
-  )
-    return 'mixed';
-
-  if (graph.directedSize > 0) return 'directed';
-
-  return 'undirected';
-};
-
-},{"./is-graph.js":388}],388:[function(require,module,exports){
-/**
- * Graphology isGraph
- * ===================
- *
- * Very simple function aiming at ensuring the given variable is a
- * graphology instance.
- */
-
-/**
- * Checking the value is a graphology instance.
- *
- * @param  {any}     value - Target value.
- * @return {boolean}
- */
-module.exports = function isGraph(value) {
-  return (
-    value !== null &&
-    typeof value === 'object' &&
-    typeof value.addUndirectedEdgeWithKey === 'function' &&
-    typeof value.dropNode === 'function' &&
-    typeof value.multi === 'boolean'
-  );
-};
-
-},{}],389:[function(require,module,exports){
 /**
  * Mnemonist SparseMap
  * ====================
@@ -39431,7 +39429,7 @@ if (typeof Symbol !== 'undefined')
  */
 module.exports = SparseMap;
 
-},{"./utils/typed-arrays.js":391,"obliterator/iterator":392}],390:[function(require,module,exports){
+},{"./utils/typed-arrays.js":388,"obliterator/iterator":643}],387:[function(require,module,exports){
 /**
  * Mnemonist SparseQueueSet
  * =========================
@@ -39482,16 +39480,9 @@ SparseQueueSet.prototype.has = function(member) {
 
   var index = this.sparse[member];
 
-  var inBounds = (
-    index < this.capacity &&
-    (
-      index >= this.start &&
-      index < this.start + this.size
-    ) ||
-    (
-      index < ((this.start + this.size) % this.capacity)
-    )
-  );
+  var inBounds = (index >= this.start) ?
+    (index < (this.start + this.size)) :
+    (index < ((this.start + this.size) % this.capacity));
 
   return (
     inBounds &&
@@ -39508,21 +39499,12 @@ SparseQueueSet.prototype.has = function(member) {
 SparseQueueSet.prototype.enqueue = function(member) {
   var index = this.sparse[member];
 
-  if (this.size !== 0) {
-    var inBounds = (
-      index < this.capacity &&
-      (
-        index >= this.start &&
-        index < this.start + this.size
-      ) ||
-      (
-        index < ((this.start + this.size) % this.capacity)
-      )
-    );
+  var inBounds = (index >= this.start) ?
+    (index < (this.start + this.size)) :
+    (index < ((this.start + this.size) % this.capacity));
 
-    if (inBounds && this.dense[index] === member)
-      return this;
-  }
+  if (this.size !== 0 && inBounds && this.dense[index] === member)
+    return this;
 
   index = (this.start + this.size) % this.capacity;
 
@@ -39553,7 +39535,7 @@ SparseQueueSet.prototype.dequeue = function() {
 
   var member = this.dense[index];
 
-  this.sparse[member] = this.capacity;
+  this.sparse[member] = index + 1;
 
   return member;
 };
@@ -39651,7 +39633,455 @@ if (typeof Symbol !== 'undefined')
  */
 module.exports = SparseQueueSet;
 
-},{"./utils/typed-arrays.js":391,"obliterator/iterator":392}],391:[function(require,module,exports){
+},{"./utils/typed-arrays.js":388,"obliterator/iterator":643}],388:[function(require,module,exports){
+arguments[4][385][0].apply(exports,arguments)
+},{"dup":385}],389:[function(require,module,exports){
+/**
+ * Graphology Components
+ * ======================
+ *
+ * Basic connected components-related functions.
+ */
+var isGraph = require('graphology-utils/is-graph');
+
+/**
+ * Function returning a list of connected components.
+ *
+ * @param  {Graph} graph - Target graph.
+ * @return {array}
+ */
+exports.connectedComponents = function(graph) {
+  if (!isGraph(graph))
+    throw new Error('graphology-components: the given graph is not a valid graphology instance.');
+
+  if (!graph.order)
+    return [];
+
+  var components = [],
+      nodes = graph.nodes(),
+      i, l;
+
+  if (!graph.size) {
+    for (i = 0, l = nodes.length; i < l; i++) {
+      components.push([nodes[i]]);
+    }
+    return components;
+  }
+
+  var component,
+      stack = [],
+      node,
+      neighbor,
+      visited = new Set();
+
+  for (i = 0, l = nodes.length; i < l; i++) {
+    node = nodes[i];
+
+    if (!visited.has(node)) {
+      visited.add(node);
+      component = [node];
+      components.push(component);
+
+      stack.push.apply(stack, graph.neighbors(node));
+
+      while (stack.length) {
+        neighbor = stack.pop();
+
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          component.push(neighbor);
+          stack.push.apply(stack, graph.neighbors(neighbor));
+        }
+      }
+    }
+  }
+
+  return components;
+};
+
+/**
+ * Function returning a list of strongly connected components.
+ *
+ * @param  {Graph} graph - Target directed graph.
+ * @return {array}
+ */
+exports.stronglyConnectedComponents = function(graph) {
+  if (!isGraph(graph))
+    throw new Error('graphology-components: the given graph is not a valid graphology instance.');
+
+  if (!graph.order)
+    return [];
+
+  if (graph.type === 'undirected')
+    throw new Error('graphology-components: the given graph is undirected');
+
+  var nodes = graph.nodes(),
+      components = [],
+      i, l;
+
+  if (!graph.size) {
+    for (i = 0, l = nodes.length; i < l; i++)
+      components.push([nodes[i]]);
+    return components;
+  }
+
+  var count = 1,
+      P = [],
+      S = [],
+      preorder = new Map(),
+      assigned = new Set(),
+      component,
+      pop,
+      vertex;
+
+  var DFS = function(node) {
+    var neighbor,
+        neighbors = graph.outNeighbors(node).concat(graph.undirectedNeighbors(node)),
+        neighborOrder;
+
+    preorder.set(node, count++);
+    P.push(node);
+    S.push(node);
+
+    for (var k = 0, n = neighbors.length; k < n; k++) {
+      neighbor = neighbors[k];
+
+      if (preorder.has(neighbor)) {
+        neighborOrder = preorder.get(neighbor);
+        if (!assigned.has(neighbor))
+          while (preorder.get(P[P.length - 1]) > neighborOrder)
+            P.pop();
+      }
+      else
+        DFS(neighbor);
+    }
+
+    if (preorder.get(P[P.length - 1]) === preorder.get(node)) {
+      component = [];
+      do {
+        pop = S.pop();
+        component.push(pop);
+        assigned.add(pop);
+      } while (pop !== node);
+      components.push(component);
+      P.pop();
+    }
+  };
+
+  for (i = 0, l = nodes.length; i < l; i++) {
+    vertex = nodes[i];
+    if (!assigned.has(vertex))
+      DFS(vertex);
+  }
+
+  return components;
+};
+
+},{"graphology-utils/is-graph":412}],390:[function(require,module,exports){
+/**
+ * Graphology Neighborhood Indices
+ * ================================
+ */
+var typed = require('mnemonist/utils/typed-arrays');
+var createEdgeWeightGetter =
+  require('graphology-utils/getters').createEdgeWeightGetter;
+
+function upperBoundPerMethod(method, graph) {
+  if (method === 'outbound' || method === 'inbound')
+    return graph.directedSize + graph.undirectedSize * 2;
+
+  if (method === 'in' || method === 'out' || method === 'directed')
+    return graph.directedSize;
+
+  return graph.undirectedSize * 2;
+}
+
+function NeighborhoodIndex(graph, method) {
+  method = method || 'outbound';
+  var getNeighbors = graph[method + 'Neighbors'].bind(graph);
+
+  var upperBound = upperBoundPerMethod(method, graph);
+
+  var NeighborhoodPointerArray = typed.getPointerArray(upperBound);
+  var NodesPointerArray = typed.getPointerArray(graph.order);
+
+  // NOTE: directedSize + undirectedSize * 2 is an upper bound for
+  // neighborhood size
+  this.graph = graph;
+  this.neighborhood = new NodesPointerArray(upperBound);
+
+  this.starts = new NeighborhoodPointerArray(graph.order + 1);
+
+  this.nodes = graph.nodes();
+
+  var ids = {};
+
+  var i, l, j, m, node, neighbors;
+
+  var n = 0;
+
+  for (i = 0, l = graph.order; i < l; i++) ids[this.nodes[i]] = i;
+
+  for (i = 0, l = graph.order; i < l; i++) {
+    node = this.nodes[i];
+    neighbors = getNeighbors(node);
+
+    this.starts[i] = n;
+
+    for (j = 0, m = neighbors.length; j < m; j++)
+      this.neighborhood[n++] = ids[neighbors[j]];
+  }
+
+  // NOTE: we keep one more index as upper bound to simplify iteration
+  this.starts[i] = upperBound;
+}
+
+NeighborhoodIndex.prototype.bounds = function (i) {
+  return [this.starts[i], this.starts[i + 1]];
+};
+
+NeighborhoodIndex.prototype.project = function () {
+  var self = this;
+
+  var projection = {};
+
+  self.nodes.forEach(function (node, i) {
+    projection[node] = Array.from(
+      self.neighborhood.slice(self.starts[i], self.starts[i + 1])
+    ).map(function (j) {
+      return self.nodes[j];
+    });
+  });
+
+  return projection;
+};
+
+NeighborhoodIndex.prototype.collect = function (results) {
+  var i, l;
+
+  var o = {};
+
+  for (i = 0, l = results.length; i < l; i++) o[this.nodes[i]] = results[i];
+
+  return o;
+};
+
+NeighborhoodIndex.prototype.assign = function (prop, results) {
+  var i = 0;
+
+  this.graph.updateEachNodeAttributes(
+    function (_, attr) {
+      attr[prop] = results[i++];
+
+      return attr;
+    },
+    {attributes: [prop]}
+  );
+};
+
+exports.NeighborhoodIndex = NeighborhoodIndex;
+
+function WeightedNeighborhoodIndex(graph, getEdgeWeight, method) {
+  method = method || 'outbound';
+  var getEdges = graph[method + 'Edges'].bind(graph);
+
+  var upperBound = upperBoundPerMethod(method, graph);
+
+  var NeighborhoodPointerArray = typed.getPointerArray(upperBound);
+  var NodesPointerArray = typed.getPointerArray(graph.order);
+
+  var weightGetter = createEdgeWeightGetter(getEdgeWeight).fromMinimalEntry;
+
+  // NOTE: directedSize + undirectedSize * 2 is an upper bound for
+  // neighborhood size
+  this.graph = graph;
+  this.neighborhood = new NodesPointerArray(upperBound);
+  this.weights = new Float64Array(upperBound);
+  this.outDegrees = new Float64Array(graph.order);
+
+  this.starts = new NeighborhoodPointerArray(graph.order + 1);
+
+  this.nodes = graph.nodes();
+
+  var ids = {};
+
+  var i, l, j, m, node, neighbor, edges, edge, weight;
+
+  var n = 0;
+
+  for (i = 0, l = graph.order; i < l; i++) ids[this.nodes[i]] = i;
+
+  for (i = 0, l = graph.order; i < l; i++) {
+    node = this.nodes[i];
+    edges = getEdges(node);
+
+    this.starts[i] = n;
+
+    for (j = 0, m = edges.length; j < m; j++) {
+      edge = edges[j];
+      neighbor = graph.opposite(node, edge);
+      weight = weightGetter(edge, graph.getEdgeAttributes(edge));
+
+      // NOTE: for weighted mixed beware of merging weights if twice the same neighbor
+      this.neighborhood[n] = ids[neighbor];
+      this.weights[n++] = weight;
+      this.outDegrees[i] += weight;
+    }
+  }
+
+  // NOTE: we keep one more index as upper bound to simplify iteration
+  this.starts[i] = upperBound;
+}
+
+WeightedNeighborhoodIndex.prototype.bounds = NeighborhoodIndex.prototype.bounds;
+WeightedNeighborhoodIndex.prototype.project =
+  NeighborhoodIndex.prototype.project;
+WeightedNeighborhoodIndex.prototype.collect =
+  NeighborhoodIndex.prototype.collect;
+WeightedNeighborhoodIndex.prototype.assign = NeighborhoodIndex.prototype.assign;
+
+exports.WeightedNeighborhoodIndex = WeightedNeighborhoodIndex;
+
+},{"graphology-utils/getters":391,"mnemonist/utils/typed-arrays":392}],391:[function(require,module,exports){
+/**
+ * Graphology Weight Getter
+ * =========================
+ *
+ * Function creating weight getters.
+ */
+function coerceWeight(value) {
+  // Ensuring target value is a correct number
+  if (typeof value !== 'number' || isNaN(value)) return 1;
+
+  return value;
+}
+
+function createNodeValueGetter(nameOrFunction, defaultValue) {
+  var getter = {};
+
+  var coerceToDefault = function (v) {
+    if (typeof v === 'undefined') return defaultValue;
+
+    return v;
+  };
+
+  if (typeof defaultValue === 'function') coerceToDefault = defaultValue;
+
+  var get = function (attributes) {
+    return coerceToDefault(attributes[nameOrFunction]);
+  };
+
+  var returnDefault = function () {
+    return coerceToDefault(undefined);
+  };
+
+  if (typeof nameOrFunction === 'string') {
+    getter.fromAttributes = get;
+    getter.fromGraph = function (graph, node) {
+      return get(graph.getNodeAttributes(node));
+    };
+    getter.fromEntry = function (node, attributes) {
+      return get(attributes);
+    };
+  } else if (typeof nameOrFunction === 'function') {
+    getter.fromAttributes = function () {
+      throw new Error(
+        'graphology-utils/getters/createNodeValueGetter: irrelevant usage.'
+      );
+    };
+    getter.fromGraph = function (graph, node) {
+      return coerceToDefault(
+        nameOrFunction(node, graph.getNodeAttributes(node))
+      );
+    };
+    getter.fromEntry = function (node, attributes) {
+      return coerceToDefault(nameOrFunction(node, attributes));
+    };
+  } else {
+    getter.fromAttributes = returnDefault;
+    getter.fromGraph = returnDefault;
+    getter.fromEntry = returnDefault;
+  }
+
+  return getter;
+}
+
+function createEdgeValueGetter(nameOrFunction, defaultValue) {
+  var getter = {};
+
+  var coerceToDefault = function (v) {
+    if (typeof v === 'undefined') return defaultValue;
+
+    return v;
+  };
+
+  if (typeof defaultValue === 'function') coerceToDefault = defaultValue;
+
+  var get = function (attributes) {
+    return coerceToDefault(attributes[nameOrFunction]);
+  };
+
+  var returnDefault = function () {
+    return coerceToDefault(undefined);
+  };
+
+  if (typeof nameOrFunction === 'string') {
+    getter.fromAttributes = get;
+    getter.fromGraph = function (graph, edge) {
+      return get(graph.getEdgeAttributes(edge));
+    };
+    getter.fromEntry = function (edge, attributes) {
+      return get(attributes);
+    };
+    getter.fromPartialEntry = getter.fromEntry;
+    getter.fromMinimalEntry = getter.fromEntry;
+  } else if (typeof nameOrFunction === 'function') {
+    getter.fromAttributes = function () {
+      throw new Error(
+        'graphology-utils/getters/createEdgeValueGetter: irrelevant usage.'
+      );
+    };
+    getter.fromGraph = function (graph, edge) {
+      // TODO: we can do better, check #310
+      var extremities = graph.extremities(edge);
+      return coerceToDefault(
+        nameOrFunction(
+          edge,
+          graph.getEdgeAttributes(edge),
+          extremities[0],
+          extremities[1],
+          graph.getNodeAttributes(extremities[0]),
+          graph.getNodeAttributes(extremities[1]),
+          graph.isUndirected(edge)
+        )
+      );
+    };
+    getter.fromEntry = function (e, a, s, t, sa, ta, u) {
+      return coerceToDefault(nameOrFunction(e, a, s, t, sa, ta, u));
+    };
+    getter.fromPartialEntry = function (e, a, s, t) {
+      return coerceToDefault(nameOrFunction(e, a, s, t));
+    };
+    getter.fromMinimalEntry = function (e, a) {
+      return coerceToDefault(nameOrFunction(e, a));
+    };
+  } else {
+    getter.fromAttributes = returnDefault;
+    getter.fromGraph = returnDefault;
+    getter.fromEntry = returnDefault;
+    getter.fromMinimalEntry = returnDefault;
+  }
+
+  return getter;
+}
+
+exports.createNodeValueGetter = createNodeValueGetter;
+exports.createEdgeValueGetter = createEdgeValueGetter;
+exports.createEdgeWeightGetter = function (name) {
+  return createEdgeValueGetter(name, coerceWeight);
+};
+
+},{}],392:[function(require,module,exports){
 /**
  * Mnemonist Typed Array Helpers
  * ==============================
@@ -39840,416 +40270,7 @@ exports.indices = function(length) {
   return array;
 };
 
-},{}],392:[function(require,module,exports){
-/**
- * Obliterator Iterator Class
- * ===========================
- *
- * Simple class representing the library's iterators.
- */
-
-/**
- * Iterator class.
- *
- * @constructor
- * @param {function} next - Next function.
- */
-function Iterator(next) {
-  if (typeof next !== 'function')
-    throw new Error('obliterator/iterator: expecting a function!');
-
-  this.next = next;
-}
-
-/**
- * If symbols are supported, we add `next` to `Symbol.iterator`.
- */
-if (typeof Symbol !== 'undefined')
-  Iterator.prototype[Symbol.iterator] = function () {
-    return this;
-  };
-
-/**
- * Returning an iterator of the given values.
- *
- * @param  {any...} values - Values.
- * @return {Iterator}
- */
-Iterator.of = function () {
-  var args = arguments,
-    l = args.length,
-    i = 0;
-
-  return new Iterator(function () {
-    if (i >= l) return {done: true};
-
-    return {done: false, value: args[i++]};
-  });
-};
-
-/**
- * Returning an empty iterator.
- *
- * @return {Iterator}
- */
-Iterator.empty = function () {
-  var iterator = new Iterator(function () {
-    return {done: true};
-  });
-
-  return iterator;
-};
-
-/**
- * Returning an iterator over the given indexed sequence.
- *
- * @param  {string|Array} sequence - Target sequence.
- * @return {Iterator}
- */
-Iterator.fromSequence = function (sequence) {
-  var i = 0,
-    l = sequence.length;
-
-  return new Iterator(function () {
-    if (i >= l) return {done: true};
-
-    return {done: false, value: sequence[i++]};
-  });
-};
-
-/**
- * Returning whether the given value is an iterator.
- *
- * @param  {any} value - Value.
- * @return {boolean}
- */
-Iterator.is = function (value) {
-  if (value instanceof Iterator) return true;
-
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    typeof value.next === 'function'
-  );
-};
-
-/**
- * Exporting.
- */
-module.exports = Iterator;
-
 },{}],393:[function(require,module,exports){
-/**
- * Graphology Components
- * ======================
- *
- * Basic connected components-related functions.
- */
-var isGraph = require('graphology-utils/is-graph');
-
-/**
- * Function returning a list of connected components.
- *
- * @param  {Graph} graph - Target graph.
- * @return {array}
- */
-exports.connectedComponents = function(graph) {
-  if (!isGraph(graph))
-    throw new Error('graphology-components: the given graph is not a valid graphology instance.');
-
-  if (!graph.order)
-    return [];
-
-  var components = [],
-      nodes = graph.nodes(),
-      i, l;
-
-  if (!graph.size) {
-    for (i = 0, l = nodes.length; i < l; i++) {
-      components.push([nodes[i]]);
-    }
-    return components;
-  }
-
-  var component,
-      stack = [],
-      node,
-      neighbor,
-      visited = new Set();
-
-  for (i = 0, l = nodes.length; i < l; i++) {
-    node = nodes[i];
-
-    if (!visited.has(node)) {
-      visited.add(node);
-      component = [node];
-      components.push(component);
-
-      stack.push.apply(stack, graph.neighbors(node));
-
-      while (stack.length) {
-        neighbor = stack.pop();
-
-        if (!visited.has(neighbor)) {
-          visited.add(neighbor);
-          component.push(neighbor);
-          stack.push.apply(stack, graph.neighbors(neighbor));
-        }
-      }
-    }
-  }
-
-  return components;
-};
-
-/**
- * Function returning a list of strongly connected components.
- *
- * @param  {Graph} graph - Target directed graph.
- * @return {array}
- */
-exports.stronglyConnectedComponents = function(graph) {
-  if (!isGraph(graph))
-    throw new Error('graphology-components: the given graph is not a valid graphology instance.');
-
-  if (!graph.order)
-    return [];
-
-  if (graph.type === 'undirected')
-    throw new Error('graphology-components: the given graph is undirected');
-
-  var nodes = graph.nodes(),
-      components = [],
-      i, l;
-
-  if (!graph.size) {
-    for (i = 0, l = nodes.length; i < l; i++)
-      components.push([nodes[i]]);
-    return components;
-  }
-
-  var count = 1,
-      P = [],
-      S = [],
-      preorder = new Map(),
-      assigned = new Set(),
-      component,
-      pop,
-      vertex;
-
-  var DFS = function(node) {
-    var neighbor,
-        neighbors = graph.outNeighbors(node).concat(graph.undirectedNeighbors(node)),
-        neighborOrder;
-
-    preorder.set(node, count++);
-    P.push(node);
-    S.push(node);
-
-    for (var k = 0, n = neighbors.length; k < n; k++) {
-      neighbor = neighbors[k];
-
-      if (preorder.has(neighbor)) {
-        neighborOrder = preorder.get(neighbor);
-        if (!assigned.has(neighbor))
-          while (preorder.get(P[P.length - 1]) > neighborOrder)
-            P.pop();
-      }
-      else
-        DFS(neighbor);
-    }
-
-    if (preorder.get(P[P.length - 1]) === preorder.get(node)) {
-      component = [];
-      do {
-        pop = S.pop();
-        component.push(pop);
-        assigned.add(pop);
-      } while (pop !== node);
-      components.push(component);
-      P.pop();
-    }
-  };
-
-  for (i = 0, l = nodes.length; i < l; i++) {
-    vertex = nodes[i];
-    if (!assigned.has(vertex))
-      DFS(vertex);
-  }
-
-  return components;
-};
-
-},{"graphology-utils/is-graph":415}],394:[function(require,module,exports){
-/**
- * Graphology Neighborhood Indices
- * ================================
- */
-var typed = require('mnemonist/utils/typed-arrays');
-var createEdgeWeightGetter =
-  require('graphology-utils/getters').createEdgeWeightGetter;
-
-function upperBoundPerMethod(method, graph) {
-  if (method === 'outbound' || method === 'inbound')
-    return graph.directedSize + graph.undirectedSize * 2;
-
-  if (method === 'in' || method === 'out' || method === 'directed')
-    return graph.directedSize;
-
-  return graph.undirectedSize * 2;
-}
-
-function NeighborhoodIndex(graph, method) {
-  method = method || 'outbound';
-  var getNeighbors = graph[method + 'Neighbors'].bind(graph);
-
-  var upperBound = upperBoundPerMethod(method, graph);
-
-  var NeighborhoodPointerArray = typed.getPointerArray(upperBound);
-  var NodesPointerArray = typed.getPointerArray(graph.order);
-
-  // NOTE: directedSize + undirectedSize * 2 is an upper bound for
-  // neighborhood size
-  this.graph = graph;
-  this.neighborhood = new NodesPointerArray(upperBound);
-
-  this.starts = new NeighborhoodPointerArray(graph.order + 1);
-
-  this.nodes = graph.nodes();
-
-  var ids = {};
-
-  var i, l, j, m, node, neighbors;
-
-  var n = 0;
-
-  for (i = 0, l = graph.order; i < l; i++) ids[this.nodes[i]] = i;
-
-  for (i = 0, l = graph.order; i < l; i++) {
-    node = this.nodes[i];
-    neighbors = getNeighbors(node);
-
-    this.starts[i] = n;
-
-    for (j = 0, m = neighbors.length; j < m; j++)
-      this.neighborhood[n++] = ids[neighbors[j]];
-  }
-
-  // NOTE: we keep one more index as upper bound to simplify iteration
-  this.starts[i] = upperBound;
-}
-
-NeighborhoodIndex.prototype.bounds = function (i) {
-  return [this.starts[i], this.starts[i + 1]];
-};
-
-NeighborhoodIndex.prototype.project = function () {
-  var self = this;
-
-  var projection = {};
-
-  self.nodes.forEach(function (node, i) {
-    projection[node] = Array.from(
-      self.neighborhood.slice(self.starts[i], self.starts[i + 1])
-    ).map(function (j) {
-      return self.nodes[j];
-    });
-  });
-
-  return projection;
-};
-
-NeighborhoodIndex.prototype.collect = function (results) {
-  var i, l;
-
-  var o = {};
-
-  for (i = 0, l = results.length; i < l; i++) o[this.nodes[i]] = results[i];
-
-  return o;
-};
-
-NeighborhoodIndex.prototype.assign = function (prop, results) {
-  var i = 0;
-
-  this.graph.updateEachNodeAttributes(
-    function (_, attr) {
-      attr[prop] = results[i++];
-
-      return attr;
-    },
-    {attributes: [prop]}
-  );
-};
-
-exports.NeighborhoodIndex = NeighborhoodIndex;
-
-function WeightedNeighborhoodIndex(graph, getEdgeWeight, method) {
-  method = method || 'outbound';
-  var getEdges = graph[method + 'Edges'].bind(graph);
-
-  var upperBound = upperBoundPerMethod(method, graph);
-
-  var NeighborhoodPointerArray = typed.getPointerArray(upperBound);
-  var NodesPointerArray = typed.getPointerArray(graph.order);
-
-  var weightGetter = createEdgeWeightGetter(getEdgeWeight).fromMinimalEntry;
-
-  // NOTE: directedSize + undirectedSize * 2 is an upper bound for
-  // neighborhood size
-  this.graph = graph;
-  this.neighborhood = new NodesPointerArray(upperBound);
-  this.weights = new Float64Array(upperBound);
-  this.outDegrees = new Float64Array(graph.order);
-
-  this.starts = new NeighborhoodPointerArray(graph.order + 1);
-
-  this.nodes = graph.nodes();
-
-  var ids = {};
-
-  var i, l, j, m, node, neighbor, edges, edge, weight;
-
-  var n = 0;
-
-  for (i = 0, l = graph.order; i < l; i++) ids[this.nodes[i]] = i;
-
-  for (i = 0, l = graph.order; i < l; i++) {
-    node = this.nodes[i];
-    edges = getEdges(node);
-
-    this.starts[i] = n;
-
-    for (j = 0, m = edges.length; j < m; j++) {
-      edge = edges[j];
-      neighbor = graph.opposite(node, edge);
-      weight = weightGetter(edge, graph.getEdgeAttributes(edge));
-
-      // NOTE: for weighted mixed beware of merging weights if twice the same neighbor
-      this.neighborhood[n] = ids[neighbor];
-      this.weights[n++] = weight;
-      this.outDegrees[i] += weight;
-    }
-  }
-
-  // NOTE: we keep one more index as upper bound to simplify iteration
-  this.starts[i] = upperBound;
-}
-
-WeightedNeighborhoodIndex.prototype.bounds = NeighborhoodIndex.prototype.bounds;
-WeightedNeighborhoodIndex.prototype.project =
-  NeighborhoodIndex.prototype.project;
-WeightedNeighborhoodIndex.prototype.collect =
-  NeighborhoodIndex.prototype.collect;
-WeightedNeighborhoodIndex.prototype.assign = NeighborhoodIndex.prototype.assign;
-
-exports.WeightedNeighborhoodIndex = WeightedNeighborhoodIndex;
-
-},{"graphology-utils/getters":395,"mnemonist/utils/typed-arrays":396}],395:[function(require,module,exports){
-arguments[4][386][0].apply(exports,arguments)
-},{"dup":386}],396:[function(require,module,exports){
-arguments[4][391][0].apply(exports,arguments)
-},{"dup":391}],397:[function(require,module,exports){
 /**
  * Graphology ForceAtlas2 Layout Default Settings
  * ===============================================
@@ -40267,7 +40288,7 @@ module.exports = {
   barnesHutTheta: 0.5
 };
 
-},{}],398:[function(require,module,exports){
+},{}],394:[function(require,module,exports){
 /**
  * Graphology ForceAtlas2 Helpers
  * ===============================
@@ -40456,7 +40477,7 @@ exports.collectLayoutChanges = function(graph, NodeMatrix) {
   return positions;
 };
 
-},{}],399:[function(require,module,exports){
+},{}],395:[function(require,module,exports){
 /**
  * Graphology ForceAtlas2 Layout
  * ==============================
@@ -40545,7 +40566,7 @@ synchronousLayout.inferSettings = inferSettings;
 
 module.exports = synchronousLayout;
 
-},{"./defaults.js":397,"./helpers.js":398,"./iterate.js":400,"graphology-utils/is-graph":415}],400:[function(require,module,exports){
+},{"./defaults.js":393,"./helpers.js":394,"./iterate.js":396,"graphology-utils/is-graph":412}],396:[function(require,module,exports){
 /* eslint no-constant-condition: 0 */
 /**
  * Graphology ForceAtlas2 Iteration
@@ -41378,7 +41399,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
   return {};
 };
 
-},{}],401:[function(require,module,exports){
+},{}],397:[function(require,module,exports){
 /**
  * Graphology Circular Layout
  * ===========================
@@ -41458,7 +41479,7 @@ circularLayout.assign = genericCircularLayout.bind(null, true);
 
 module.exports = circularLayout;
 
-},{"graphology-utils/is-graph":415,"lodash/defaultsDeep":501}],402:[function(require,module,exports){
+},{"graphology-utils/is-graph":412,"lodash/defaultsDeep":498}],398:[function(require,module,exports){
 /**
  * Graphology Layout
  * ==================
@@ -41471,7 +41492,7 @@ var circular = require('./circular.js'),
 exports.circular = circular;
 exports.random = random;
 
-},{"./circular.js":401,"./random.js":403}],403:[function(require,module,exports){
+},{"./circular.js":397,"./random.js":399}],399:[function(require,module,exports){
 /**
  * Graphology Random Layout
  * =========================
@@ -41553,7 +41574,7 @@ randomLayout.assign = genericRandomLayout.bind(null, true);
 
 module.exports = randomLayout;
 
-},{"graphology-utils/is-graph":415,"lodash/defaultsDeep":501}],404:[function(require,module,exports){
+},{"graphology-utils/is-graph":412,"lodash/defaultsDeep":498}],400:[function(require,module,exports){
 /**
  * Graphology Betweenness Centrality
  * ==================================
@@ -41679,7 +41700,7 @@ betweennessCentrality.assign = abstractBetweennessCentrality.bind(null, true);
 
 module.exports = betweennessCentrality;
 
-},{"graphology-shortest-path/indexed-brandes":414,"graphology-utils/is-graph":415,"lodash/defaults":500}],405:[function(require,module,exports){
+},{"graphology-shortest-path/indexed-brandes":410,"graphology-utils/is-graph":412,"lodash/defaults":497}],401:[function(require,module,exports){
 /**
  * Graphology Degree Centrality
  * =============================
@@ -41766,7 +41787,7 @@ degreeCentrality.inDegreeCentrality = inDegreeCentrality;
 degreeCentrality.outDegreeCentrality = outDegreeCentrality;
 module.exports = degreeCentrality;
 
-},{"graphology-utils/is-graph":415}],406:[function(require,module,exports){
+},{"graphology-utils/is-graph":412}],402:[function(require,module,exports){
 /**
  * Graphology Metrics Centrality
  * ==============================
@@ -41776,7 +41797,7 @@ module.exports = degreeCentrality;
 exports.betweenness = require('./betweenness.js');
 exports.degree = require('./degree.js');
 
-},{"./betweenness.js":404,"./degree.js":405}],407:[function(require,module,exports){
+},{"./betweenness.js":400,"./degree.js":401}],403:[function(require,module,exports){
 /**
  * Graphology Degree
  * ===================
@@ -41916,7 +41937,7 @@ degree.abstractDegree = abstractDegree;
 
 module.exports = degree;
 
-},{"graphology-utils/is-graph":415}],408:[function(require,module,exports){
+},{"graphology-utils/is-graph":412}],404:[function(require,module,exports){
 /**
  * Graphology Density
  * ===================
@@ -42066,7 +42087,7 @@ density.multiMixedDensity = abstractDensity.bind(null, 'mixed', true);
  */
 module.exports = density;
 
-},{"graphology-utils/is-graph":415}],409:[function(require,module,exports){
+},{"graphology-utils/is-graph":412}],405:[function(require,module,exports){
 /**
  * Graphology Extent
  * ==================
@@ -42182,7 +42203,7 @@ extent.edgeExtent = edgeExtent;
 
 module.exports = extent;
 
-},{"graphology-utils/is-graph":415}],410:[function(require,module,exports){
+},{"graphology-utils/is-graph":412}],406:[function(require,module,exports){
 /**
  * Graphology Metrics
  * ===================
@@ -42196,7 +42217,7 @@ exports.modularity = require('./modularity.js');
 exports.weightedDegree = require('./weighted-degree.js');
 exports.weightedSize = require('./weighted-size.js');
 
-},{"./centrality":406,"./density.js":408,"./extent.js":409,"./modularity.js":411,"./weighted-degree.js":412,"./weighted-size.js":413}],411:[function(require,module,exports){
+},{"./centrality":402,"./density.js":404,"./extent.js":405,"./modularity.js":407,"./weighted-degree.js":408,"./weighted-size.js":409}],407:[function(require,module,exports){
 /**
  * Graphology Modularity
  * ======================
@@ -42325,7 +42346,7 @@ function modularity(graph, options) {
 
 module.exports = modularity;
 
-},{"graphology-utils/is-graph":415,"lodash/defaultsDeep":501}],412:[function(require,module,exports){
+},{"graphology-utils/is-graph":412,"lodash/defaultsDeep":498}],408:[function(require,module,exports){
 /**
  * Graphology Weighted Degree
  * ===========================
@@ -42470,7 +42491,7 @@ weightedDegree.weightedInDegree = weightedInDegree;
 weightedDegree.weightedOutDegree = weightedOutDegree;
 module.exports = weightedDegree;
 
-},{"graphology-utils/is-graph":415}],413:[function(require,module,exports){
+},{"graphology-utils/is-graph":412}],409:[function(require,module,exports){
 /**
  * Graphology Weighted Size
  * =========================
@@ -42515,7 +42536,7 @@ module.exports = function weightedSize(graph, weightAttribute) {
   return W;
 };
 
-},{"graphology-utils/is-graph":415}],414:[function(require,module,exports){
+},{"graphology-utils/is-graph":412}],410:[function(require,module,exports){
 /**
  * Graphology Indexed Brandes Routine
  * ===================================
@@ -42711,9 +42732,69 @@ exports.createDijkstraIndexedBrandes = function createDijkstraIndexedBrandes(
   return brandes;
 };
 
-},{"graphology-indices/neighborhood":394,"mnemonist/fixed-deque":520,"mnemonist/fixed-stack":521,"mnemonist/heap":522,"mnemonist/utils/typed-arrays":528}],415:[function(require,module,exports){
-arguments[4][388][0].apply(exports,arguments)
-},{"dup":388}],416:[function(require,module,exports){
+},{"graphology-indices/neighborhood":390,"mnemonist/fixed-deque":517,"mnemonist/fixed-stack":518,"mnemonist/heap":519,"mnemonist/utils/typed-arrays":525}],411:[function(require,module,exports){
+/**
+ * Graphology inferType
+ * =====================
+ *
+ * Useful function used to "guess" the real type of the given Graph using
+ * introspection.
+ */
+var isGraph = require('./is-graph.js');
+
+/**
+ * Returning the inferred type of the given graph.
+ *
+ * @param  {Graph}   graph - Target graph.
+ * @return {boolean}
+ */
+module.exports = function inferType(graph) {
+  if (!isGraph(graph))
+    throw new Error('graphology-utils/infer-type: expecting a valid graphology instance.');
+
+  var declaredType = graph.type;
+
+  if (declaredType !== 'mixed')
+    return declaredType;
+
+  if (
+    (graph.directedSize === 0 && graph.undirectedSize === 0) ||
+    (graph.directedSize > 0 && graph.undirectedSize > 0)
+  )
+    return 'mixed';
+
+  if (graph.directedSize > 0)
+    return 'directed';
+
+  return 'undirected';
+};
+
+},{"./is-graph.js":412}],412:[function(require,module,exports){
+/**
+ * Graphology isGraph
+ * ===================
+ *
+ * Very simple function aiming at ensuring the given variable is a
+ * graphology instance.
+ */
+
+/**
+ * Checking the value is a graphology instance.
+ *
+ * @param  {any}     value - Target value.
+ * @return {boolean}
+ */
+module.exports = function isGraph(value) {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    typeof value.addUndirectedEdgeWithKey === 'function' &&
+    typeof value.dropNode === 'function' &&
+    typeof value.multi === 'boolean'
+  );
+};
+
+},{}],413:[function(require,module,exports){
 /**
  * Graphology Sub Graph
  * =====================
@@ -42796,11 +42877,11 @@ module.exports = function subGraph(graph, nodes) {
   return subGraphResult;
 };
 
-},{}],417:[function(require,module,exports){
+},{}],414:[function(require,module,exports){
 !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e=e||self).graphology=t()}(this,(function(){"use strict";function e(t){return(e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(t)}function t(e,t){e.prototype=Object.create(t.prototype),e.prototype.constructor=e,e.__proto__=t}function n(e){return(n=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function r(e,t){return(r=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function i(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(e){return!1}}function o(e,t,n){return(o=i()?Reflect.construct:function(e,t,n){var i=[null];i.push.apply(i,t);var o=new(Function.bind.apply(e,i));return n&&r(o,n.prototype),o}).apply(null,arguments)}function a(e){var t="function"==typeof Map?new Map:void 0;return(a=function(e){if(null===e||(i=e,-1===Function.toString.call(i).indexOf("[native code]")))return e;var i;if("function"!=typeof e)throw new TypeError("Super expression must either be null or a function");if(void 0!==t){if(t.has(e))return t.get(e);t.set(e,a)}function a(){return o(e,arguments,n(this).constructor)}return a.prototype=Object.create(e.prototype,{constructor:{value:a,enumerable:!1,writable:!0,configurable:!0}}),r(a,e)})(e)}function c(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function d(){for(var e=arguments[0]||{},t=1,n=arguments.length;t<n;t++)if(arguments[t])for(var r in arguments[t])e[r]=arguments[t][r];return e}function u(e,t,n,r){var i=e._nodes.get(t),o=null;return i?o="mixed"===r?i.out&&i.out[n]||i.undirected&&i.undirected[n]:"directed"===r?i.out&&i.out[n]:i.undirected&&i.undirected[n]:o}function s(t){return null!==t&&"object"===e(t)&&"function"==typeof t.addUndirectedEdgeWithKey&&"function"==typeof t.dropNode}function h(t){return"object"===e(t)&&null!==t&&t.constructor===Object}function f(e){for(var t=""+e,n="",r=0,i=t.length;r<i;r++){n=t[i-r-1]+n,(r-2)%3||r===i-1||(n=","+n)}return n}function p(e,t,n){Object.defineProperty(e,t,{enumerable:!1,configurable:!1,writable:!0,value:n})}function g(e,t,n){var r={enumerable:!0,configurable:!0};"function"==typeof n?r.get=n:(r.value=n,r.writable=!1),Object.defineProperty(e,t,r)}function l(){}function y(){y.init.call(this)}function v(e){return void 0===e._maxListeners?y.defaultMaxListeners:e._maxListeners}function w(e,t,n){if(t)e.call(n);else for(var r=e.length,i=S(e,r),o=0;o<r;++o)i[o].call(n)}function b(e,t,n,r){if(t)e.call(n,r);else for(var i=e.length,o=S(e,i),a=0;a<i;++a)o[a].call(n,r)}function m(e,t,n,r,i){if(t)e.call(n,r,i);else for(var o=e.length,a=S(e,o),c=0;c<o;++c)a[c].call(n,r,i)}function _(e,t,n,r,i,o){if(t)e.call(n,r,i,o);else for(var a=e.length,c=S(e,a),d=0;d<a;++d)c[d].call(n,r,i,o)}function G(e,t,n,r){if(t)e.apply(n,r);else for(var i=e.length,o=S(e,i),a=0;a<i;++a)o[a].apply(n,r)}function E(e,t,n,r){var i,o,a,c;if("function"!=typeof n)throw new TypeError('"listener" argument must be a function');if((o=e._events)?(o.newListener&&(e.emit("newListener",t,n.listener?n.listener:n),o=e._events),a=o[t]):(o=e._events=new l,e._eventsCount=0),a){if("function"==typeof a?a=o[t]=r?[n,a]:[a,n]:r?a.unshift(n):a.push(n),!a.warned&&(i=v(e))&&i>0&&a.length>i){a.warned=!0;var d=new Error("Possible EventEmitter memory leak detected. "+a.length+" "+t+" listeners added. Use emitter.setMaxListeners() to increase limit");d.name="MaxListenersExceededWarning",d.emitter=e,d.type=t,d.count=a.length,c=d,"function"==typeof console.warn?console.warn(c):console.log(c)}}else a=o[t]=n,++e._eventsCount;return e}function k(e,t,n){var r=!1;function i(){e.removeListener(t,i),r||(r=!0,n.apply(e,arguments))}return i.listener=n,i}function x(e){var t=this._events;if(t){var n=t[e];if("function"==typeof n)return 1;if(n)return n.length}return 0}function S(e,t){for(var n=new Array(t);t--;)n[t]=e[t];return n}function A(e){Object.defineProperty(this,"_next",{writable:!1,enumerable:!1,value:e}),this.done=!1}l.prototype=Object.create(null),y.EventEmitter=y,y.usingDomains=!1,y.prototype.domain=void 0,y.prototype._events=void 0,y.prototype._maxListeners=void 0,y.defaultMaxListeners=10,y.init=function(){this.domain=null,y.usingDomains&&(void 0).active,this._events&&this._events!==Object.getPrototypeOf(this)._events||(this._events=new l,this._eventsCount=0),this._maxListeners=this._maxListeners||void 0},y.prototype.setMaxListeners=function(e){if("number"!=typeof e||e<0||isNaN(e))throw new TypeError('"n" argument must be a positive number');return this._maxListeners=e,this},y.prototype.getMaxListeners=function(){return v(this)},y.prototype.emit=function(e){var t,n,r,i,o,a,c,d="error"===e;if(a=this._events)d=d&&null==a.error;else if(!d)return!1;if(c=this.domain,d){if(t=arguments[1],!c){if(t instanceof Error)throw t;var u=new Error('Uncaught, unspecified "error" event. ('+t+")");throw u.context=t,u}return t||(t=new Error('Uncaught, unspecified "error" event')),t.domainEmitter=this,t.domain=c,t.domainThrown=!1,c.emit("error",t),!1}if(!(n=a[e]))return!1;var s="function"==typeof n;switch(r=arguments.length){case 1:w(n,s,this);break;case 2:b(n,s,this,arguments[1]);break;case 3:m(n,s,this,arguments[1],arguments[2]);break;case 4:_(n,s,this,arguments[1],arguments[2],arguments[3]);break;default:for(i=new Array(r-1),o=1;o<r;o++)i[o-1]=arguments[o];G(n,s,this,i)}return!0},y.prototype.addListener=function(e,t){return E(this,e,t,!1)},y.prototype.on=y.prototype.addListener,y.prototype.prependListener=function(e,t){return E(this,e,t,!0)},y.prototype.once=function(e,t){if("function"!=typeof t)throw new TypeError('"listener" argument must be a function');return this.on(e,k(this,e,t)),this},y.prototype.prependOnceListener=function(e,t){if("function"!=typeof t)throw new TypeError('"listener" argument must be a function');return this.prependListener(e,k(this,e,t)),this},y.prototype.removeListener=function(e,t){var n,r,i,o,a;if("function"!=typeof t)throw new TypeError('"listener" argument must be a function');if(!(r=this._events))return this;if(!(n=r[e]))return this;if(n===t||n.listener&&n.listener===t)0==--this._eventsCount?this._events=new l:(delete r[e],r.removeListener&&this.emit("removeListener",e,n.listener||t));else if("function"!=typeof n){for(i=-1,o=n.length;o-- >0;)if(n[o]===t||n[o].listener&&n[o].listener===t){a=n[o].listener,i=o;break}if(i<0)return this;if(1===n.length){if(n[0]=void 0,0==--this._eventsCount)return this._events=new l,this;delete r[e]}else!function(e,t){for(var n=t,r=n+1,i=e.length;r<i;n+=1,r+=1)e[n]=e[r];e.pop()}(n,i);r.removeListener&&this.emit("removeListener",e,a||t)}return this},y.prototype.removeAllListeners=function(e){var t,n;if(!(n=this._events))return this;if(!n.removeListener)return 0===arguments.length?(this._events=new l,this._eventsCount=0):n[e]&&(0==--this._eventsCount?this._events=new l:delete n[e]),this;if(0===arguments.length){for(var r,i=Object.keys(n),o=0;o<i.length;++o)"removeListener"!==(r=i[o])&&this.removeAllListeners(r);return this.removeAllListeners("removeListener"),this._events=new l,this._eventsCount=0,this}if("function"==typeof(t=n[e]))this.removeListener(e,t);else if(t)do{this.removeListener(e,t[t.length-1])}while(t[0]);return this},y.prototype.listeners=function(e){var t,n=this._events;return n&&(t=n[e])?"function"==typeof t?[t.listener||t]:function(e){for(var t=new Array(e.length),n=0;n<t.length;++n)t[n]=e[n].listener||e[n];return t}(t):[]},y.listenerCount=function(e,t){return"function"==typeof e.listenerCount?e.listenerCount(t):x.call(e,t)},y.prototype.listenerCount=x,y.prototype.eventNames=function(){return this._eventsCount>0?Reflect.ownKeys(this._events):[]},A.prototype.next=function(){if(this.done)return{done:!0};var e=this._next();return e.done&&(this.done=!0),e},"undefined"!=typeof Symbol&&(A.prototype[Symbol.iterator]=function(){return this}),A.of=function(){var e=arguments,t=e.length,n=0;return new A((function(){return n>=t?{done:!0}:{done:!1,value:e[n++]}}))},A.empty=function(){var e=new A(null);return e.done=!0,e},A.is=function(e){return e instanceof A||"object"==typeof e&&null!==e&&"function"==typeof e.next};var N=A,D=function(e,t){for(var n,r=arguments.length>1?t:1/0,i=r!==1/0?new Array(r):[],o=0;;){if(o===r)return i;if((n=e.next()).done)return o!==t?i.slice(0,o):i;i[o++]=n.value}},L=function(e){function n(t,n){var r;return(r=e.call(this)||this).name="GraphError",r.message=t||"",r.data=n||{},r}return t(n,e),n}(a(Error)),j=function(e){function n(t,r){var i;return(i=e.call(this,t,r)||this).name="InvalidArgumentsGraphError","function"==typeof Error.captureStackTrace&&Error.captureStackTrace(c(i),n.prototype.constructor),i}return t(n,e),n}(L),U=function(e){function n(t,r){var i;return(i=e.call(this,t,r)||this).name="NotFoundGraphError","function"==typeof Error.captureStackTrace&&Error.captureStackTrace(c(i),n.prototype.constructor),i}return t(n,e),n}(L),z=function(e){function n(t,r){var i;return(i=e.call(this,t,r)||this).name="UsageGraphError","function"==typeof Error.captureStackTrace&&Error.captureStackTrace(c(i),n.prototype.constructor),i}return t(n,e),n}(L);function O(e,t){this.key=e,this.attributes=t,this.inDegree=0,this.outDegree=0,this.undirectedDegree=0,this.directedSelfLoops=0,this.undirectedSelfLoops=0,this.in={},this.out={},this.undirected={}}function K(e,t){this.key=e,this.attributes=t||{},this.inDegree=0,this.outDegree=0,this.directedSelfLoops=0,this.in={},this.out={}}function M(e,t){this.key=e,this.attributes=t||{},this.undirectedDegree=0,this.undirectedSelfLoops=0,this.undirected={}}function C(e,t,n,r,i){this.key=e,this.attributes=i,this.source=n,this.target=r,this.generatedKey=t}function T(e,t,n,r,i){this.key=e,this.attributes=i,this.source=n,this.target=r,this.generatedKey=t}function P(e,t,n,r,i,o,a){var c=e.multi,d=t?"undirected":"out",u=t?"undirected":"in",s=o[d][i];void 0===s&&(s=c?new Set:n,o[d][i]=s),c&&s.add(n),r!==i&&void 0===a[u][r]&&(a[u][r]=s)}function W(e,t,n){var r=e.multi,i=n.source,o=n.target,a=i.key,c=o.key,d=i[t?"undirected":"out"],u=t?"undirected":"in";if(c in d)if(r){var s=d[c];1===s.size?(delete d[c],delete o[u][a]):s.delete(n)}else delete d[c];r||delete o[u][a]}K.prototype.upgradeToMixed=function(){this.undirectedDegree=0,this.undirectedSelfLoops=0,this.undirected={}},M.prototype.upgradeToMixed=function(){this.inDegree=0,this.outDegree=0,this.directedSelfLoops=0,this.in={},this.out={}};var R=[{name:function(e){return"get".concat(e,"Attribute")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i){var o;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>2){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var a=""+e,c=""+i;if(i=arguments[2],!(o=u(this,a,c,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(a,'" - "').concat(c,'").'))}else if(e=""+e,!(o=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if("mixed"!==n&&!(o instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return o.attributes[i]}}},{name:function(e){return"get".concat(e,"Attributes")},attacher:function(e,t,n,r){e.prototype[t]=function(e){var i;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>1){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var o=""+e,a=""+arguments[1];if(!(i=u(this,o,a,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(o,'" - "').concat(a,'").'))}else if(e=""+e,!(i=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if("mixed"!==n&&!(i instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return i.attributes}}},{name:function(e){return"has".concat(e,"Attribute")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i){var o;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>2){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var a=""+e,c=""+i;if(i=arguments[2],!(o=u(this,a,c,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(a,'" - "').concat(c,'").'))}else if(e=""+e,!(o=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if("mixed"!==n&&!(o instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return o.attributes.hasOwnProperty(i)}}},{name:function(e){return"set".concat(e,"Attribute")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i,o){var a;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>3){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var c=""+e,d=""+i;if(i=arguments[2],o=arguments[3],!(a=u(this,c,d,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(c,'" - "').concat(d,'").'))}else if(e=""+e,!(a=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if("mixed"!==n&&!(a instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return a.attributes[i]=o,this.emit("edgeAttributesUpdated",{key:a.key,type:"set",meta:{name:i,value:o}}),this}}},{name:function(e){return"update".concat(e,"Attribute")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i,o){var a;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>3){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var c=""+e,d=""+i;if(i=arguments[2],o=arguments[3],!(a=u(this,c,d,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(c,'" - "').concat(d,'").'))}else if(e=""+e,!(a=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if("function"!=typeof o)throw new j("Graph.".concat(t,": updater should be a function."));if("mixed"!==n&&!(a instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return a.attributes[i]=o(a.attributes[i]),this.emit("edgeAttributesUpdated",{key:a.key,type:"set",meta:{name:i,value:a.attributes[i]}}),this}}},{name:function(e){return"remove".concat(e,"Attribute")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i){var o;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>2){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var a=""+e,c=""+i;if(i=arguments[2],!(o=u(this,a,c,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(a,'" - "').concat(c,'").'))}else if(e=""+e,!(o=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if("mixed"!==n&&!(o instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return delete o.attributes[i],this.emit("edgeAttributesUpdated",{key:o.key,type:"remove",meta:{name:i}}),this}}},{name:function(e){return"replace".concat(e,"Attributes")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i){var o;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>2){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var a=""+e,c=""+i;if(i=arguments[2],!(o=u(this,a,c,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(a,'" - "').concat(c,'").'))}else if(e=""+e,!(o=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if(!h(i))throw new j("Graph.".concat(t,": provided attributes are not a plain object."));if("mixed"!==n&&!(o instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));var d=o.attributes;return o.attributes=i,this.emit("edgeAttributesUpdated",{key:o.key,type:"replace",meta:{before:d,after:i}}),this}}},{name:function(e){return"merge".concat(e,"Attributes")},attacher:function(e,t,n,r){e.prototype[t]=function(e,i){var o;if("mixed"!==this.type&&"mixed"!==n&&n!==this.type)throw new z("Graph.".concat(t,": cannot find this type of edges in your ").concat(this.type," graph."));if(arguments.length>2){if(this.multi)throw new z("Graph.".concat(t,": cannot use a {source,target} combo when asking about an edge's attributes in a MultiGraph since we cannot infer the one you want information about."));var a=""+e,c=""+i;if(i=arguments[2],!(o=u(this,a,c,n)))throw new U("Graph.".concat(t,': could not find an edge for the given path ("').concat(a,'" - "').concat(c,'").'))}else if(e=""+e,!(o=this._edges.get(e)))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" edge in the graph.'));if(!h(i))throw new j("Graph.".concat(t,": provided attributes are not a plain object."));if("mixed"!==n&&!(o instanceof r))throw new U("Graph.".concat(t,': could not find the "').concat(e,'" ').concat(n," edge in the graph."));return d(o.attributes,i),this.emit("edgeAttributesUpdated",{key:o.key,type:"merge",meta:{data:i}}),this}}}];var I=function(){var e,t=arguments,n=-1;return new N((function r(){if(!e){if(++n>=t.length)return{done:!0};e=t[n]}var i=e.next();return i.done?(e=null,r()):i}))},F=[{name:"edges",type:"mixed"},{name:"inEdges",type:"directed",direction:"in"},{name:"outEdges",type:"directed",direction:"out"},{name:"inboundEdges",type:"mixed",direction:"in"},{name:"outboundEdges",type:"mixed",direction:"out"},{name:"directedEdges",type:"directed"},{name:"undirectedEdges",type:"undirected"}];function Y(e,t){for(var n in t)t[n]instanceof Set?t[n].forEach((function(t){return e.push(t.key)})):e.push(t[n].key)}function J(e,t){for(var n in e){var r=e[n];t(r.key,r.attributes,r.source.key,r.target.key,r.source.attributes,r.target.attributes)}}function q(e,t){for(var n in e)e[n].forEach((function(e){return t(e.key,e.attributes,e.source.key,e.target.key,e.source.attributes,e.target.attributes)}))}function B(e){var t=Object.keys(e),n=t.length,r=null,i=0;return new N((function o(){var a;if(r){var c=r.next();if(c.done)return r=null,i++,o();a=c.value}else{if(i>=n)return{done:!0};var d=t[i];if((a=e[d])instanceof Set)return r=a.values(),o();i++}return{done:!1,value:[a.key,a.attributes,a.source.key,a.target.key,a.source.attributes,a.target.attributes]}}))}function H(e,t,n){n in t&&(t[n]instanceof Set?t[n].forEach((function(t){return e.push(t.key)})):e.push(t[n].key))}function Q(e,t,n){if(t in e)if(e[t]instanceof Set)e[t].forEach((function(e){return n(e.key,e.attributes,e.source.key,e.target.key,e.source.attributes,e.target.attributes)}));else{var r=e[t];n(r.key,r.attributes,r.source.key,r.target.key,r.source.attributes,r.target.attributes)}}function V(e,t){var n=e[t];if(n instanceof Set){var r=n.values();return new N((function(){var e=r.next();if(e.done)return e;var t=e.value;return{done:!1,value:[t.key,t.attributes,t.source.key,t.target.key,t.source.attributes,t.target.attributes]}}))}return N.of([n.key,n.attributes,n.source.key,n.target.key,n.source.attributes,n.target.attributes])}function X(e,t){if(0===e.size)return[];if("mixed"===t||t===e.type)return D(e._edges.keys(),e._edges.size);var n="undirected"===t?e.undirectedSize:e.directedSize,r=new Array(n),i="undirected"===t,o=0;return e._edges.forEach((function(e,t){e instanceof T===i&&(r[o++]=t)})),r}function Z(e,t,n){if(0!==e.size)if("mixed"===t||t===e.type)e._edges.forEach((function(e,t){var r=e.attributes,i=e.source,o=e.target;n(t,r,i.key,o.key,i.attributes,o.attributes)}));else{var r="undirected"===t;e._edges.forEach((function(e,t){if(e instanceof T===r){var i=e.attributes,o=e.source,a=e.target;n(t,i,o.key,a.key,o.attributes,a.attributes)}}))}}function $(e,t){return 0===e.size?N.empty():"mixed"===t?(n=e._edges.values(),new N((function(){var e=n.next();if(e.done)return e;var t=e.value;return{value:[t.key,t.attributes,t.source.key,t.target.key,t.source.attributes,t.target.attributes],done:!1}}))):(n=e._edges.values(),new N((function e(){var r=n.next();if(r.done)return r;var i=r.value;return i instanceof T==("undirected"===t)?{value:[i.key,i.attributes,i.source.key,i.target.key,i.source.attributes,i.target.attributes],done:!1}:e()})));var n}function ee(e,t,n){var r=[];return"undirected"!==e&&("out"!==t&&Y(r,n.in),"in"!==t&&Y(r,n.out)),"directed"!==e&&Y(r,n.undirected),r}function te(e,t,n,r,i){var o=e?q:J;"undirected"!==t&&("out"!==n&&o(r.in,i),"in"!==n&&o(r.out,i)),"directed"!==t&&o(r.undirected,i)}function ne(e,t,n){var r=N.empty();return"undirected"!==e&&("out"!==t&&void 0!==n.in&&(r=I(r,B(n.in))),"in"!==t&&void 0!==n.out&&(r=I(r,B(n.out)))),"directed"!==e&&void 0!==n.undirected&&(r=I(r,B(n.undirected))),r}function re(e,t,n,r){var i=[];return"undirected"!==e&&(void 0!==n.in&&"out"!==t&&H(i,n.in,r),void 0!==n.out&&"in"!==t&&H(i,n.out,r)),"directed"!==e&&void 0!==n.undirected&&H(i,n.undirected,r),i}function ie(e,t,n,r,i){"undirected"!==e&&(void 0!==n.in&&"out"!==t&&Q(n.in,r,i),void 0!==n.out&&"in"!==t&&Q(n.out,r,i)),"directed"!==e&&void 0!==n.undirected&&Q(n.undirected,r,i)}function oe(e,t,n,r){var i=N.empty();return"undirected"!==e&&(void 0!==n.in&&"out"!==t&&r in n.in&&(i=I(i,V(n.in,r))),void 0!==n.out&&"in"!==t&&r in n.out&&(i=I(i,V(n.out,r)))),"directed"!==e&&void 0!==n.undirected&&r in n.undirected&&(i=I(i,V(n.undirected,r))),i}var ae=[{name:"neighbors",type:"mixed"},{name:"inNeighbors",type:"directed",direction:"in"},{name:"outNeighbors",type:"directed",direction:"out"},{name:"inboundNeighbors",type:"mixed",direction:"in"},{name:"outboundNeighbors",type:"mixed",direction:"out"},{name:"directedNeighbors",type:"directed"},{name:"undirectedNeighbors",type:"undirected"}];function ce(e,t){if(void 0!==t)for(var n in t)e.add(n)}function de(e,t,n){if("mixed"!==e){if("undirected"===e)return Object.keys(n.undirected);if("string"==typeof t)return Object.keys(n[t])}var r=new Set;return"undirected"!==e&&("out"!==t&&ce(r,n.in),"in"!==t&&ce(r,n.out)),"directed"!==e&&ce(r,n.undirected),D(r.values(),r.size)}function ue(e,t,n){for(var r in t){var i=t[r];i instanceof Set&&(i=i.values().next().value);var o=i.source,a=i.target,c=o===e?a:o;n(c.key,c.attributes)}}function se(e,t,n,r){for(var i in n){var o=n[i];o instanceof Set&&(o=o.values().next().value);var a=o.source,c=o.target,d=a===t?c:a;e.has(d.key)||(e.add(d.key),r(d.key,d.attributes))}}function he(e,t){var n=Object.keys(t),r=n.length,i=0;return new N((function(){if(i>=r)return{done:!0};var o=t[n[i++]];o instanceof Set&&(o=o.values().next().value);var a=o.source,c=o.target,d=a===e?c:a;return{done:!1,value:[d.key,d.attributes]}}))}function fe(e,t,n){var r=Object.keys(n),i=r.length,o=0;return new N((function a(){if(o>=i)return{done:!0};var c=n[r[o++]];c instanceof Set&&(c=c.values().next().value);var d=c.source,u=c.target,s=d===t?u:d;return e.has(s.key)?a():(e.add(s.key),{done:!1,value:[s.key,s.attributes]})}))}function pe(e,t,n,r,i){var o=e._nodes.get(r);if("undirected"!==t){if("out"!==n&&void 0!==o.in)for(var a in o.in)if(a===i)return!0;if("in"!==n&&void 0!==o.out)for(var c in o.out)if(c===i)return!0}if("directed"!==t&&void 0!==o.undirected)for(var d in o.undirected)if(d===i)return!0;return!1}function ge(e,t){var n=t.name,r=t.type,i=t.direction,o="forEach"+n[0].toUpperCase()+n.slice(1,-1);e.prototype[o]=function(e,t){if("mixed"===r||"mixed"===this.type||r===this.type){e=""+e;var n=this._nodes.get(e);if(void 0===n)throw new U("Graph.".concat(o,': could not find the "').concat(e,'" node in the graph.'));!function(e,t,n,r){if("mixed"!==e){if("undirected"===e)return ue(n,n.undirected,r);if("string"==typeof t)return ue(n,n[t],r)}var i=new Set;"undirected"!==e&&("out"!==t&&se(i,n,n.in,r),"in"!==t&&se(i,n,n.out,r)),"directed"!==e&&se(i,n,n.undirected,r)}("mixed"===r?this.type:r,i,n,t)}}}function le(e,t){var n=t.name,r=t.type,i=t.direction,o=n.slice(0,-1)+"Entries";e.prototype[o]=function(e){if("mixed"!==r&&"mixed"!==this.type&&r!==this.type)return N.empty();e=""+e;var t=this._nodes.get(e);if(void 0===t)throw new U("Graph.".concat(o,': could not find the "').concat(e,'" node in the graph.'));return function(e,t,n){if("mixed"!==e){if("undirected"===e)return he(n,n.undirected);if("string"==typeof t)return he(n,n[t])}var r=N.empty(),i=new Set;return"undirected"!==e&&("out"!==t&&(r=I(r,fe(i,n,n.in))),"in"!==t&&(r=I(r,fe(i,n,n.out)))),"directed"!==e&&(r=I(r,fe(i,n,n.undirected))),r}("mixed"===r?this.type:r,i,t)}}function ye(e,t){var n={key:e};return Object.keys(t.attributes).length&&(n.attributes=d({},t.attributes)),n}function ve(e,t){var n={source:t.source.key,target:t.target.key};return t.generatedKey||(n.key=e),Object.keys(t.attributes).length&&(n.attributes=d({},t.attributes)),t instanceof T&&(n.undirected=!0),n}function we(e){return h(e)?"key"in e?!("attributes"in e)||h(e.attributes)&&null!==e.attributes?null:"invalid-attributes":"no-key":"not-object"}function be(e){return h(e)?"source"in e?"target"in e?!("attributes"in e)||h(e.attributes)&&null!==e.attributes?"undirected"in e&&"boolean"!=typeof e.undirected?"invalid-undirected":null:"invalid-attributes":"no-target":"no-source":"not-object"}var me=new Set(["directed","undirected","mixed"]),_e=new Set(["domain","_events","_eventsCount","_maxListeners"]),Ge={allowSelfLoops:!0,edgeKeyGenerator:null,multi:!1,type:"mixed"};function Ee(e,t,n,r,i,o,a,c){if(!r&&"undirected"===e.type)throw new z("Graph.".concat(t,": you cannot add a directed edge to an undirected graph. Use the #.addEdge or #.addUndirectedEdge instead."));if(r&&"directed"===e.type)throw new z("Graph.".concat(t,": you cannot add an undirected edge to a directed graph. Use the #.addEdge or #.addDirectedEdge instead."));if(c&&!h(c))throw new j("Graph.".concat(t,': invalid attributes. Expecting an object but got "').concat(c,'"'));if(o=""+o,a=""+a,c=c||{},!e.allowSelfLoops&&o===a)throw new z("Graph.".concat(t,': source & target are the same ("').concat(o,"\"), thus creating a loop explicitly forbidden by this graph 'allowSelfLoops' option set to false."));var d=e._nodes.get(o),u=e._nodes.get(a);if(!d)throw new U("Graph.".concat(t,': source node "').concat(o,'" not found.'));if(!u)throw new U("Graph.".concat(t,': target node "').concat(a,'" not found.'));var s={key:null,undirected:r,source:o,target:a,attributes:c};if(n&&(i=e._edgeKeyGenerator(s)),i=""+i,e._edges.has(i))throw new z("Graph.".concat(t,': the "').concat(i,'" edge already exists in the graph.'));if(!e.multi&&(r?void 0!==d.undirected[a]:void 0!==d.out[a]))throw new z("Graph.".concat(t,': an edge linking "').concat(o,'" to "').concat(a,"\" already exists. If you really want to add multiple edges linking those nodes, you should create a multi graph by using the 'multi' option."));var f=new(r?T:C)(i,n,d,u,c);return e._edges.set(i,f),o===a?r?d.undirectedSelfLoops++:d.directedSelfLoops++:r?(d.undirectedDegree++,u.undirectedDegree++):(d.outDegree++,u.inDegree++),P(e,r,f,o,a,d,u),r?e._undirectedSize++:e._directedSize++,s.key=i,e.emit("edgeAdded",s),i}function ke(e,t,n,r,i,o,a,c){if(!r&&"undirected"===e.type)throw new z("Graph.".concat(t,": you cannot add a directed edge to an undirected graph. Use the #.addEdge or #.addUndirectedEdge instead."));if(r&&"directed"===e.type)throw new z("Graph.".concat(t,": you cannot add an undirected edge to a directed graph. Use the #.addEdge or #.addDirectedEdge instead."));if(c&&!h(c))throw new j("Graph.".concat(t,': invalid attributes. Expecting an object but got "').concat(c,'"'));if(o=""+o,a=""+a,c=c||{},!e.allowSelfLoops&&o===a)throw new z("Graph.".concat(t,': source & target are the same ("').concat(o,"\"), thus creating a loop explicitly forbidden by this graph 'allowSelfLoops' option set to false."));var s,f,p=e._nodes.get(o),g=e._nodes.get(a),l=null;if(!n&&(s=e._edges.get(i))){if(s.source!==o||s.target!==a||r&&(s.source!==a||s.target!==o))throw new z("Graph.".concat(t,': inconsistency detected when attempting to merge the "').concat(i,'" edge with "').concat(o,'" source & "').concat(a,'" target vs. (').concat(s.source,", ").concat(s.target,")."));l=i}if(l||e.multi||!p||(r?void 0===p.undirected[a]:void 0===p.out[a])||(f=u(e,o,a,r?"undirected":"directed")),f)return c?(d(f.attributes,c),l):l;var y={key:null,undirected:r,source:o,target:a,attributes:c};if(n&&(i=e._edgeKeyGenerator(y)),i=""+i,e._edges.has(i))throw new z("Graph.".concat(t,': the "').concat(i,'" edge already exists in the graph.'));return p||(e.addNode(o),p=e._nodes.get(o),o===a&&(g=p)),g||(e.addNode(a),g=e._nodes.get(a)),s=new(r?T:C)(i,n,p,g,c),e._edges.set(i,s),o===a?r?p.undirectedSelfLoops++:p.directedSelfLoops++:r?(p.undirectedDegree++,g.undirectedDegree++):(p.outDegree++,g.inDegree++),P(e,r,s,o,a,p,g),r?e._undirectedSize++:e._directedSize++,y.key=i,e.emit("edgeAdded",y),i}var xe=function(e){function n(t){var n;if(n=e.call(this)||this,(t=d({},Ge,t)).edgeKeyGenerator&&"function"!=typeof t.edgeKeyGenerator)throw new j("Graph.constructor: invalid 'edgeKeyGenerator' option. Expecting a function but got \"".concat(t.edgeKeyGenerator,'".'));if("boolean"!=typeof t.multi)throw new j("Graph.constructor: invalid 'multi' option. Expecting a boolean but got \"".concat(t.multi,'".'));if(!me.has(t.type))throw new j('Graph.constructor: invalid \'type\' option. Should be one of "mixed", "directed" or "undirected" but got "'.concat(t.type,'".'));if("boolean"!=typeof t.allowSelfLoops)throw new j("Graph.constructor: invalid 'allowSelfLoops' option. Expecting a boolean but got \"".concat(t.allowSelfLoops,'".'));var r,i="mixed"===t.type?O:"directed"===t.type?K:M;return p(c(n),"NodeDataClass",i),p(c(n),"_attributes",{}),p(c(n),"_nodes",new Map),p(c(n),"_edges",new Map),p(c(n),"_directedSize",0),p(c(n),"_undirectedSize",0),p(c(n),"_edgeKeyGenerator",t.edgeKeyGenerator||(r=0,function(){return"_geid".concat(r++,"_")})),p(c(n),"_options",t),_e.forEach((function(e){return p(c(n),e,n[e])})),g(c(n),"order",(function(){return n._nodes.size})),g(c(n),"size",(function(){return n._edges.size})),g(c(n),"directedSize",(function(){return n._directedSize})),g(c(n),"undirectedSize",(function(){return n._undirectedSize})),g(c(n),"multi",n._options.multi),g(c(n),"type",n._options.type),g(c(n),"allowSelfLoops",n._options.allowSelfLoops),n}t(n,e);var r=n.prototype;return r.hasNode=function(e){return this._nodes.has(""+e)},r.hasDirectedEdge=function(e,t){if("undirected"===this.type)return!1;if(1===arguments.length){var n=""+e,r=this._edges.get(n);return!!r&&r instanceof C}if(2===arguments.length){e=""+e,t=""+t;var i=this._nodes.get(e);if(!i)return!1;var o=i.out[t];return!!o&&(!this.multi||!!o.size)}throw new j("Graph.hasDirectedEdge: invalid arity (".concat(arguments.length,", instead of 1 or 2). You can either ask for an edge id or for the existence of an edge between a source & a target."))},r.hasUndirectedEdge=function(e,t){if("directed"===this.type)return!1;if(1===arguments.length){var n=""+e,r=this._edges.get(n);return!!r&&r instanceof T}if(2===arguments.length){e=""+e,t=""+t;var i=this._nodes.get(e);if(!i)return!1;var o=i.undirected[t];return!!o&&(!this.multi||!!o.size)}throw new j("Graph.hasDirectedEdge: invalid arity (".concat(arguments.length,", instead of 1 or 2). You can either ask for an edge id or for the existence of an edge between a source & a target."))},r.hasEdge=function(e,t){if(1===arguments.length){var n=""+e;return this._edges.has(n)}if(2===arguments.length){e=""+e,t=""+t;var r=this._nodes.get(e);if(!r)return!1;var i=void 0!==r.out&&r.out[t];return i||(i=void 0!==r.undirected&&r.undirected[t]),!!i&&(!this.multi||!!i.size)}throw new j("Graph.hasEdge: invalid arity (".concat(arguments.length,", instead of 1 or 2). You can either ask for an edge id or for the existence of an edge between a source & a target."))},r.directedEdge=function(e,t){if("undirected"!==this.type){if(e=""+e,t=""+t,this.multi)throw new z("Graph.directedEdge: this method is irrelevant with multigraphs since there might be multiple edges between source & target. See #.directedEdges instead.");var n=this._nodes.get(e);if(!n)throw new U('Graph.directedEdge: could not find the "'.concat(e,'" source node in the graph.'));if(!this._nodes.has(t))throw new U('Graph.directedEdge: could not find the "'.concat(t,'" target node in the graph.'));var r=n.out&&n.out[t]||void 0;return r?r.key:void 0}},r.undirectedEdge=function(e,t){if("directed"!==this.type){if(e=""+e,t=""+t,this.multi)throw new z("Graph.undirectedEdge: this method is irrelevant with multigraphs since there might be multiple edges between source & target. See #.undirectedEdges instead.");var n=this._nodes.get(e);if(!n)throw new U('Graph.undirectedEdge: could not find the "'.concat(e,'" source node in the graph.'));if(!this._nodes.has(t))throw new U('Graph.undirectedEdge: could not find the "'.concat(t,'" target node in the graph.'));var r=n.undirected&&n.undirected[t]||void 0;return r?r.key:void 0}},r.edge=function(e,t){if(this.multi)throw new z("Graph.edge: this method is irrelevant with multigraphs since there might be multiple edges between source & target. See #.edges instead.");e=""+e,t=""+t;var n=this._nodes.get(e);if(!n)throw new U('Graph.edge: could not find the "'.concat(e,'" source node in the graph.'));if(!this._nodes.has(t))throw new U('Graph.edge: could not find the "'.concat(t,'" target node in the graph.'));var r=n.out&&n.out[t]||n.undirected&&n.undirected[t]||void 0;if(r)return r.key},r.inDegree=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if("boolean"!=typeof t)throw new j('Graph.inDegree: Expecting a boolean but got "'.concat(t,'" for the second parameter (allowing self-loops to be counted).'));e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.inDegree: could not find the "'.concat(e,'" node in the graph.'));if("undirected"===this.type)return 0;var r=t?n.directedSelfLoops:0;return n.inDegree+r},r.outDegree=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if("boolean"!=typeof t)throw new j('Graph.outDegree: Expecting a boolean but got "'.concat(t,'" for the second parameter (allowing self-loops to be counted).'));e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.outDegree: could not find the "'.concat(e,'" node in the graph.'));if("undirected"===this.type)return 0;var r=t?n.directedSelfLoops:0;return n.outDegree+r},r.directedDegree=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if("boolean"!=typeof t)throw new j('Graph.directedDegree: Expecting a boolean but got "'.concat(t,'" for the second parameter (allowing self-loops to be counted).'));if(e=""+e,!this.hasNode(e))throw new U('Graph.directedDegree: could not find the "'.concat(e,'" node in the graph.'));return"undirected"===this.type?0:this.inDegree(e,t)+this.outDegree(e,t)},r.undirectedDegree=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if("boolean"!=typeof t)throw new j('Graph.undirectedDegree: Expecting a boolean but got "'.concat(t,'" for the second parameter (allowing self-loops to be counted).'));if(e=""+e,!this.hasNode(e))throw new U('Graph.undirectedDegree: could not find the "'.concat(e,'" node in the graph.'));if("directed"===this.type)return 0;var n=this._nodes.get(e),r=t?2*n.undirectedSelfLoops:0;return n.undirectedDegree+r},r.degree=function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if("boolean"!=typeof t)throw new j('Graph.degree: Expecting a boolean but got "'.concat(t,'" for the second parameter (allowing self-loops to be counted).'));if(e=""+e,!this.hasNode(e))throw new U('Graph.degree: could not find the "'.concat(e,'" node in the graph.'));var n=0;return"undirected"!==this.type&&(n+=this.directedDegree(e,t)),"directed"!==this.type&&(n+=this.undirectedDegree(e,t)),n},r.source=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.source: could not find the "'.concat(e,'" edge in the graph.'));return t.source.key},r.target=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.target: could not find the "'.concat(e,'" edge in the graph.'));return t.target.key},r.extremities=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.extremities: could not find the "'.concat(e,'" edge in the graph.'));return[t.source.key,t.target.key]},r.opposite=function(e,t){if(e=""+e,t=""+t,!this._nodes.has(e))throw new U('Graph.opposite: could not find the "'.concat(e,'" node in the graph.'));var n=this._edges.get(t);if(!n)throw new U('Graph.opposite: could not find the "'.concat(t,'" edge in the graph.'));var r=n.source,i=n.target,o=r.key,a=i.key;if(e!==o&&e!==a)throw new U('Graph.opposite: the "'.concat(e,'" node is not attached to the "').concat(t,'" edge (').concat(o,", ").concat(a,")."));return e===o?a:o},r.undirected=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.undirected: could not find the "'.concat(e,'" edge in the graph.'));return t instanceof T},r.directed=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.directed: could not find the "'.concat(e,'" edge in the graph.'));return t instanceof C},r.selfLoop=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.selfLoop: could not find the "'.concat(e,'" edge in the graph.'));return t.source===t.target},r.addNode=function(e,t){if(t&&!h(t))throw new j('Graph.addNode: invalid attributes. Expecting an object but got "'.concat(t,'"'));if(e=""+e,t=t||{},this._nodes.has(e))throw new z('Graph.addNode: the "'.concat(e,'" node already exist in the graph.'));var n=new this.NodeDataClass(e,t);return this._nodes.set(e,n),this.emit("nodeAdded",{key:e,attributes:t}),e},r.mergeNode=function(e,t){if(t&&!h(t))throw new j('Graph.mergeNode: invalid attributes. Expecting an object but got "'.concat(t,'"'));e=""+e,t=t||{};var n=this._nodes.get(e);return n?(t&&d(n.attributes,t),e):(n=new this.NodeDataClass(e,t),this._nodes.set(e,n),this.emit("nodeAdded",{key:e,attributes:t}),e)},r.dropNode=function(e){if(e=""+e,!this.hasNode(e))throw new U('Graph.dropNode: could not find the "'.concat(e,'" node in the graph.'));for(var t=this.edges(e),n=0,r=t.length;n<r;n++)this.dropEdge(t[n]);var i=this._nodes.get(e);this._nodes.delete(e),this.emit("nodeDropped",{key:e,attributes:i.attributes})},r.dropEdge=function(e){var t;if(arguments.length>1){var n=""+arguments[0],r=""+arguments[1];if(!(t=u(this,n,r,this.type)))throw new U('Graph.dropEdge: could not find the "'.concat(n,'" -> "').concat(r,'" edge in the graph.'))}else if(e=""+e,!(t=this._edges.get(e)))throw new U('Graph.dropEdge: could not find the "'.concat(e,'" edge in the graph.'));this._edges.delete(t.key);var i=t,o=i.source,a=i.target,c=i.attributes,d=t instanceof T;return o===a?o.selfLoops--:d?(o.undirectedDegree--,a.undirectedDegree--):(o.outDegree--,a.inDegree--),W(this,d,t),d?this._undirectedSize--:this._directedSize--,this.emit("edgeDropped",{key:e,attributes:c,source:o.key,target:a.key,undirected:d}),this},r.clear=function(){this._edges.clear(),this._nodes.clear(),this.emit("cleared")},r.clearEdges=function(){this._edges.clear(),this.clearIndex(),this.emit("edgesCleared")},r.getAttribute=function(e){return this._attributes[e]},r.getAttributes=function(){return this._attributes},r.hasAttribute=function(e){return this._attributes.hasOwnProperty(e)},r.setAttribute=function(e,t){return this._attributes[e]=t,this.emit("attributesUpdated",{type:"set",meta:{name:e,value:t}}),this},r.updateAttribute=function(e,t){if("function"!=typeof t)throw new j("Graph.updateAttribute: updater should be a function.");return this._attributes[e]=t(this._attributes[e]),this.emit("attributesUpdated",{type:"set",meta:{name:e,value:this._attributes[e]}}),this},r.removeAttribute=function(e){return delete this._attributes[e],this.emit("attributesUpdated",{type:"remove",meta:{name:e}}),this},r.replaceAttributes=function(e){if(!h(e))throw new j("Graph.replaceAttributes: provided attributes are not a plain object.");var t=this._attributes;return this._attributes=e,this.emit("attributesUpdated",{type:"replace",meta:{before:t,after:e}}),this},r.mergeAttributes=function(e){if(!h(e))throw new j("Graph.mergeAttributes: provided attributes are not a plain object.");return this._attributes=d(this._attributes,e),this.emit("attributesUpdated",{type:"merge",meta:{data:this._attributes}}),this},r.getNodeAttribute=function(e,t){e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.getNodeAttribute: could not find the "'.concat(e,'" node in the graph.'));return n.attributes[t]},r.getNodeAttributes=function(e){e=""+e;var t=this._nodes.get(e);if(!t)throw new U('Graph.getNodeAttributes: could not find the "'.concat(e,'" node in the graph.'));return t.attributes},r.hasNodeAttribute=function(e,t){e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.hasNodeAttribute: could not find the "'.concat(e,'" node in the graph.'));return n.attributes.hasOwnProperty(t)},r.setNodeAttribute=function(e,t,n){e=""+e;var r=this._nodes.get(e);if(!r)throw new U('Graph.setNodeAttribute: could not find the "'.concat(e,'" node in the graph.'));if(arguments.length<3)throw new j("Graph.setNodeAttribute: not enough arguments. Either you forgot to pass the attribute's name or value, or you meant to use #.replaceNodeAttributes / #.mergeNodeAttributes instead.");return r.attributes[t]=n,this.emit("nodeAttributesUpdated",{key:e,type:"set",meta:{name:t,value:n}}),this},r.updateNodeAttribute=function(e,t,n){e=""+e;var r=this._nodes.get(e);if(!r)throw new U('Graph.updateNodeAttribute: could not find the "'.concat(e,'" node in the graph.'));if(arguments.length<3)throw new j("Graph.updateNodeAttribute: not enough arguments. Either you forgot to pass the attribute's name or updater, or you meant to use #.replaceNodeAttributes / #.mergeNodeAttributes instead.");if("function"!=typeof n)throw new j("Graph.updateAttribute: updater should be a function.");var i=r.attributes;return i[t]=n(i[t]),this.emit("nodeAttributesUpdated",{key:e,type:"set",meta:{name:t,value:i[t]}}),this},r.removeNodeAttribute=function(e,t){e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.hasNodeAttribute: could not find the "'.concat(e,'" node in the graph.'));return delete n.attributes[t],this.emit("nodeAttributesUpdated",{key:e,type:"remove",meta:{name:t}}),this},r.replaceNodeAttributes=function(e,t){e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.replaceNodeAttributes: could not find the "'.concat(e,'" node in the graph.'));if(!h(t))throw new j("Graph.replaceNodeAttributes: provided attributes are not a plain object.");var r=n.attributes;return n.attributes=t,this.emit("nodeAttributesUpdated",{key:e,type:"replace",meta:{before:r,after:t}}),this},r.mergeNodeAttributes=function(e,t){e=""+e;var n=this._nodes.get(e);if(!n)throw new U('Graph.mergeNodeAttributes: could not find the "'.concat(e,'" node in the graph.'));if(!h(t))throw new j("Graph.mergeNodeAttributes: provided attributes are not a plain object.");return d(n.attributes,t),this.emit("nodeAttributesUpdated",{key:e,type:"merge",meta:{data:t}}),this},r.forEach=function(e){if("function"!=typeof e)throw new j("Graph.forEach: expecting a callback.");this._edges.forEach((function(t,n){var r=t.source,i=t.target;e(r.key,i.key,r.attributes,i.attributes,n,t.attributes)}))},r.adjacency=function(){var e=this._edges.values();return new N((function(){var t=e.next();if(t.done)return t;var n=t.value,r=n.source,i=n.target;return{done:!1,value:[r.key,i.key,r.attributes,i.attributes,n.key,n.attributes]}}))},r.nodes=function(){return D(this._nodes.keys(),this._nodes.size)},r.forEachNode=function(e){if("function"!=typeof e)throw new j("Graph.forEachNode: expecting a callback.");this._nodes.forEach((function(t,n){e(n,t.attributes)}))},r.nodeEntries=function(){var e=this._nodes.values();return new N((function(){var t=e.next();if(t.done)return t;var n=t.value;return{value:[n.key,n.attributes],done:!1}}))},r.exportNode=function(e){e=""+e;var t=this._nodes.get(e);if(!t)throw new U('Graph.exportNode: could not find the "'.concat(e,'" node in the graph.'));return ye(e,t)},r.exportEdge=function(e){e=""+e;var t=this._edges.get(e);if(!t)throw new U('Graph.exportEdge: could not find the "'.concat(e,'" edge in the graph.'));return ve(e,t)},r.export=function(){var e=new Array(this._nodes.size),t=0;this._nodes.forEach((function(n,r){e[t++]=ye(r,n)}));var n=new Array(this._edges.size);return t=0,this._edges.forEach((function(e,r){n[t++]=ve(r,e)})),{attributes:this.getAttributes(),nodes:e,edges:n}},r.importNode=function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=we(e);if(n){if("not-object"===n)throw new j('Graph.importNode: invalid serialized node. A serialized node should be a plain object with at least a "key" property.');if("no-key"===n)throw new j("Graph.importNode: no key provided.");if("invalid-attributes"===n)throw new j("Graph.importNode: invalid attributes. Attributes should be a plain object, null or omitted.")}var r=e.key,i=e.attributes,o=void 0===i?{}:i;return t?this.mergeNode(r,o):this.addNode(r,o),this},r.importEdge=function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=be(e);if(n){if("not-object"===n)throw new j('Graph.importEdge: invalid serialized edge. A serialized edge should be a plain object with at least a "source" & "target" property.');if("no-source"===n)throw new j("Graph.importEdge: missing souce.");if("no-target"===n)throw new j("Graph.importEdge: missing target.");if("invalid-attributes"===n)throw new j("Graph.importEdge: invalid attributes. Attributes should be a plain object, null or omitted.");if("invalid-undirected"===n)throw new j("Graph.importEdge: invalid undirected. Undirected should be boolean or omitted.")}var r=e.source,i=e.target,o=e.attributes,a=void 0===o?{}:o,c=e.undirected,d=void 0!==c&&c;return"key"in e?(t?d?this.mergeUndirectedEdgeWithKey:this.mergeDirectedEdgeWithKey:d?this.addUndirectedEdgeWithKey:this.addDirectedEdgeWithKey).call(this,e.key,r,i,a):(t?d?this.mergeUndirectedEdge:this.mergeDirectedEdge:d?this.addUndirectedEdge:this.addDirectedEdge).call(this,r,i,a),this},r.import=function(e){var t=this,n=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(s(e))return this.import(e.export(),n),this;if(!h(e))throw new j("Graph.import: invalid argument. Expecting a serialized graph or, alternatively, a Graph instance.");if(e.attributes){if(!h(e.attributes))throw new j("Graph.import: invalid attributes. Expecting a plain object.");n?this.mergeAttributes(e.attributes):this.replaceAttributes(e.attributes)}return e.nodes&&e.nodes.forEach((function(e){return t.importNode(e,n)})),e.edges&&e.edges.forEach((function(e){return t.importEdge(e,n)})),this},r.nullCopy=function(e){return new n(d({},this._options,e))},r.emptyCopy=function(e){var t=new n(d({},this._options,e));return this._nodes.forEach((function(e,n){e=new t.NodeDataClass(n,d({},e.attributes)),t._nodes.set(n,e)})),t},r.copy=function(){var e=new n(this._options);return e.import(this),e},r.upgradeToMixed=function(){return"mixed"===this.type||(this._nodes.forEach((function(e){return e.upgradeToMixed()})),this._options.type="mixed",g(this,"type",this._options.type),p(this,"NodeDataClass",O)),this},r.upgradeToMulti=function(){return this.multi||(this._options.multi=!0,g(this,"multi",!0),(e=this)._nodes.forEach((function(t,n){if(t.out)for(var r in t.out){var i=new Set;i.add(t.out[r]),t.out[r]=i,e._nodes.get(r).in[n]=i}if(t.undirected)for(var o in t.undirected)if(!(o>n)){var a=new Set;a.add(t.undirected[o]),t.undirected[o]=a,e._nodes.get(o).undirected[n]=a}}))),this;var e},r.clearIndex=function(){return this._nodes.forEach((function(e){void 0!==e.in&&(e.in={},e.out={}),void 0!==e.undirected&&(e.undirected={})})),this},r.toJSON=function(){return this.export()},r.toString=function(){var e=this.order>1||0===this.order,t=this.size>1||0===this.size;return"Graph<".concat(f(this.order)," node").concat(e?"s":"",", ").concat(f(this.size)," edge").concat(t?"s":"",">")},r.inspect=function(){var e=this,t={};this._nodes.forEach((function(e,n){t[n]=e.attributes}));var n={},r={};this._edges.forEach((function(t,i){var o=t instanceof T?"--":"->",a="",c="(".concat(t.source.key,")").concat(o,"(").concat(t.target.key,")");t.generatedKey?e.multi&&(void 0===r[c]?r[c]=0:r[c]++,a+="".concat(r[c],". ")):a+="[".concat(i,"]: "),n[a+=c]=t.attributes}));var i={};for(var o in this)this.hasOwnProperty(o)&&!_e.has(o)&&"function"!=typeof this[o]&&(i[o]=this[o]);return i.attributes=this._attributes,i.nodes=t,i.edges=n,p(i,"constructor",this.constructor),i},n}(y);"undefined"!=typeof Symbol&&(xe.prototype[Symbol.for("nodejs.util.inspect.custom")]=xe.prototype.inspect),[{name:function(e){return"".concat(e,"Edge")},generateKey:!0},{name:function(e){return"".concat(e,"DirectedEdge")},generateKey:!0,type:"directed"},{name:function(e){return"".concat(e,"UndirectedEdge")},generateKey:!0,type:"undirected"},{name:function(e){return"".concat(e,"EdgeWithKey")}},{name:function(e){return"".concat(e,"DirectedEdgeWithKey")},type:"directed"},{name:function(e){return"".concat(e,"UndirectedEdgeWithKey")},type:"undirected"}].forEach((function(e){["add","merge"].forEach((function(t){var n=e.name(t),r="add"===t?Ee:ke;e.generateKey?xe.prototype[n]=function(t,i,o){return r(this,n,!0,"undirected"===(e.type||this.type),null,t,i,o)}:xe.prototype[n]=function(t,i,o,a){return r(this,n,!1,"undirected"===(e.type||this.type),t,i,o,a)}}))})),"undefined"!=typeof Symbol&&(xe.prototype[Symbol.iterator]=xe.prototype.adjacency),function(e){R.forEach((function(t){var n=t.name,r=t.attacher;r(e,n("Edge"),"mixed",C),r(e,n("DirectedEdge"),"directed",C),r(e,n("UndirectedEdge"),"undirected",T)}))}(xe),function(e){F.forEach((function(t){!function(e,t){var n=t.name,r=t.type,i=t.direction;e.prototype[n]=function(e,t){if("mixed"!==r&&"mixed"!==this.type&&r!==this.type)return[];if(!arguments.length)return X(this,r);if(1===arguments.length){e=""+e;var o=this._nodes.get(e);if(void 0===o)throw new U("Graph.".concat(n,': could not find the "').concat(e,'" node in the graph.'));return ee("mixed"===r?this.type:r,i,o)}if(2===arguments.length){e=""+e,t=""+t;var a=this._nodes.get(e);if(!a)throw new U("Graph.".concat(n,':  could not find the "').concat(e,'" source node in the graph.'));if(!this._nodes.has(t))throw new U("Graph.".concat(n,':  could not find the "').concat(t,'" target node in the graph.'));return re(r,i,a,t)}throw new j("Graph.".concat(n,": too many arguments (expecting 0, 1 or 2 and got ").concat(arguments.length,")."))}}(e,t),function(e,t){var n=t.name,r=t.type,i=t.direction,o="forEach"+n[0].toUpperCase()+n.slice(1,-1);e.prototype[o]=function(e,t,n){if("mixed"===r||"mixed"===this.type||r===this.type){if(1===arguments.length)return Z(this,r,n=e);if(2===arguments.length){e=""+e,n=t;var a=this._nodes.get(e);if(void 0===a)throw new U("Graph.".concat(o,': could not find the "').concat(e,'" node in the graph.'));return te(this.multi,"mixed"===r?this.type:r,i,a,n)}if(3===arguments.length){e=""+e,t=""+t;var c=this._nodes.get(e);if(!c)throw new U("Graph.".concat(o,':  could not find the "').concat(e,'" source node in the graph.'));if(!this._nodes.has(t))throw new U("Graph.".concat(o,':  could not find the "').concat(t,'" target node in the graph.'));return ie(r,i,c,t,n)}throw new j("Graph.".concat(o,": too many arguments (expecting 1, 2 or 3 and got ").concat(arguments.length,")."))}}}(e,t),function(e,t){var n=t.name,r=t.type,i=t.direction,o=n.slice(0,-1)+"Entries";e.prototype[o]=function(e,t){if("mixed"!==r&&"mixed"!==this.type&&r!==this.type)return N.empty();if(!arguments.length)return $(this,r);if(1===arguments.length){e=""+e;var n=this._nodes.get(e);if(!n)throw new U("Graph.".concat(o,': could not find the "').concat(e,'" node in the graph.'));return ne(r,i,n)}if(2===arguments.length){e=""+e,t=""+t;var a=this._nodes.get(e);if(!a)throw new U("Graph.".concat(o,':  could not find the "').concat(e,'" source node in the graph.'));if(!this._nodes.has(t))throw new U("Graph.".concat(o,':  could not find the "').concat(t,'" target node in the graph.'));return oe(r,i,a,t)}throw new j("Graph.".concat(o,": too many arguments (expecting 0, 1 or 2 and got ").concat(arguments.length,")."))}}(e,t)}))}(xe),function(e){ae.forEach((function(t){!function(e,t){var n=t.name,r=t.type,i=t.direction;e.prototype[n]=function(e){if("mixed"!==r&&"mixed"!==this.type&&r!==this.type)return[];if(2===arguments.length){var t=""+arguments[0],o=""+arguments[1];if(!this._nodes.has(t))throw new U("Graph.".concat(n,': could not find the "').concat(t,'" node in the graph.'));if(!this._nodes.has(o))throw new U("Graph.".concat(n,': could not find the "').concat(o,'" node in the graph.'));return pe(this,r,i,t,o)}if(1===arguments.length){e=""+e;var a=this._nodes.get(e);if(void 0===a)throw new U("Graph.".concat(n,': could not find the "').concat(e,'" node in the graph.'));var c=de("mixed"===r?this.type:r,i,a);return c}throw new j("Graph.".concat(n,": invalid number of arguments (expecting 1 or 2 and got ").concat(arguments.length,")."))}}(e,t),ge(e,t),le(e,t)}))}(xe);var Se=function(e){function n(t){return e.call(this,d({type:"directed"},t))||this}return t(n,e),n}(xe),Ae=function(e){function n(t){return e.call(this,d({type:"undirected"},t))||this}return t(n,e),n}(xe),Ne=function(e){function n(t){return e.call(this,d({multi:!0},t))||this}return t(n,e),n}(xe),De=function(e){function n(t){return e.call(this,d({multi:!0,type:"directed"},t))||this}return t(n,e),n}(xe),Le=function(e){function n(t){return e.call(this,d({multi:!0,type:"undirected"},t))||this}return t(n,e),n}(xe);function je(e){e.from=function(t,n){var r=new e(n);return r.import(t),r}}return je(xe),je(Se),je(Ae),je(Ne),je(De),je(Le),xe.Graph=xe,xe.DirectedGraph=Se,xe.UndirectedGraph=Ae,xe.MultiGraph=Ne,xe.MultiDirectedGraph=De,xe.MultiUndirectedGraph=Le,xe.InvalidArgumentsGraphError=j,xe.NotFoundGraphError=U,xe.UsageGraphError=z,xe}));
 
 
-},{}],418:[function(require,module,exports){
+},{}],415:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -42810,7 +42891,7 @@ __export(require("./isMobile"));
 var isMobile_1 = require("./isMobile");
 exports["default"] = isMobile_1["default"];
 
-},{"./isMobile":419}],419:[function(require,module,exports){
+},{"./isMobile":416}],416:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
 var appleIphone = /iPhone/i;
@@ -42939,7 +43020,7 @@ function isMobile(param) {
 }
 exports["default"] = isMobile;
 
-},{}],420:[function(require,module,exports){
+},{}],417:[function(require,module,exports){
 var hashClear = require('./_hashClear'),
     hashDelete = require('./_hashDelete'),
     hashGet = require('./_hashGet'),
@@ -42973,7 +43054,7 @@ Hash.prototype.set = hashSet;
 
 module.exports = Hash;
 
-},{"./_hashClear":462,"./_hashDelete":463,"./_hashGet":464,"./_hashHas":465,"./_hashSet":466}],421:[function(require,module,exports){
+},{"./_hashClear":459,"./_hashDelete":460,"./_hashGet":461,"./_hashHas":462,"./_hashSet":463}],418:[function(require,module,exports){
 var listCacheClear = require('./_listCacheClear'),
     listCacheDelete = require('./_listCacheDelete'),
     listCacheGet = require('./_listCacheGet'),
@@ -43007,7 +43088,7 @@ ListCache.prototype.set = listCacheSet;
 
 module.exports = ListCache;
 
-},{"./_listCacheClear":473,"./_listCacheDelete":474,"./_listCacheGet":475,"./_listCacheHas":476,"./_listCacheSet":477}],422:[function(require,module,exports){
+},{"./_listCacheClear":470,"./_listCacheDelete":471,"./_listCacheGet":472,"./_listCacheHas":473,"./_listCacheSet":474}],419:[function(require,module,exports){
 var getNative = require('./_getNative'),
     root = require('./_root');
 
@@ -43016,7 +43097,7 @@ var Map = getNative(root, 'Map');
 
 module.exports = Map;
 
-},{"./_getNative":458,"./_root":489}],423:[function(require,module,exports){
+},{"./_getNative":455,"./_root":486}],420:[function(require,module,exports){
 var mapCacheClear = require('./_mapCacheClear'),
     mapCacheDelete = require('./_mapCacheDelete'),
     mapCacheGet = require('./_mapCacheGet'),
@@ -43050,7 +43131,7 @@ MapCache.prototype.set = mapCacheSet;
 
 module.exports = MapCache;
 
-},{"./_mapCacheClear":478,"./_mapCacheDelete":479,"./_mapCacheGet":480,"./_mapCacheHas":481,"./_mapCacheSet":482}],424:[function(require,module,exports){
+},{"./_mapCacheClear":475,"./_mapCacheDelete":476,"./_mapCacheGet":477,"./_mapCacheHas":478,"./_mapCacheSet":479}],421:[function(require,module,exports){
 var ListCache = require('./_ListCache'),
     stackClear = require('./_stackClear'),
     stackDelete = require('./_stackDelete'),
@@ -43079,7 +43160,7 @@ Stack.prototype.set = stackSet;
 
 module.exports = Stack;
 
-},{"./_ListCache":421,"./_stackClear":493,"./_stackDelete":494,"./_stackGet":495,"./_stackHas":496,"./_stackSet":497}],425:[function(require,module,exports){
+},{"./_ListCache":418,"./_stackClear":490,"./_stackDelete":491,"./_stackGet":492,"./_stackHas":493,"./_stackSet":494}],422:[function(require,module,exports){
 var root = require('./_root');
 
 /** Built-in value references. */
@@ -43087,7 +43168,7 @@ var Symbol = root.Symbol;
 
 module.exports = Symbol;
 
-},{"./_root":489}],426:[function(require,module,exports){
+},{"./_root":486}],423:[function(require,module,exports){
 var root = require('./_root');
 
 /** Built-in value references. */
@@ -43095,7 +43176,7 @@ var Uint8Array = root.Uint8Array;
 
 module.exports = Uint8Array;
 
-},{"./_root":489}],427:[function(require,module,exports){
+},{"./_root":486}],424:[function(require,module,exports){
 /**
  * A faster alternative to `Function#apply`, this function invokes `func`
  * with the `this` binding of `thisArg` and the arguments of `args`.
@@ -43118,7 +43199,7 @@ function apply(func, thisArg, args) {
 
 module.exports = apply;
 
-},{}],428:[function(require,module,exports){
+},{}],425:[function(require,module,exports){
 var baseTimes = require('./_baseTimes'),
     isArguments = require('./isArguments'),
     isArray = require('./isArray'),
@@ -43169,7 +43250,7 @@ function arrayLikeKeys(value, inherited) {
 
 module.exports = arrayLikeKeys;
 
-},{"./_baseTimes":444,"./_isIndex":468,"./isArguments":504,"./isArray":505,"./isBuffer":508,"./isTypedArray":514}],429:[function(require,module,exports){
+},{"./_baseTimes":441,"./_isIndex":465,"./isArguments":501,"./isArray":502,"./isBuffer":505,"./isTypedArray":511}],426:[function(require,module,exports){
 var baseAssignValue = require('./_baseAssignValue'),
     eq = require('./eq');
 
@@ -43191,7 +43272,7 @@ function assignMergeValue(object, key, value) {
 
 module.exports = assignMergeValue;
 
-},{"./_baseAssignValue":432,"./eq":502}],430:[function(require,module,exports){
+},{"./_baseAssignValue":429,"./eq":499}],427:[function(require,module,exports){
 var baseAssignValue = require('./_baseAssignValue'),
     eq = require('./eq');
 
@@ -43221,7 +43302,7 @@ function assignValue(object, key, value) {
 
 module.exports = assignValue;
 
-},{"./_baseAssignValue":432,"./eq":502}],431:[function(require,module,exports){
+},{"./_baseAssignValue":429,"./eq":499}],428:[function(require,module,exports){
 var eq = require('./eq');
 
 /**
@@ -43244,7 +43325,7 @@ function assocIndexOf(array, key) {
 
 module.exports = assocIndexOf;
 
-},{"./eq":502}],432:[function(require,module,exports){
+},{"./eq":499}],429:[function(require,module,exports){
 var defineProperty = require('./_defineProperty');
 
 /**
@@ -43271,7 +43352,7 @@ function baseAssignValue(object, key, value) {
 
 module.exports = baseAssignValue;
 
-},{"./_defineProperty":455}],433:[function(require,module,exports){
+},{"./_defineProperty":452}],430:[function(require,module,exports){
 var isObject = require('./isObject');
 
 /** Built-in value references. */
@@ -43303,7 +43384,7 @@ var baseCreate = (function() {
 
 module.exports = baseCreate;
 
-},{"./isObject":511}],434:[function(require,module,exports){
+},{"./isObject":508}],431:[function(require,module,exports){
 var createBaseFor = require('./_createBaseFor');
 
 /**
@@ -43321,7 +43402,7 @@ var baseFor = createBaseFor();
 
 module.exports = baseFor;
 
-},{"./_createBaseFor":453}],435:[function(require,module,exports){
+},{"./_createBaseFor":450}],432:[function(require,module,exports){
 var Symbol = require('./_Symbol'),
     getRawTag = require('./_getRawTag'),
     objectToString = require('./_objectToString');
@@ -43351,7 +43432,7 @@ function baseGetTag(value) {
 
 module.exports = baseGetTag;
 
-},{"./_Symbol":425,"./_getRawTag":460,"./_objectToString":486}],436:[function(require,module,exports){
+},{"./_Symbol":422,"./_getRawTag":457,"./_objectToString":483}],433:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isObjectLike = require('./isObjectLike');
 
@@ -43371,7 +43452,7 @@ function baseIsArguments(value) {
 
 module.exports = baseIsArguments;
 
-},{"./_baseGetTag":435,"./isObjectLike":512}],437:[function(require,module,exports){
+},{"./_baseGetTag":432,"./isObjectLike":509}],434:[function(require,module,exports){
 var isFunction = require('./isFunction'),
     isMasked = require('./_isMasked'),
     isObject = require('./isObject'),
@@ -43420,7 +43501,7 @@ function baseIsNative(value) {
 
 module.exports = baseIsNative;
 
-},{"./_isMasked":471,"./_toSource":498,"./isFunction":509,"./isObject":511}],438:[function(require,module,exports){
+},{"./_isMasked":468,"./_toSource":495,"./isFunction":506,"./isObject":508}],435:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isLength = require('./isLength'),
     isObjectLike = require('./isObjectLike');
@@ -43482,7 +43563,7 @@ function baseIsTypedArray(value) {
 
 module.exports = baseIsTypedArray;
 
-},{"./_baseGetTag":435,"./isLength":510,"./isObjectLike":512}],439:[function(require,module,exports){
+},{"./_baseGetTag":432,"./isLength":507,"./isObjectLike":509}],436:[function(require,module,exports){
 var isObject = require('./isObject'),
     isPrototype = require('./_isPrototype'),
     nativeKeysIn = require('./_nativeKeysIn');
@@ -43517,7 +43598,7 @@ function baseKeysIn(object) {
 
 module.exports = baseKeysIn;
 
-},{"./_isPrototype":472,"./_nativeKeysIn":484,"./isObject":511}],440:[function(require,module,exports){
+},{"./_isPrototype":469,"./_nativeKeysIn":481,"./isObject":508}],437:[function(require,module,exports){
 var Stack = require('./_Stack'),
     assignMergeValue = require('./_assignMergeValue'),
     baseFor = require('./_baseFor'),
@@ -43561,7 +43642,7 @@ function baseMerge(object, source, srcIndex, customizer, stack) {
 
 module.exports = baseMerge;
 
-},{"./_Stack":424,"./_assignMergeValue":429,"./_baseFor":434,"./_baseMergeDeep":441,"./_safeGet":490,"./isObject":511,"./keysIn":515}],441:[function(require,module,exports){
+},{"./_Stack":421,"./_assignMergeValue":426,"./_baseFor":431,"./_baseMergeDeep":438,"./_safeGet":487,"./isObject":508,"./keysIn":512}],438:[function(require,module,exports){
 var assignMergeValue = require('./_assignMergeValue'),
     cloneBuffer = require('./_cloneBuffer'),
     cloneTypedArray = require('./_cloneTypedArray'),
@@ -43657,7 +43738,7 @@ function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, sta
 
 module.exports = baseMergeDeep;
 
-},{"./_assignMergeValue":429,"./_cloneBuffer":447,"./_cloneTypedArray":448,"./_copyArray":449,"./_initCloneObject":467,"./_safeGet":490,"./isArguments":504,"./isArray":505,"./isArrayLikeObject":507,"./isBuffer":508,"./isFunction":509,"./isObject":511,"./isPlainObject":513,"./isTypedArray":514,"./toPlainObject":518}],442:[function(require,module,exports){
+},{"./_assignMergeValue":426,"./_cloneBuffer":444,"./_cloneTypedArray":445,"./_copyArray":446,"./_initCloneObject":464,"./_safeGet":487,"./isArguments":501,"./isArray":502,"./isArrayLikeObject":504,"./isBuffer":505,"./isFunction":506,"./isObject":508,"./isPlainObject":510,"./isTypedArray":511,"./toPlainObject":515}],439:[function(require,module,exports){
 var identity = require('./identity'),
     overRest = require('./_overRest'),
     setToString = require('./_setToString');
@@ -43676,7 +43757,7 @@ function baseRest(func, start) {
 
 module.exports = baseRest;
 
-},{"./_overRest":488,"./_setToString":491,"./identity":503}],443:[function(require,module,exports){
+},{"./_overRest":485,"./_setToString":488,"./identity":500}],440:[function(require,module,exports){
 var constant = require('./constant'),
     defineProperty = require('./_defineProperty'),
     identity = require('./identity');
@@ -43700,7 +43781,7 @@ var baseSetToString = !defineProperty ? identity : function(func, string) {
 
 module.exports = baseSetToString;
 
-},{"./_defineProperty":455,"./constant":499,"./identity":503}],444:[function(require,module,exports){
+},{"./_defineProperty":452,"./constant":496,"./identity":500}],441:[function(require,module,exports){
 /**
  * The base implementation of `_.times` without support for iteratee shorthands
  * or max array length checks.
@@ -43722,7 +43803,7 @@ function baseTimes(n, iteratee) {
 
 module.exports = baseTimes;
 
-},{}],445:[function(require,module,exports){
+},{}],442:[function(require,module,exports){
 /**
  * The base implementation of `_.unary` without support for storing metadata.
  *
@@ -43738,7 +43819,7 @@ function baseUnary(func) {
 
 module.exports = baseUnary;
 
-},{}],446:[function(require,module,exports){
+},{}],443:[function(require,module,exports){
 var Uint8Array = require('./_Uint8Array');
 
 /**
@@ -43756,7 +43837,7 @@ function cloneArrayBuffer(arrayBuffer) {
 
 module.exports = cloneArrayBuffer;
 
-},{"./_Uint8Array":426}],447:[function(require,module,exports){
+},{"./_Uint8Array":423}],444:[function(require,module,exports){
 var root = require('./_root');
 
 /** Detect free variable `exports`. */
@@ -43793,7 +43874,7 @@ function cloneBuffer(buffer, isDeep) {
 
 module.exports = cloneBuffer;
 
-},{"./_root":489}],448:[function(require,module,exports){
+},{"./_root":486}],445:[function(require,module,exports){
 var cloneArrayBuffer = require('./_cloneArrayBuffer');
 
 /**
@@ -43811,7 +43892,7 @@ function cloneTypedArray(typedArray, isDeep) {
 
 module.exports = cloneTypedArray;
 
-},{"./_cloneArrayBuffer":446}],449:[function(require,module,exports){
+},{"./_cloneArrayBuffer":443}],446:[function(require,module,exports){
 /**
  * Copies the values of `source` to `array`.
  *
@@ -43833,7 +43914,7 @@ function copyArray(source, array) {
 
 module.exports = copyArray;
 
-},{}],450:[function(require,module,exports){
+},{}],447:[function(require,module,exports){
 var assignValue = require('./_assignValue'),
     baseAssignValue = require('./_baseAssignValue');
 
@@ -43875,7 +43956,7 @@ function copyObject(source, props, object, customizer) {
 
 module.exports = copyObject;
 
-},{"./_assignValue":430,"./_baseAssignValue":432}],451:[function(require,module,exports){
+},{"./_assignValue":427,"./_baseAssignValue":429}],448:[function(require,module,exports){
 var root = require('./_root');
 
 /** Used to detect overreaching core-js shims. */
@@ -43883,7 +43964,7 @@ var coreJsData = root['__core-js_shared__'];
 
 module.exports = coreJsData;
 
-},{"./_root":489}],452:[function(require,module,exports){
+},{"./_root":486}],449:[function(require,module,exports){
 var baseRest = require('./_baseRest'),
     isIterateeCall = require('./_isIterateeCall');
 
@@ -43922,7 +44003,7 @@ function createAssigner(assigner) {
 
 module.exports = createAssigner;
 
-},{"./_baseRest":442,"./_isIterateeCall":469}],453:[function(require,module,exports){
+},{"./_baseRest":439,"./_isIterateeCall":466}],450:[function(require,module,exports){
 /**
  * Creates a base function for methods like `_.forIn` and `_.forOwn`.
  *
@@ -43949,7 +44030,7 @@ function createBaseFor(fromRight) {
 
 module.exports = createBaseFor;
 
-},{}],454:[function(require,module,exports){
+},{}],451:[function(require,module,exports){
 var baseMerge = require('./_baseMerge'),
     isObject = require('./isObject');
 
@@ -43979,7 +44060,7 @@ function customDefaultsMerge(objValue, srcValue, key, object, source, stack) {
 
 module.exports = customDefaultsMerge;
 
-},{"./_baseMerge":440,"./isObject":511}],455:[function(require,module,exports){
+},{"./_baseMerge":437,"./isObject":508}],452:[function(require,module,exports){
 var getNative = require('./_getNative');
 
 var defineProperty = (function() {
@@ -43992,7 +44073,7 @@ var defineProperty = (function() {
 
 module.exports = defineProperty;
 
-},{"./_getNative":458}],456:[function(require,module,exports){
+},{"./_getNative":455}],453:[function(require,module,exports){
 (function (global){(function (){
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -44000,7 +44081,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 module.exports = freeGlobal;
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],457:[function(require,module,exports){
+},{}],454:[function(require,module,exports){
 var isKeyable = require('./_isKeyable');
 
 /**
@@ -44020,7 +44101,7 @@ function getMapData(map, key) {
 
 module.exports = getMapData;
 
-},{"./_isKeyable":470}],458:[function(require,module,exports){
+},{"./_isKeyable":467}],455:[function(require,module,exports){
 var baseIsNative = require('./_baseIsNative'),
     getValue = require('./_getValue');
 
@@ -44039,7 +44120,7 @@ function getNative(object, key) {
 
 module.exports = getNative;
 
-},{"./_baseIsNative":437,"./_getValue":461}],459:[function(require,module,exports){
+},{"./_baseIsNative":434,"./_getValue":458}],456:[function(require,module,exports){
 var overArg = require('./_overArg');
 
 /** Built-in value references. */
@@ -44047,7 +44128,7 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{"./_overArg":487}],460:[function(require,module,exports){
+},{"./_overArg":484}],457:[function(require,module,exports){
 var Symbol = require('./_Symbol');
 
 /** Used for built-in method references. */
@@ -44095,7 +44176,7 @@ function getRawTag(value) {
 
 module.exports = getRawTag;
 
-},{"./_Symbol":425}],461:[function(require,module,exports){
+},{"./_Symbol":422}],458:[function(require,module,exports){
 /**
  * Gets the value at `key` of `object`.
  *
@@ -44110,7 +44191,7 @@ function getValue(object, key) {
 
 module.exports = getValue;
 
-},{}],462:[function(require,module,exports){
+},{}],459:[function(require,module,exports){
 var nativeCreate = require('./_nativeCreate');
 
 /**
@@ -44127,7 +44208,7 @@ function hashClear() {
 
 module.exports = hashClear;
 
-},{"./_nativeCreate":483}],463:[function(require,module,exports){
+},{"./_nativeCreate":480}],460:[function(require,module,exports){
 /**
  * Removes `key` and its value from the hash.
  *
@@ -44146,7 +44227,7 @@ function hashDelete(key) {
 
 module.exports = hashDelete;
 
-},{}],464:[function(require,module,exports){
+},{}],461:[function(require,module,exports){
 var nativeCreate = require('./_nativeCreate');
 
 /** Used to stand-in for `undefined` hash values. */
@@ -44178,7 +44259,7 @@ function hashGet(key) {
 
 module.exports = hashGet;
 
-},{"./_nativeCreate":483}],465:[function(require,module,exports){
+},{"./_nativeCreate":480}],462:[function(require,module,exports){
 var nativeCreate = require('./_nativeCreate');
 
 /** Used for built-in method references. */
@@ -44203,7 +44284,7 @@ function hashHas(key) {
 
 module.exports = hashHas;
 
-},{"./_nativeCreate":483}],466:[function(require,module,exports){
+},{"./_nativeCreate":480}],463:[function(require,module,exports){
 var nativeCreate = require('./_nativeCreate');
 
 /** Used to stand-in for `undefined` hash values. */
@@ -44228,7 +44309,7 @@ function hashSet(key, value) {
 
 module.exports = hashSet;
 
-},{"./_nativeCreate":483}],467:[function(require,module,exports){
+},{"./_nativeCreate":480}],464:[function(require,module,exports){
 var baseCreate = require('./_baseCreate'),
     getPrototype = require('./_getPrototype'),
     isPrototype = require('./_isPrototype');
@@ -44248,7 +44329,7 @@ function initCloneObject(object) {
 
 module.exports = initCloneObject;
 
-},{"./_baseCreate":433,"./_getPrototype":459,"./_isPrototype":472}],468:[function(require,module,exports){
+},{"./_baseCreate":430,"./_getPrototype":456,"./_isPrototype":469}],465:[function(require,module,exports){
 /** Used as references for various `Number` constants. */
 var MAX_SAFE_INTEGER = 9007199254740991;
 
@@ -44275,7 +44356,7 @@ function isIndex(value, length) {
 
 module.exports = isIndex;
 
-},{}],469:[function(require,module,exports){
+},{}],466:[function(require,module,exports){
 var eq = require('./eq'),
     isArrayLike = require('./isArrayLike'),
     isIndex = require('./_isIndex'),
@@ -44307,7 +44388,7 @@ function isIterateeCall(value, index, object) {
 
 module.exports = isIterateeCall;
 
-},{"./_isIndex":468,"./eq":502,"./isArrayLike":506,"./isObject":511}],470:[function(require,module,exports){
+},{"./_isIndex":465,"./eq":499,"./isArrayLike":503,"./isObject":508}],467:[function(require,module,exports){
 /**
  * Checks if `value` is suitable for use as unique object key.
  *
@@ -44324,7 +44405,7 @@ function isKeyable(value) {
 
 module.exports = isKeyable;
 
-},{}],471:[function(require,module,exports){
+},{}],468:[function(require,module,exports){
 var coreJsData = require('./_coreJsData');
 
 /** Used to detect methods masquerading as native. */
@@ -44346,7 +44427,7 @@ function isMasked(func) {
 
 module.exports = isMasked;
 
-},{"./_coreJsData":451}],472:[function(require,module,exports){
+},{"./_coreJsData":448}],469:[function(require,module,exports){
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
@@ -44366,7 +44447,7 @@ function isPrototype(value) {
 
 module.exports = isPrototype;
 
-},{}],473:[function(require,module,exports){
+},{}],470:[function(require,module,exports){
 /**
  * Removes all key-value entries from the list cache.
  *
@@ -44381,7 +44462,7 @@ function listCacheClear() {
 
 module.exports = listCacheClear;
 
-},{}],474:[function(require,module,exports){
+},{}],471:[function(require,module,exports){
 var assocIndexOf = require('./_assocIndexOf');
 
 /** Used for built-in method references. */
@@ -44418,7 +44499,7 @@ function listCacheDelete(key) {
 
 module.exports = listCacheDelete;
 
-},{"./_assocIndexOf":431}],475:[function(require,module,exports){
+},{"./_assocIndexOf":428}],472:[function(require,module,exports){
 var assocIndexOf = require('./_assocIndexOf');
 
 /**
@@ -44439,7 +44520,7 @@ function listCacheGet(key) {
 
 module.exports = listCacheGet;
 
-},{"./_assocIndexOf":431}],476:[function(require,module,exports){
+},{"./_assocIndexOf":428}],473:[function(require,module,exports){
 var assocIndexOf = require('./_assocIndexOf');
 
 /**
@@ -44457,7 +44538,7 @@ function listCacheHas(key) {
 
 module.exports = listCacheHas;
 
-},{"./_assocIndexOf":431}],477:[function(require,module,exports){
+},{"./_assocIndexOf":428}],474:[function(require,module,exports){
 var assocIndexOf = require('./_assocIndexOf');
 
 /**
@@ -44485,7 +44566,7 @@ function listCacheSet(key, value) {
 
 module.exports = listCacheSet;
 
-},{"./_assocIndexOf":431}],478:[function(require,module,exports){
+},{"./_assocIndexOf":428}],475:[function(require,module,exports){
 var Hash = require('./_Hash'),
     ListCache = require('./_ListCache'),
     Map = require('./_Map');
@@ -44508,7 +44589,7 @@ function mapCacheClear() {
 
 module.exports = mapCacheClear;
 
-},{"./_Hash":420,"./_ListCache":421,"./_Map":422}],479:[function(require,module,exports){
+},{"./_Hash":417,"./_ListCache":418,"./_Map":419}],476:[function(require,module,exports){
 var getMapData = require('./_getMapData');
 
 /**
@@ -44528,7 +44609,7 @@ function mapCacheDelete(key) {
 
 module.exports = mapCacheDelete;
 
-},{"./_getMapData":457}],480:[function(require,module,exports){
+},{"./_getMapData":454}],477:[function(require,module,exports){
 var getMapData = require('./_getMapData');
 
 /**
@@ -44546,7 +44627,7 @@ function mapCacheGet(key) {
 
 module.exports = mapCacheGet;
 
-},{"./_getMapData":457}],481:[function(require,module,exports){
+},{"./_getMapData":454}],478:[function(require,module,exports){
 var getMapData = require('./_getMapData');
 
 /**
@@ -44564,7 +44645,7 @@ function mapCacheHas(key) {
 
 module.exports = mapCacheHas;
 
-},{"./_getMapData":457}],482:[function(require,module,exports){
+},{"./_getMapData":454}],479:[function(require,module,exports){
 var getMapData = require('./_getMapData');
 
 /**
@@ -44588,7 +44669,7 @@ function mapCacheSet(key, value) {
 
 module.exports = mapCacheSet;
 
-},{"./_getMapData":457}],483:[function(require,module,exports){
+},{"./_getMapData":454}],480:[function(require,module,exports){
 var getNative = require('./_getNative');
 
 /* Built-in method references that are verified to be native. */
@@ -44596,7 +44677,7 @@ var nativeCreate = getNative(Object, 'create');
 
 module.exports = nativeCreate;
 
-},{"./_getNative":458}],484:[function(require,module,exports){
+},{"./_getNative":455}],481:[function(require,module,exports){
 /**
  * This function is like
  * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
@@ -44618,7 +44699,7 @@ function nativeKeysIn(object) {
 
 module.exports = nativeKeysIn;
 
-},{}],485:[function(require,module,exports){
+},{}],482:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `exports`. */
@@ -44650,7 +44731,7 @@ var nodeUtil = (function() {
 
 module.exports = nodeUtil;
 
-},{"./_freeGlobal":456}],486:[function(require,module,exports){
+},{"./_freeGlobal":453}],483:[function(require,module,exports){
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
@@ -44674,7 +44755,7 @@ function objectToString(value) {
 
 module.exports = objectToString;
 
-},{}],487:[function(require,module,exports){
+},{}],484:[function(require,module,exports){
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
  *
@@ -44691,7 +44772,7 @@ function overArg(func, transform) {
 
 module.exports = overArg;
 
-},{}],488:[function(require,module,exports){
+},{}],485:[function(require,module,exports){
 var apply = require('./_apply');
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -44729,7 +44810,7 @@ function overRest(func, start, transform) {
 
 module.exports = overRest;
 
-},{"./_apply":427}],489:[function(require,module,exports){
+},{"./_apply":424}],486:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `self`. */
@@ -44740,7 +44821,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 
 module.exports = root;
 
-},{"./_freeGlobal":456}],490:[function(require,module,exports){
+},{"./_freeGlobal":453}],487:[function(require,module,exports){
 /**
  * Gets the value at `key`, unless `key` is "__proto__" or "constructor".
  *
@@ -44763,7 +44844,7 @@ function safeGet(object, key) {
 
 module.exports = safeGet;
 
-},{}],491:[function(require,module,exports){
+},{}],488:[function(require,module,exports){
 var baseSetToString = require('./_baseSetToString'),
     shortOut = require('./_shortOut');
 
@@ -44779,7 +44860,7 @@ var setToString = shortOut(baseSetToString);
 
 module.exports = setToString;
 
-},{"./_baseSetToString":443,"./_shortOut":492}],492:[function(require,module,exports){
+},{"./_baseSetToString":440,"./_shortOut":489}],489:[function(require,module,exports){
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
 var HOT_COUNT = 800,
     HOT_SPAN = 16;
@@ -44818,7 +44899,7 @@ function shortOut(func) {
 
 module.exports = shortOut;
 
-},{}],493:[function(require,module,exports){
+},{}],490:[function(require,module,exports){
 var ListCache = require('./_ListCache');
 
 /**
@@ -44835,7 +44916,7 @@ function stackClear() {
 
 module.exports = stackClear;
 
-},{"./_ListCache":421}],494:[function(require,module,exports){
+},{"./_ListCache":418}],491:[function(require,module,exports){
 /**
  * Removes `key` and its value from the stack.
  *
@@ -44855,7 +44936,7 @@ function stackDelete(key) {
 
 module.exports = stackDelete;
 
-},{}],495:[function(require,module,exports){
+},{}],492:[function(require,module,exports){
 /**
  * Gets the stack value for `key`.
  *
@@ -44871,7 +44952,7 @@ function stackGet(key) {
 
 module.exports = stackGet;
 
-},{}],496:[function(require,module,exports){
+},{}],493:[function(require,module,exports){
 /**
  * Checks if a stack value for `key` exists.
  *
@@ -44887,7 +44968,7 @@ function stackHas(key) {
 
 module.exports = stackHas;
 
-},{}],497:[function(require,module,exports){
+},{}],494:[function(require,module,exports){
 var ListCache = require('./_ListCache'),
     Map = require('./_Map'),
     MapCache = require('./_MapCache');
@@ -44923,7 +45004,7 @@ function stackSet(key, value) {
 
 module.exports = stackSet;
 
-},{"./_ListCache":421,"./_Map":422,"./_MapCache":423}],498:[function(require,module,exports){
+},{"./_ListCache":418,"./_Map":419,"./_MapCache":420}],495:[function(require,module,exports){
 /** Used for built-in method references. */
 var funcProto = Function.prototype;
 
@@ -44951,7 +45032,7 @@ function toSource(func) {
 
 module.exports = toSource;
 
-},{}],499:[function(require,module,exports){
+},{}],496:[function(require,module,exports){
 /**
  * Creates a function that returns `value`.
  *
@@ -44979,7 +45060,7 @@ function constant(value) {
 
 module.exports = constant;
 
-},{}],500:[function(require,module,exports){
+},{}],497:[function(require,module,exports){
 var baseRest = require('./_baseRest'),
     eq = require('./eq'),
     isIterateeCall = require('./_isIterateeCall'),
@@ -45045,7 +45126,7 @@ var defaults = baseRest(function(object, sources) {
 
 module.exports = defaults;
 
-},{"./_baseRest":442,"./_isIterateeCall":469,"./eq":502,"./keysIn":515}],501:[function(require,module,exports){
+},{"./_baseRest":439,"./_isIterateeCall":466,"./eq":499,"./keysIn":512}],498:[function(require,module,exports){
 var apply = require('./_apply'),
     baseRest = require('./_baseRest'),
     customDefaultsMerge = require('./_customDefaultsMerge'),
@@ -45077,7 +45158,7 @@ var defaultsDeep = baseRest(function(args) {
 
 module.exports = defaultsDeep;
 
-},{"./_apply":427,"./_baseRest":442,"./_customDefaultsMerge":454,"./mergeWith":516}],502:[function(require,module,exports){
+},{"./_apply":424,"./_baseRest":439,"./_customDefaultsMerge":451,"./mergeWith":513}],499:[function(require,module,exports){
 /**
  * Performs a
  * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
@@ -45116,7 +45197,7 @@ function eq(value, other) {
 
 module.exports = eq;
 
-},{}],503:[function(require,module,exports){
+},{}],500:[function(require,module,exports){
 /**
  * This method returns the first argument it receives.
  *
@@ -45139,7 +45220,7 @@ function identity(value) {
 
 module.exports = identity;
 
-},{}],504:[function(require,module,exports){
+},{}],501:[function(require,module,exports){
 var baseIsArguments = require('./_baseIsArguments'),
     isObjectLike = require('./isObjectLike');
 
@@ -45177,7 +45258,7 @@ var isArguments = baseIsArguments(function() { return arguments; }()) ? baseIsAr
 
 module.exports = isArguments;
 
-},{"./_baseIsArguments":436,"./isObjectLike":512}],505:[function(require,module,exports){
+},{"./_baseIsArguments":433,"./isObjectLike":509}],502:[function(require,module,exports){
 /**
  * Checks if `value` is classified as an `Array` object.
  *
@@ -45205,7 +45286,7 @@ var isArray = Array.isArray;
 
 module.exports = isArray;
 
-},{}],506:[function(require,module,exports){
+},{}],503:[function(require,module,exports){
 var isFunction = require('./isFunction'),
     isLength = require('./isLength');
 
@@ -45240,7 +45321,7 @@ function isArrayLike(value) {
 
 module.exports = isArrayLike;
 
-},{"./isFunction":509,"./isLength":510}],507:[function(require,module,exports){
+},{"./isFunction":506,"./isLength":507}],504:[function(require,module,exports){
 var isArrayLike = require('./isArrayLike'),
     isObjectLike = require('./isObjectLike');
 
@@ -45275,7 +45356,7 @@ function isArrayLikeObject(value) {
 
 module.exports = isArrayLikeObject;
 
-},{"./isArrayLike":506,"./isObjectLike":512}],508:[function(require,module,exports){
+},{"./isArrayLike":503,"./isObjectLike":509}],505:[function(require,module,exports){
 var root = require('./_root'),
     stubFalse = require('./stubFalse');
 
@@ -45315,7 +45396,7 @@ var isBuffer = nativeIsBuffer || stubFalse;
 
 module.exports = isBuffer;
 
-},{"./_root":489,"./stubFalse":517}],509:[function(require,module,exports){
+},{"./_root":486,"./stubFalse":514}],506:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     isObject = require('./isObject');
 
@@ -45354,7 +45435,7 @@ function isFunction(value) {
 
 module.exports = isFunction;
 
-},{"./_baseGetTag":435,"./isObject":511}],510:[function(require,module,exports){
+},{"./_baseGetTag":432,"./isObject":508}],507:[function(require,module,exports){
 /** Used as references for various `Number` constants. */
 var MAX_SAFE_INTEGER = 9007199254740991;
 
@@ -45391,7 +45472,7 @@ function isLength(value) {
 
 module.exports = isLength;
 
-},{}],511:[function(require,module,exports){
+},{}],508:[function(require,module,exports){
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -45424,7 +45505,7 @@ function isObject(value) {
 
 module.exports = isObject;
 
-},{}],512:[function(require,module,exports){
+},{}],509:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -45455,7 +45536,7 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],513:[function(require,module,exports){
+},{}],510:[function(require,module,exports){
 var baseGetTag = require('./_baseGetTag'),
     getPrototype = require('./_getPrototype'),
     isObjectLike = require('./isObjectLike');
@@ -45519,7 +45600,7 @@ function isPlainObject(value) {
 
 module.exports = isPlainObject;
 
-},{"./_baseGetTag":435,"./_getPrototype":459,"./isObjectLike":512}],514:[function(require,module,exports){
+},{"./_baseGetTag":432,"./_getPrototype":456,"./isObjectLike":509}],511:[function(require,module,exports){
 var baseIsTypedArray = require('./_baseIsTypedArray'),
     baseUnary = require('./_baseUnary'),
     nodeUtil = require('./_nodeUtil');
@@ -45548,7 +45629,7 @@ var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedA
 
 module.exports = isTypedArray;
 
-},{"./_baseIsTypedArray":438,"./_baseUnary":445,"./_nodeUtil":485}],515:[function(require,module,exports){
+},{"./_baseIsTypedArray":435,"./_baseUnary":442,"./_nodeUtil":482}],512:[function(require,module,exports){
 var arrayLikeKeys = require('./_arrayLikeKeys'),
     baseKeysIn = require('./_baseKeysIn'),
     isArrayLike = require('./isArrayLike');
@@ -45582,7 +45663,7 @@ function keysIn(object) {
 
 module.exports = keysIn;
 
-},{"./_arrayLikeKeys":428,"./_baseKeysIn":439,"./isArrayLike":506}],516:[function(require,module,exports){
+},{"./_arrayLikeKeys":425,"./_baseKeysIn":436,"./isArrayLike":503}],513:[function(require,module,exports){
 var baseMerge = require('./_baseMerge'),
     createAssigner = require('./_createAssigner');
 
@@ -45623,7 +45704,7 @@ var mergeWith = createAssigner(function(object, source, srcIndex, customizer) {
 
 module.exports = mergeWith;
 
-},{"./_baseMerge":440,"./_createAssigner":452}],517:[function(require,module,exports){
+},{"./_baseMerge":437,"./_createAssigner":449}],514:[function(require,module,exports){
 /**
  * This method returns `false`.
  *
@@ -45643,7 +45724,7 @@ function stubFalse() {
 
 module.exports = stubFalse;
 
-},{}],518:[function(require,module,exports){
+},{}],515:[function(require,module,exports){
 var copyObject = require('./_copyObject'),
     keysIn = require('./keysIn');
 
@@ -45677,7 +45758,7 @@ function toPlainObject(value) {
 
 module.exports = toPlainObject;
 
-},{"./_copyObject":450,"./keysIn":515}],519:[function(require,module,exports){
+},{"./_copyObject":447,"./keysIn":512}],516:[function(require,module,exports){
 module.exports = Long;
 
 /**
@@ -47002,7 +47083,7 @@ Long.fromBytesBE = function fromBytesBE(bytes, unsigned) {
     );
 };
 
-},{}],520:[function(require,module,exports){
+},{}],517:[function(require,module,exports){
 /**
  * Mnemonist FixedDeque
  * =====================
@@ -47355,7 +47436,7 @@ FixedDeque.from = function(iterable, ArrayClass, capacity) {
  */
 module.exports = FixedDeque;
 
-},{"./utils/iterables.js":527,"obliterator/iterator":524}],521:[function(require,module,exports){
+},{"./utils/iterables.js":524,"obliterator/iterator":521}],518:[function(require,module,exports){
 /**
  * Mnemonist FixedStack
  * =====================
@@ -47599,7 +47680,7 @@ FixedStack.from = function(iterable, ArrayClass, capacity) {
  */
 module.exports = FixedStack;
 
-},{"./utils/iterables.js":527,"obliterator/iterator":524}],522:[function(require,module,exports){
+},{"./utils/iterables.js":524,"obliterator/iterator":521}],519:[function(require,module,exports){
 /**
  * Mnemonist Binary Heap
  * ======================
@@ -48177,7 +48258,7 @@ Heap.MaxHeap = MaxHeap;
 
 module.exports = Heap;
 
-},{"./utils/comparators.js":526,"./utils/iterables.js":527,"obliterator/foreach":523}],523:[function(require,module,exports){
+},{"./utils/comparators.js":523,"./utils/iterables.js":524,"obliterator/foreach":520}],520:[function(require,module,exports){
 /**
  * Obliterator ForEach Function
  * =============================
@@ -48252,13 +48333,109 @@ module.exports = function forEach(iterable, callback) {
   return;
 };
 
-},{"./support.js":525}],524:[function(require,module,exports){
-arguments[4][392][0].apply(exports,arguments)
-},{"dup":392}],525:[function(require,module,exports){
+},{"./support.js":522}],521:[function(require,module,exports){
+/**
+ * Obliterator Iterator Class
+ * ===========================
+ *
+ * Simple class representing the library's iterators.
+ */
+
+/**
+ * Iterator class.
+ *
+ * @constructor
+ * @param {function} next - Next function.
+ */
+function Iterator(next) {
+  if (typeof next !== 'function')
+    throw new Error('obliterator/iterator: expecting a function!');
+
+  this.next = next;
+}
+
+/**
+ * If symbols are supported, we add `next` to `Symbol.iterator`.
+ */
+if (typeof Symbol !== 'undefined')
+  Iterator.prototype[Symbol.iterator] = function () {
+    return this;
+  };
+
+/**
+ * Returning an iterator of the given values.
+ *
+ * @param  {any...} values - Values.
+ * @return {Iterator}
+ */
+Iterator.of = function () {
+  var args = arguments,
+    l = args.length,
+    i = 0;
+
+  return new Iterator(function () {
+    if (i >= l) return {done: true};
+
+    return {done: false, value: args[i++]};
+  });
+};
+
+/**
+ * Returning an empty iterator.
+ *
+ * @return {Iterator}
+ */
+Iterator.empty = function () {
+  var iterator = new Iterator(function () {
+    return {done: true};
+  });
+
+  return iterator;
+};
+
+/**
+ * Returning an iterator over the given indexed sequence.
+ *
+ * @param  {string|Array} sequence - Target sequence.
+ * @return {Iterator}
+ */
+Iterator.fromSequence = function (sequence) {
+  var i = 0,
+    l = sequence.length;
+
+  return new Iterator(function () {
+    if (i >= l) return {done: true};
+
+    return {done: false, value: sequence[i++]};
+  });
+};
+
+/**
+ * Returning whether the given value is an iterator.
+ *
+ * @param  {any} value - Value.
+ * @return {boolean}
+ */
+Iterator.is = function (value) {
+  if (value instanceof Iterator) return true;
+
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof value.next === 'function'
+  );
+};
+
+/**
+ * Exporting.
+ */
+module.exports = Iterator;
+
+},{}],522:[function(require,module,exports){
 exports.ARRAY_BUFFER_SUPPORT = typeof ArrayBuffer !== 'undefined';
 exports.SYMBOL_SUPPORT = typeof Symbol !== 'undefined';
 
-},{}],526:[function(require,module,exports){
+},{}],523:[function(require,module,exports){
 /**
  * Mnemonist Heap Comparators
  * ===========================
@@ -48339,7 +48516,7 @@ exports.DEFAULT_REVERSE_COMPARATOR = DEFAULT_REVERSE_COMPARATOR;
 exports.reverseComparator = reverseComparator;
 exports.createTupleComparator = createTupleComparator;
 
-},{}],527:[function(require,module,exports){
+},{}],524:[function(require,module,exports){
 /**
  * Mnemonist Iterable Function
  * ============================
@@ -48434,9 +48611,9 @@ exports.guessLength = guessLength;
 exports.toArray = toArray;
 exports.toArrayWithIndices = toArrayWithIndices;
 
-},{"./typed-arrays.js":528,"obliterator/foreach":523}],528:[function(require,module,exports){
-arguments[4][391][0].apply(exports,arguments)
-},{"dup":391}],529:[function(require,module,exports){
+},{"./typed-arrays.js":525,"obliterator/foreach":520}],525:[function(require,module,exports){
+arguments[4][392][0].apply(exports,arguments)
+},{"dup":392}],526:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -48524,7 +48701,7 @@ var Stitch = (function () {
 }());
 exports.default = Stitch;
 
-},{"./internal/StitchAppClientImpl":544,"./internal/common/LocalStorage":545,"./internal/net/BrowserFetchStreamTransport":547,"./internal/net/BrowserFetchTransport":548,"mongodb-stitch-core-sdk":609}],530:[function(require,module,exports){
+},{"./internal/StitchAppClientImpl":541,"./internal/common/LocalStorage":542,"./internal/net/BrowserFetchStreamTransport":544,"./internal/net/BrowserFetchTransport":545,"mongodb-stitch-core-sdk":606}],527:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var RedirectFragmentFields;
@@ -48538,7 +48715,7 @@ var RedirectFragmentFields;
 })(RedirectFragmentFields || (RedirectFragmentFields = {}));
 exports.default = RedirectFragmentFields;
 
-},{}],531:[function(require,module,exports){
+},{}],528:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var RedirectKeys;
@@ -48549,7 +48726,7 @@ var RedirectKeys;
 })(RedirectKeys || (RedirectKeys = {}));
 exports.default = RedirectKeys;
 
-},{}],532:[function(require,module,exports){
+},{}],529:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -48962,7 +49139,7 @@ function isAuthProviderClientFactory(factory) {
     return (factory.getClient !== undefined);
 }
 
-},{"../../internal/common/Version":546,"./RedirectFragmentFields":530,"./RedirectKeys":531,"./StitchRedirectError":535,"./StitchUserFactoryImpl":536,"detect-browser":380,"mongodb-stitch-core-sdk":609}],533:[function(require,module,exports){
+},{"../../internal/common/Version":543,"./RedirectFragmentFields":527,"./RedirectKeys":528,"./StitchRedirectError":532,"./StitchUserFactoryImpl":533,"detect-browser":380,"mongodb-stitch-core-sdk":606}],530:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -48994,7 +49171,7 @@ var StitchBrowserAppAuthRoutes = (function (_super) {
 }(mongodb_stitch_core_sdk_1.StitchAppAuthRoutes));
 exports.default = StitchBrowserAppAuthRoutes;
 
-},{"mongodb-stitch-core-sdk":609}],534:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],531:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49023,7 +49200,7 @@ var StitchBrowserAppRoutes = (function (_super) {
 }(mongodb_stitch_core_sdk_1.StitchAppRoutes));
 exports.default = StitchBrowserAppRoutes;
 
-},{"./StitchBrowserAppAuthRoutes":533,"mongodb-stitch-core-sdk":609}],535:[function(require,module,exports){
+},{"./StitchBrowserAppAuthRoutes":530,"mongodb-stitch-core-sdk":606}],532:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49046,7 +49223,7 @@ var StitchRedirectError = (function (_super) {
 }(mongodb_stitch_core_sdk_1.StitchError));
 exports.default = StitchRedirectError;
 
-},{"mongodb-stitch-core-sdk":609}],536:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],533:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49064,7 +49241,7 @@ var StitchUserFactoryImpl = (function () {
 }());
 exports.default = StitchUserFactoryImpl;
 
-},{"./StitchUserImpl":537}],537:[function(require,module,exports){
+},{"./StitchUserImpl":534}],534:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49095,7 +49272,7 @@ var StitchUserImpl = (function (_super) {
 }(mongodb_stitch_core_sdk_1.CoreStitchUserImpl));
 exports.default = StitchUserImpl;
 
-},{"mongodb-stitch-core-sdk":609}],538:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],535:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb_stitch_core_sdk_1 = require("mongodb-stitch-core-sdk");
@@ -49111,7 +49288,7 @@ var FacebookRedirectCredential = (function () {
 }());
 exports.default = FacebookRedirectCredential;
 
-},{"mongodb-stitch-core-sdk":609}],539:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],536:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb_stitch_core_sdk_1 = require("mongodb-stitch-core-sdk");
@@ -49127,7 +49304,7 @@ var GoogleRedirectCredential = (function () {
 }());
 exports.default = GoogleRedirectCredential;
 
-},{"mongodb-stitch-core-sdk":609}],540:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],537:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49146,7 +49323,7 @@ var UserApiKeyAuthProviderClient;
     }())();
 })(UserApiKeyAuthProviderClient = exports.UserApiKeyAuthProviderClient || (exports.UserApiKeyAuthProviderClient = {}));
 
-},{"./internal/UserApiKeyAuthProviderClientImpl":541}],541:[function(require,module,exports){
+},{"./internal/UserApiKeyAuthProviderClientImpl":538}],538:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49187,7 +49364,7 @@ var UserApiKeyAuthProviderClientImpl = (function (_super) {
 }(mongodb_stitch_core_sdk_1.CoreUserApiKeyAuthProviderClient));
 exports.default = UserApiKeyAuthProviderClientImpl;
 
-},{"mongodb-stitch-core-sdk":609}],542:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],539:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49206,7 +49383,7 @@ var UserPasswordAuthProviderClient;
     }())();
 })(UserPasswordAuthProviderClient = exports.UserPasswordAuthProviderClient || (exports.UserPasswordAuthProviderClient = {}));
 
-},{"./internal/UserPasswordAuthProviderClientImpl":543}],543:[function(require,module,exports){
+},{"./internal/UserPasswordAuthProviderClientImpl":540}],540:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49247,7 +49424,7 @@ var UserPasswordAuthProviderClientImpl = (function (_super) {
 }(mongodb_stitch_core_sdk_1.CoreUserPassAuthProviderClient));
 exports.default = UserPasswordAuthProviderClientImpl;
 
-},{"mongodb-stitch-core-sdk":609}],544:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],541:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49309,7 +49486,7 @@ function isServiceClientFactory(factory) {
     return factory.getClient !== undefined;
 }
 
-},{"../../services/internal/StitchServiceClientImpl":551,"../auth/internal/StitchAuthImpl":532,"../auth/internal/StitchBrowserAppRoutes":534,"mongodb-stitch-core-sdk":609}],545:[function(require,module,exports){
+},{"../../services/internal/StitchServiceClientImpl":548,"../auth/internal/StitchAuthImpl":529,"../auth/internal/StitchBrowserAppRoutes":531,"mongodb-stitch-core-sdk":606}],542:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var stitchPrefixKey = "__stitch.client";
@@ -49333,14 +49510,14 @@ var LocalStorage = (function () {
 }());
 exports.default = LocalStorage;
 
-},{}],546:[function(require,module,exports){
+},{}],543:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var version = "4.9.0";
 exports.default = version;
 
 
-},{}],547:[function(require,module,exports){
+},{}],544:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49403,7 +49580,7 @@ var BrowserFetchStreamTransport = (function (_super) {
 }(BrowserFetchTransport_1.default));
 exports.default = BrowserFetchStreamTransport;
 
-},{"./BrowserFetchTransport":548,"./EventSourceEventStream":549,"mongodb-stitch-core-sdk":609,"whatwg-fetch":650}],548:[function(require,module,exports){
+},{"./BrowserFetchTransport":545,"./EventSourceEventStream":546,"mongodb-stitch-core-sdk":606,"whatwg-fetch":649}],545:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb_stitch_core_sdk_1 = require("mongodb-stitch-core-sdk");
@@ -49439,7 +49616,7 @@ var BrowserFetchTransport = (function () {
 }());
 exports.default = BrowserFetchTransport;
 
-},{"mongodb-stitch-core-sdk":609,"whatwg-fetch":650}],549:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606,"whatwg-fetch":649}],546:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49507,7 +49684,7 @@ var EventSourceEventStream = (function (_super) {
 }(mongodb_stitch_core_sdk_1.BaseEventStream));
 exports.default = EventSourceEventStream;
 
-},{"mongodb-stitch-core-sdk":609}],550:[function(require,module,exports){
+},{"mongodb-stitch-core-sdk":606}],547:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49557,7 +49734,7 @@ exports.BrowserFetchTransport = BrowserFetchTransport_1.default;
 var Stitch_1 = __importDefault(require("./core/Stitch"));
 exports.Stitch = Stitch_1.default;
 
-},{"./core/Stitch":529,"./core/auth/providers/facebook/FacebookRedirectCredential":538,"./core/auth/providers/google/GoogleRedirectCredential":539,"./core/auth/providers/userapikey/UserApiKeyAuthProviderClient":540,"./core/auth/providers/userpassword/UserPasswordAuthProviderClient":542,"./core/internal/net/BrowserFetchTransport":548,"mongodb-stitch-core-sdk":609}],551:[function(require,module,exports){
+},{"./core/Stitch":526,"./core/auth/providers/facebook/FacebookRedirectCredential":535,"./core/auth/providers/google/GoogleRedirectCredential":536,"./core/auth/providers/userapikey/UserApiKeyAuthProviderClient":537,"./core/auth/providers/userpassword/UserPasswordAuthProviderClient":539,"./core/internal/net/BrowserFetchTransport":545,"mongodb-stitch-core-sdk":606}],548:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchServiceClientImpl = (function () {
@@ -49574,7 +49751,7 @@ var StitchServiceClientImpl = (function () {
 }());
 exports.default = StitchServiceClientImpl;
 
-},{}],552:[function(require,module,exports){
+},{}],549:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -49583,7 +49760,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("mongodb-stitch-browser-core"));
 __export(require("mongodb-stitch-browser-services-mongodb-remote"));
 
-},{"mongodb-stitch-browser-core":550,"mongodb-stitch-browser-services-mongodb-remote":556}],553:[function(require,module,exports){
+},{"mongodb-stitch-browser-core":547,"mongodb-stitch-browser-services-mongodb-remote":553}],550:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49603,7 +49780,7 @@ var RemoteMongoClient;
     }())();
 })(RemoteMongoClient = exports.RemoteMongoClient || (exports.RemoteMongoClient = {}));
 
-},{"./internal/RemoteMongoClientImpl":557,"mongodb-stitch-core-services-mongodb-remote":640}],554:[function(require,module,exports){
+},{"./internal/RemoteMongoClientImpl":554,"mongodb-stitch-core-services-mongodb-remote":637}],551:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var RemoteMongoCursor = (function () {
@@ -49617,7 +49794,7 @@ var RemoteMongoCursor = (function () {
 }());
 exports.default = RemoteMongoCursor;
 
-},{}],555:[function(require,module,exports){
+},{}],552:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49644,7 +49821,7 @@ var RemoteMongoReadOperation = (function () {
 }());
 exports.default = RemoteMongoReadOperation;
 
-},{"./RemoteMongoCursor":554}],556:[function(require,module,exports){
+},{"./RemoteMongoCursor":551}],553:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49657,7 +49834,7 @@ exports.RemoteMongoClient = RemoteMongoClient_1.RemoteMongoClient;
 var RemoteMongoReadOperation_1 = __importDefault(require("./RemoteMongoReadOperation"));
 exports.RemoteMongoReadOperation = RemoteMongoReadOperation_1.default;
 
-},{"./RemoteMongoClient":553,"./RemoteMongoReadOperation":555,"mongodb-stitch-core-services-mongodb-remote":640}],557:[function(require,module,exports){
+},{"./RemoteMongoClient":550,"./RemoteMongoReadOperation":552,"mongodb-stitch-core-services-mongodb-remote":637}],554:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49675,7 +49852,7 @@ var RemoteMongoClientImpl = (function () {
 }());
 exports.default = RemoteMongoClientImpl;
 
-},{"./RemoteMongoDatabaseImpl":559}],558:[function(require,module,exports){
+},{"./RemoteMongoDatabaseImpl":556}],555:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49739,7 +49916,7 @@ var RemoteMongoCollectionImpl = (function () {
 }());
 exports.default = RemoteMongoCollectionImpl;
 
-},{"../RemoteMongoReadOperation":555}],559:[function(require,module,exports){
+},{"../RemoteMongoReadOperation":552}],556:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -49758,7 +49935,7 @@ var RemoteMongoDatabaseImpl = (function () {
 }());
 exports.default = RemoteMongoDatabaseImpl;
 
-},{"./RemoteMongoCollectionImpl":558}],560:[function(require,module,exports){
+},{"./RemoteMongoCollectionImpl":555}],557:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49815,7 +49992,7 @@ exports.StitchAppClientConfiguration = StitchAppClientConfiguration;
 })(StitchAppClientConfiguration = exports.StitchAppClientConfiguration || (exports.StitchAppClientConfiguration = {}));
 exports.StitchAppClientConfiguration = StitchAppClientConfiguration;
 
-},{"./StitchClientConfiguration":562}],561:[function(require,module,exports){
+},{"./StitchClientConfiguration":559}],558:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchAppClientInfo = (function () {
@@ -49829,7 +50006,7 @@ var StitchAppClientInfo = (function () {
 }());
 exports.default = StitchAppClientInfo;
 
-},{}],562:[function(require,module,exports){
+},{}],559:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchClientConfiguration = (function () {
@@ -49880,7 +50057,7 @@ exports.StitchClientConfiguration = StitchClientConfiguration;
 })(StitchClientConfiguration = exports.StitchClientConfiguration || (exports.StitchClientConfiguration = {}));
 exports.StitchClientConfiguration = StitchClientConfiguration;
 
-},{}],563:[function(require,module,exports){
+},{}],560:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49912,7 +50089,7 @@ var StitchClientError = (function (_super) {
 }(StitchError_1.default));
 exports.default = StitchClientError;
 
-},{"./StitchClientErrorCode":564,"./StitchError":565}],564:[function(require,module,exports){
+},{"./StitchClientErrorCode":561,"./StitchError":562}],561:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a;
@@ -49942,7 +50119,7 @@ exports.clientErrorCodeDescs = (_a = {},
     _a[StitchClientErrorCode.UnexpectedArguments] = "function does not accept arguments",
     _a);
 
-},{}],565:[function(require,module,exports){
+},{}],562:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -49973,7 +50150,7 @@ var StitchError = (function (_super) {
 }(_Error));
 exports.default = StitchError;
 
-},{}],566:[function(require,module,exports){
+},{}],563:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -50006,7 +50183,7 @@ var StitchRequestError = (function (_super) {
 }(StitchError_1.default));
 exports.default = StitchRequestError;
 
-},{"./StitchError":565,"./StitchRequestErrorCode":567}],567:[function(require,module,exports){
+},{"./StitchError":562,"./StitchRequestErrorCode":564}],564:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a;
@@ -50022,7 +50199,7 @@ exports.requestErrorCodeDescs = (_a = {},
     _a[StitchRequestErrorCode.ENCODING_ERROR] = "an error occurred while encoding a request for Stitch",
     _a);
 
-},{}],568:[function(require,module,exports){
+},{}],565:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -50054,7 +50231,7 @@ var StitchServiceError = (function (_super) {
 }(StitchError_1.default));
 exports.default = StitchServiceError;
 
-},{"./StitchError":565,"./StitchServiceErrorCode":569}],569:[function(require,module,exports){
+},{"./StitchError":562,"./StitchServiceErrorCode":566}],566:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchServiceErrorCode;
@@ -50163,7 +50340,7 @@ function stitchServiceErrorCodeFromApi(code) {
 }
 exports.stitchServiceErrorCodeFromApi = stitchServiceErrorCodeFromApi;
 
-},{}],570:[function(require,module,exports){
+},{}],567:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -50261,7 +50438,7 @@ var Stream = (function () {
 }());
 exports.default = Stream;
 
-},{"./internal/net/Event":620,"./internal/net/StitchEvent":630}],571:[function(require,module,exports){
+},{"./internal/net/Event":617,"./internal/net/StitchEvent":627}],568:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ProviderCapabilities = (function () {
@@ -50273,7 +50450,7 @@ var ProviderCapabilities = (function () {
 }());
 exports.default = ProviderCapabilities;
 
-},{}],572:[function(require,module,exports){
+},{}],569:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchUserIdentity = (function () {
@@ -50285,7 +50462,7 @@ var StitchUserIdentity = (function () {
 }());
 exports.default = StitchUserIdentity;
 
-},{}],573:[function(require,module,exports){
+},{}],570:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var UserType;
@@ -50296,7 +50473,7 @@ var UserType;
 })(UserType || (UserType = {}));
 exports.default = UserType;
 
-},{}],574:[function(require,module,exports){
+},{}],571:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -50357,7 +50534,7 @@ var AccessTokenRefresher = (function () {
 }());
 exports.default = AccessTokenRefresher;
 
-},{"./JWT":580}],575:[function(require,module,exports){
+},{"./JWT":577}],572:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AuthEventKind;
@@ -50371,7 +50548,7 @@ var AuthEventKind;
     AuthEventKind[AuthEventKind["UserRemoved"] = 6] = "UserRemoved";
 })(AuthEventKind = exports.AuthEventKind || (exports.AuthEventKind = {}));
 
-},{}],576:[function(require,module,exports){
+},{}],573:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AuthInfo = (function () {
@@ -50440,7 +50617,7 @@ var AuthInfo = (function () {
 }());
 exports.default = AuthInfo;
 
-},{}],577:[function(require,module,exports){
+},{}],574:[function(require,module,exports){
 "use strict";
 var __values = (this && this.__values) || function (o) {
     var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
@@ -51052,7 +51229,7 @@ var CoreStitchAuth = (function () {
 }());
 exports.default = CoreStitchAuth;
 
-},{"../../StitchClientError":563,"../../StitchClientErrorCode":564,"../../StitchError":565,"../../StitchRequestError":566,"../../StitchRequestErrorCode":567,"../../StitchServiceError":568,"../../StitchServiceErrorCode":569,"../../Stream":570,"../../internal/common/StitchErrorUtils":613,"../../internal/net/Headers":621,"../../internal/net/Method":622,"../../internal/net/StitchAuthDocRequest":627,"../../internal/net/StitchAuthRequest":628,"../../internal/net/StitchDocRequest":629,"../internal/CoreStitchUserImpl":578,"../providers/anonymous/AnonymousAuthProvider":588,"../providers/internal/StitchAuthResponseCredential":599,"./AccessTokenRefresher":574,"./AuthEvent":575,"./AuthInfo":576,"./JWT":580,"./models/ApiAuthInfo":582,"./models/ApiCoreUserProfile":583,"./models/StoreAuthInfo":585,"bson":377}],578:[function(require,module,exports){
+},{"../../StitchClientError":560,"../../StitchClientErrorCode":561,"../../StitchError":562,"../../StitchRequestError":563,"../../StitchRequestErrorCode":564,"../../StitchServiceError":565,"../../StitchServiceErrorCode":566,"../../Stream":567,"../../internal/common/StitchErrorUtils":610,"../../internal/net/Headers":618,"../../internal/net/Method":619,"../../internal/net/StitchAuthDocRequest":624,"../../internal/net/StitchAuthRequest":625,"../../internal/net/StitchDocRequest":626,"../internal/CoreStitchUserImpl":575,"../providers/anonymous/AnonymousAuthProvider":585,"../providers/internal/StitchAuthResponseCredential":596,"./AccessTokenRefresher":571,"./AuthEvent":572,"./AuthInfo":573,"./JWT":577,"./models/ApiAuthInfo":579,"./models/ApiCoreUserProfile":580,"./models/StoreAuthInfo":582,"bson":377}],575:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51096,7 +51273,7 @@ var CoreStitchUserImpl = (function () {
 }());
 exports.default = CoreStitchUserImpl;
 
-},{"./StitchUserProfileImpl":581}],579:[function(require,module,exports){
+},{"./StitchUserProfileImpl":578}],576:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var DeviceFields;
@@ -51110,7 +51287,7 @@ var DeviceFields;
 })(DeviceFields || (DeviceFields = {}));
 exports.default = DeviceFields;
 
-},{}],580:[function(require,module,exports){
+},{}],577:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Base64_1 = require("../../internal/common/Base64");
@@ -51142,7 +51319,7 @@ var JWT = (function () {
 }());
 exports.default = JWT;
 
-},{"../../internal/common/Base64":612}],581:[function(require,module,exports){
+},{"../../internal/common/Base64":609}],578:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var NAME = "name";
@@ -51240,7 +51417,7 @@ var StitchUserProfileImpl = (function () {
 }());
 exports.default = StitchUserProfileImpl;
 
-},{}],582:[function(require,module,exports){
+},{}],579:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51285,7 +51462,7 @@ var ApiAuthInfo = (function (_super) {
 }(AuthInfo_1.default));
 exports.default = ApiAuthInfo;
 
-},{"../AuthInfo":576}],583:[function(require,module,exports){
+},{"../AuthInfo":573}],580:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51333,7 +51510,7 @@ var ApiCoreUserProfile = (function (_super) {
 }(StitchUserProfileImpl_1.default));
 exports.default = ApiCoreUserProfile;
 
-},{"../../../internal/common/Assertions":611,"../StitchUserProfileImpl":581,"./ApiStitchUserIdentity":584}],584:[function(require,module,exports){
+},{"../../../internal/common/Assertions":608,"../StitchUserProfileImpl":578,"./ApiStitchUserIdentity":581}],581:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51374,7 +51551,7 @@ var ApiStitchUserIdentity = (function (_super) {
 }(StitchUserIdentity_1.default));
 exports.default = ApiStitchUserIdentity;
 
-},{"../../StitchUserIdentity":572}],585:[function(require,module,exports){
+},{"../../StitchUserIdentity":569}],582:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51497,7 +51674,7 @@ var StoreAuthInfo = (function (_super) {
 }(AuthInfo_1.default));
 exports.StoreAuthInfo = StoreAuthInfo;
 
-},{"../../../StitchClientError":563,"../../../StitchClientErrorCode":564,"../AuthInfo":576,"./StoreCoreUserProfile":586,"./StoreStitchUserIdentity":587}],586:[function(require,module,exports){
+},{"../../../StitchClientError":560,"../../../StitchClientErrorCode":561,"../AuthInfo":573,"./StoreCoreUserProfile":583,"./StoreStitchUserIdentity":584}],583:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51549,7 +51726,7 @@ var StoreCoreUserProfile = (function (_super) {
 }(StitchUserProfileImpl_1.default));
 exports.default = StoreCoreUserProfile;
 
-},{"../StitchUserProfileImpl":581,"./StoreStitchUserIdentity":587}],587:[function(require,module,exports){
+},{"../StitchUserProfileImpl":578,"./StoreStitchUserIdentity":584}],584:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51590,7 +51767,7 @@ var StoreStitchUserIdentity = (function (_super) {
 }(StitchUserIdentity_1.default));
 exports.default = StoreStitchUserIdentity;
 
-},{"../../StitchUserIdentity":572}],588:[function(require,module,exports){
+},{"../../StitchUserIdentity":569}],585:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AnonymousAuthProvider = (function () {
@@ -51602,7 +51779,7 @@ var AnonymousAuthProvider = (function () {
 }());
 exports.default = AnonymousAuthProvider;
 
-},{}],589:[function(require,module,exports){
+},{}],586:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51622,7 +51799,7 @@ var AnonymousCredential = (function () {
 }());
 exports.default = AnonymousCredential;
 
-},{"../../ProviderCapabilities":571,"./AnonymousAuthProvider":588}],590:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./AnonymousAuthProvider":585}],587:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var CustomAuthProvider = (function () {
@@ -51634,7 +51811,7 @@ var CustomAuthProvider = (function () {
 }());
 exports.default = CustomAuthProvider;
 
-},{}],591:[function(require,module,exports){
+},{}],588:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51660,7 +51837,7 @@ var CustomCredential = (function () {
 }());
 exports.default = CustomCredential;
 
-},{"../../ProviderCapabilities":571,"./CustomAuthProvider":590}],592:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./CustomAuthProvider":587}],589:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacebookAuthProvider = (function () {
@@ -51672,7 +51849,7 @@ var FacebookAuthProvider = (function () {
 }());
 exports.default = FacebookAuthProvider;
 
-},{}],593:[function(require,module,exports){
+},{}],590:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51704,7 +51881,7 @@ var FacebookCredential = (function () {
 }());
 exports.default = FacebookCredential;
 
-},{"../../ProviderCapabilities":571,"./FacebookAuthProvider":592}],594:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./FacebookAuthProvider":589}],591:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var FunctionAuthProvider = (function () {
@@ -51716,7 +51893,7 @@ var FunctionAuthProvider = (function () {
 }());
 exports.default = FunctionAuthProvider;
 
-},{}],595:[function(require,module,exports){
+},{}],592:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51742,7 +51919,7 @@ var FunctionCredential = (function () {
 }());
 exports.default = FunctionCredential;
 
-},{"../../ProviderCapabilities":571,"./FunctionAuthProvider":594}],596:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./FunctionAuthProvider":591}],593:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var GoogleAuthProvider = (function () {
@@ -51754,7 +51931,7 @@ var GoogleAuthProvider = (function () {
 }());
 exports.default = GoogleAuthProvider;
 
-},{}],597:[function(require,module,exports){
+},{}],594:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51780,7 +51957,7 @@ var GoogleCredential = (function () {
 }());
 exports.default = GoogleCredential;
 
-},{"../../ProviderCapabilities":571,"./GoogleAuthProvider":596}],598:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./GoogleAuthProvider":593}],595:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var CoreAuthProviderClient = (function () {
@@ -51793,7 +51970,7 @@ var CoreAuthProviderClient = (function () {
 }());
 exports.default = CoreAuthProviderClient;
 
-},{}],599:[function(require,module,exports){
+},{}],596:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchAuthResponseCredential = (function () {
@@ -51807,7 +51984,7 @@ var StitchAuthResponseCredential = (function () {
 }());
 exports.default = StitchAuthResponseCredential;
 
-},{}],600:[function(require,module,exports){
+},{}],597:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ServerApiKeyAuthProvider = (function () {
@@ -51819,7 +51996,7 @@ var ServerApiKeyAuthProvider = (function () {
 }());
 exports.default = ServerApiKeyAuthProvider;
 
-},{}],601:[function(require,module,exports){
+},{}],598:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -51845,7 +52022,7 @@ var ServerApiKeyCredential = (function () {
 }());
 exports.default = ServerApiKeyCredential;
 
-},{"../../ProviderCapabilities":571,"./ServerApiKeyAuthProvider":600}],602:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./ServerApiKeyAuthProvider":597}],599:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -51977,7 +52154,7 @@ var CoreUserApiKeyAuthProviderClient = (function (_super) {
 }(CoreAuthProviderClient_1.default));
 exports.default = CoreUserApiKeyAuthProviderClient;
 
-},{"../../../StitchRequestError":566,"../../../StitchRequestErrorCode":567,"../../../internal/common/StitchErrorUtils":613,"../../../internal/net/Method":622,"../../../internal/net/StitchAuthDocRequest":627,"../../../internal/net/StitchAuthRequest":628,"../internal/CoreAuthProviderClient":598,"./UserApiKeyAuthProvider":603,"./models/UserApiKey":605}],603:[function(require,module,exports){
+},{"../../../StitchRequestError":563,"../../../StitchRequestErrorCode":564,"../../../internal/common/StitchErrorUtils":610,"../../../internal/net/Method":619,"../../../internal/net/StitchAuthDocRequest":624,"../../../internal/net/StitchAuthRequest":625,"../internal/CoreAuthProviderClient":595,"./UserApiKeyAuthProvider":600,"./models/UserApiKey":602}],600:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var UserApiKeyAuthProvider = (function () {
@@ -51989,7 +52166,7 @@ var UserApiKeyAuthProvider = (function () {
 }());
 exports.default = UserApiKeyAuthProvider;
 
-},{}],604:[function(require,module,exports){
+},{}],601:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52017,7 +52194,7 @@ var UserApiKeyCredential = (function () {
 }());
 exports.default = UserApiKeyCredential;
 
-},{"../../ProviderCapabilities":571,"./UserApiKeyAuthProvider":603}],605:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./UserApiKeyAuthProvider":600}],602:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52059,7 +52236,7 @@ var UserApiKey = (function () {
 }());
 exports.default = UserApiKey;
 
-},{"../../../../internal/common/Assertions":611,"bson":377}],606:[function(require,module,exports){
+},{"../../../../internal/common/Assertions":608,"bson":377}],603:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -52190,7 +52367,7 @@ var CoreUserPasswordAuthProviderClient = (function (_super) {
 }(CoreAuthProviderClient_1.default));
 exports.default = CoreUserPasswordAuthProviderClient;
 
-},{"../../../internal/net/Method":622,"../../../internal/net/StitchDocRequest":629,"../internal/CoreAuthProviderClient":598,"./UserPasswordAuthProvider":607}],607:[function(require,module,exports){
+},{"../../../internal/net/Method":619,"../../../internal/net/StitchDocRequest":626,"../internal/CoreAuthProviderClient":595,"./UserPasswordAuthProvider":604}],604:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var UserPasswordAuthProvider = (function () {
@@ -52202,7 +52379,7 @@ var UserPasswordAuthProvider = (function () {
 }());
 exports.default = UserPasswordAuthProvider;
 
-},{}],608:[function(require,module,exports){
+},{}],605:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52233,7 +52410,7 @@ var UserPasswordCredential = (function () {
 }());
 exports.default = UserPasswordCredential;
 
-},{"../../ProviderCapabilities":571,"./UserPasswordAuthProvider":607}],609:[function(require,module,exports){
+},{"../../ProviderCapabilities":568,"./UserPasswordAuthProvider":604}],606:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52366,7 +52543,7 @@ exports.StitchServiceErrorCode = StitchServiceErrorCode_1.StitchServiceErrorCode
 var Stream_1 = __importDefault(require("./Stream"));
 exports.Stream = Stream_1.default;
 
-},{"./StitchAppClientConfiguration":560,"./StitchAppClientInfo":561,"./StitchClientError":563,"./StitchClientErrorCode":564,"./StitchError":565,"./StitchRequestError":566,"./StitchRequestErrorCode":567,"./StitchServiceError":568,"./StitchServiceErrorCode":569,"./Stream":570,"./auth/StitchUserIdentity":572,"./auth/UserType":573,"./auth/internal/AuthEvent":575,"./auth/internal/AuthInfo":576,"./auth/internal/CoreStitchAuth":577,"./auth/internal/CoreStitchUserImpl":578,"./auth/internal/DeviceFields":579,"./auth/internal/StitchUserProfileImpl":581,"./auth/internal/models/ApiStitchUserIdentity":584,"./auth/providers/anonymous/AnonymousAuthProvider":588,"./auth/providers/anonymous/AnonymousCredential":589,"./auth/providers/custom/CustomAuthProvider":590,"./auth/providers/custom/CustomCredential":591,"./auth/providers/facebook/FacebookAuthProvider":592,"./auth/providers/facebook/FacebookCredential":593,"./auth/providers/function/FunctionAuthProvider":594,"./auth/providers/function/FunctionCredential":595,"./auth/providers/google/GoogleAuthProvider":596,"./auth/providers/google/GoogleCredential":597,"./auth/providers/internal/StitchAuthResponseCredential":599,"./auth/providers/serverapikey/ServerApiKeyAuthProvider":600,"./auth/providers/serverapikey/ServerApiKeyCredential":601,"./auth/providers/userapikey/CoreUserApiKeyAuthProviderClient":602,"./auth/providers/userapikey/UserApiKeyAuthProvider":603,"./auth/providers/userapikey/UserApiKeyCredential":604,"./auth/providers/userapikey/models/UserApiKey":605,"./auth/providers/userpass/CoreUserPasswordAuthProviderClient":606,"./auth/providers/userpass/UserPasswordAuthProvider":607,"./auth/providers/userpass/UserPasswordCredential":608,"./internal/CoreStitchAppClient":610,"./internal/common/Assertions":611,"./internal/common/Base64":612,"./internal/common/StitchErrorUtils":613,"./internal/common/Storage":614,"./internal/net/BaseEventStream":616,"./internal/net/BasicRequest":618,"./internal/net/ContentTypes":619,"./internal/net/Event":620,"./internal/net/Headers":621,"./internal/net/Method":622,"./internal/net/Response":623,"./internal/net/StitchAppAuthRoutes":624,"./internal/net/StitchAppRequestClient":625,"./internal/net/StitchAppRoutes":626,"./internal/net/StitchAuthRequest":628,"./internal/net/StitchEvent":630,"./internal/net/StitchRequestClient":632,"./services/internal/AuthRebindEvent":634,"./services/internal/CoreStitchServiceClientImpl":635,"./services/internal/RebindEvent":636,"./services/internal/StitchServiceRoutes":637,"bson":377}],610:[function(require,module,exports){
+},{"./StitchAppClientConfiguration":557,"./StitchAppClientInfo":558,"./StitchClientError":560,"./StitchClientErrorCode":561,"./StitchError":562,"./StitchRequestError":563,"./StitchRequestErrorCode":564,"./StitchServiceError":565,"./StitchServiceErrorCode":566,"./Stream":567,"./auth/StitchUserIdentity":569,"./auth/UserType":570,"./auth/internal/AuthEvent":572,"./auth/internal/AuthInfo":573,"./auth/internal/CoreStitchAuth":574,"./auth/internal/CoreStitchUserImpl":575,"./auth/internal/DeviceFields":576,"./auth/internal/StitchUserProfileImpl":578,"./auth/internal/models/ApiStitchUserIdentity":581,"./auth/providers/anonymous/AnonymousAuthProvider":585,"./auth/providers/anonymous/AnonymousCredential":586,"./auth/providers/custom/CustomAuthProvider":587,"./auth/providers/custom/CustomCredential":588,"./auth/providers/facebook/FacebookAuthProvider":589,"./auth/providers/facebook/FacebookCredential":590,"./auth/providers/function/FunctionAuthProvider":591,"./auth/providers/function/FunctionCredential":592,"./auth/providers/google/GoogleAuthProvider":593,"./auth/providers/google/GoogleCredential":594,"./auth/providers/internal/StitchAuthResponseCredential":596,"./auth/providers/serverapikey/ServerApiKeyAuthProvider":597,"./auth/providers/serverapikey/ServerApiKeyCredential":598,"./auth/providers/userapikey/CoreUserApiKeyAuthProviderClient":599,"./auth/providers/userapikey/UserApiKeyAuthProvider":600,"./auth/providers/userapikey/UserApiKeyCredential":601,"./auth/providers/userapikey/models/UserApiKey":602,"./auth/providers/userpass/CoreUserPasswordAuthProviderClient":603,"./auth/providers/userpass/UserPasswordAuthProvider":604,"./auth/providers/userpass/UserPasswordCredential":605,"./internal/CoreStitchAppClient":607,"./internal/common/Assertions":608,"./internal/common/Base64":609,"./internal/common/StitchErrorUtils":610,"./internal/common/Storage":611,"./internal/net/BaseEventStream":613,"./internal/net/BasicRequest":615,"./internal/net/ContentTypes":616,"./internal/net/Event":617,"./internal/net/Headers":618,"./internal/net/Method":619,"./internal/net/Response":620,"./internal/net/StitchAppAuthRoutes":621,"./internal/net/StitchAppRequestClient":622,"./internal/net/StitchAppRoutes":623,"./internal/net/StitchAuthRequest":625,"./internal/net/StitchEvent":627,"./internal/net/StitchRequestClient":629,"./services/internal/AuthRebindEvent":631,"./services/internal/CoreStitchServiceClientImpl":632,"./services/internal/RebindEvent":633,"./services/internal/StitchServiceRoutes":634,"bson":377}],607:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52385,7 +52562,7 @@ var CoreStitchAppClient = (function () {
 }());
 exports.default = CoreStitchAppClient;
 
-},{"../services/internal/CoreStitchServiceClientImpl":635}],611:[function(require,module,exports){
+},{"../services/internal/CoreStitchServiceClientImpl":632}],608:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assertions = (function () {
@@ -52400,7 +52577,7 @@ var Assertions = (function () {
 }());
 exports.default = Assertions;
 
-},{}],612:[function(require,module,exports){
+},{}],609:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var base64_js_1 = require("base64-js");
@@ -52532,7 +52709,7 @@ function decodeUtf8Char(str) {
     }
 }
 
-},{"base64-js":376}],613:[function(require,module,exports){
+},{"base64-js":376}],610:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52594,7 +52771,7 @@ function handleRichError(response, body) {
     throw new StitchServiceError_1.default(errorMsg, StitchServiceErrorCode_1.stitchServiceErrorCodeFromApi(errorCode));
 }
 
-},{"../../StitchError":565,"../../StitchRequestError":566,"../../StitchRequestErrorCode":567,"../../StitchServiceError":568,"../../StitchServiceErrorCode":569,"../net/ContentTypes":619,"../net/Headers":621}],614:[function(require,module,exports){
+},{"../../StitchError":562,"../../StitchRequestError":563,"../../StitchRequestErrorCode":564,"../../StitchServiceError":565,"../../StitchServiceErrorCode":566,"../net/ContentTypes":616,"../net/Headers":618}],611:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var MemoryStorage = (function () {
@@ -52615,7 +52792,7 @@ var MemoryStorage = (function () {
 }());
 exports.MemoryStorage = MemoryStorage;
 
-},{}],615:[function(require,module,exports){
+},{}],612:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Fields;
@@ -52645,7 +52822,7 @@ var ApiAppMetadata = (function () {
 }());
 exports.default = ApiAppMetadata;
 
-},{}],616:[function(require,module,exports){
+},{}],613:[function(require,module,exports){
 "use strict";
 var __values = (this && this.__values) || function (o) {
     var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
@@ -52787,7 +52964,7 @@ var BaseEventStream = (function () {
 }());
 exports.default = BaseEventStream;
 
-},{"../../StitchError":565,"../../StitchRequestError":566,"./Event":620,"./StitchEvent":630}],617:[function(require,module,exports){
+},{"../../StitchError":562,"../../StitchRequestError":563,"./Event":617,"./StitchEvent":627}],614:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -52840,7 +53017,7 @@ var BaseStitchRequestClient = (function () {
 }());
 exports.default = BaseStitchRequestClient;
 
-},{"../../StitchError":565,"../../StitchRequestError":566,"../../StitchRequestErrorCode":567,"../../internal/common/StitchErrorUtils":613,"./BasicRequest":618}],618:[function(require,module,exports){
+},{"../../StitchError":562,"../../StitchRequestError":563,"../../StitchRequestErrorCode":564,"../../internal/common/StitchErrorUtils":610,"./BasicRequest":615}],615:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var BasicRequest = (function () {
@@ -52895,7 +53072,7 @@ exports.BasicRequest = BasicRequest;
 })(BasicRequest = exports.BasicRequest || (exports.BasicRequest = {}));
 exports.BasicRequest = BasicRequest;
 
-},{}],619:[function(require,module,exports){
+},{}],616:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContentTypes = (function () {
@@ -52907,7 +53084,7 @@ var ContentTypes = (function () {
 }());
 exports.default = ContentTypes;
 
-},{}],620:[function(require,module,exports){
+},{}],617:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Event = (function () {
@@ -52920,7 +53097,7 @@ var Event = (function () {
 }());
 exports.default = Event;
 
-},{}],621:[function(require,module,exports){
+},{}],618:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Headers = (function () {
@@ -52940,7 +53117,7 @@ var Headers = (function () {
 }());
 exports.default = Headers;
 
-},{}],622:[function(require,module,exports){
+},{}],619:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Method;
@@ -52956,7 +53133,7 @@ var Method;
 })(Method || (Method = {}));
 exports.default = Method;
 
-},{}],623:[function(require,module,exports){
+},{}],620:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Response = (function () {
@@ -52973,7 +53150,7 @@ var Response = (function () {
 }());
 exports.default = Response;
 
-},{}],624:[function(require,module,exports){
+},{}],621:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchRoutes_1 = require("./StitchRoutes");
@@ -53014,7 +53191,7 @@ var StitchAppAuthRoutes = (function () {
 }());
 exports.default = StitchAppAuthRoutes;
 
-},{"./StitchRoutes":633}],625:[function(require,module,exports){
+},{"./StitchRoutes":630}],622:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53116,7 +53293,7 @@ var StitchAppRequestClient = (function (_super) {
 }(BaseStitchRequestClient_1.default));
 exports.default = StitchAppRequestClient;
 
-},{"./ApiAppMetadata":615,"./BaseStitchRequestClient":617,"./Method":622,"./StitchAppRoutes":626,"./StitchRequest":631,"bson":377}],626:[function(require,module,exports){
+},{"./ApiAppMetadata":612,"./BaseStitchRequestClient":614,"./Method":619,"./StitchAppRoutes":623,"./StitchRequest":628,"bson":377}],623:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -53137,7 +53314,7 @@ var StitchAppRoutes = (function () {
 }());
 exports.default = StitchAppRoutes;
 
-},{"../../services/internal/StitchServiceRoutes":637,"./StitchAppAuthRoutes":624,"./StitchRoutes":633}],627:[function(require,module,exports){
+},{"../../services/internal/StitchServiceRoutes":634,"./StitchAppAuthRoutes":621,"./StitchRoutes":630}],624:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53212,7 +53389,7 @@ exports.StitchAuthDocRequest = StitchAuthDocRequest;
 })(StitchAuthDocRequest = exports.StitchAuthDocRequest || (exports.StitchAuthDocRequest = {}));
 exports.StitchAuthDocRequest = StitchAuthDocRequest;
 
-},{"./ContentTypes":619,"./Headers":621,"./StitchAuthRequest":628,"bson":377}],628:[function(require,module,exports){
+},{"./ContentTypes":616,"./Headers":618,"./StitchAuthRequest":625,"bson":377}],625:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53276,7 +53453,7 @@ exports.StitchAuthRequest = StitchAuthRequest;
 })(StitchAuthRequest = exports.StitchAuthRequest || (exports.StitchAuthRequest = {}));
 exports.StitchAuthRequest = StitchAuthRequest;
 
-},{"./StitchRequest":631}],629:[function(require,module,exports){
+},{"./StitchRequest":628}],626:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53344,7 +53521,7 @@ exports.StitchDocRequest = StitchDocRequest;
 })(StitchDocRequest = exports.StitchDocRequest || (exports.StitchDocRequest = {}));
 exports.StitchDocRequest = StitchDocRequest;
 
-},{"./ContentTypes":619,"./Headers":621,"./StitchRequest":631,"bson":377}],630:[function(require,module,exports){
+},{"./ContentTypes":616,"./Headers":618,"./StitchRequest":628,"bson":377}],627:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -53431,7 +53608,7 @@ var ErrorFields;
     ErrorFields["ErrorCode"] = "error_code";
 })(ErrorFields || (ErrorFields = {}));
 
-},{"../../StitchServiceError":568,"../../StitchServiceErrorCode":569,"./Event":620,"bson":377}],631:[function(require,module,exports){
+},{"../../StitchServiceError":565,"../../StitchServiceErrorCode":566,"./Event":617,"bson":377}],628:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchRequest = (function () {
@@ -53497,7 +53674,7 @@ exports.StitchRequest = StitchRequest;
 })(StitchRequest = exports.StitchRequest || (exports.StitchRequest = {}));
 exports.StitchRequest = StitchRequest;
 
-},{}],632:[function(require,module,exports){
+},{}],629:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53533,7 +53710,7 @@ var StitchRequestClient = (function (_super) {
 }(BaseStitchRequestClient_1.default));
 exports.default = StitchRequestClient;
 
-},{"./BaseStitchRequestClient":617}],633:[function(require,module,exports){
+},{"./BaseStitchRequestClient":614}],630:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var BASE_ROUTE = "/api/client/v2.0";
@@ -53551,7 +53728,7 @@ function getAppMetadataRoute(clientAppId) {
 }
 exports.getAppMetadataRoute = getAppMetadataRoute;
 
-},{}],634:[function(require,module,exports){
+},{}],631:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -53577,7 +53754,7 @@ var AuthRebindEvent = (function (_super) {
 }(RebindEvent_1.RebindEvent));
 exports.default = AuthRebindEvent;
 
-},{"./RebindEvent":636}],635:[function(require,module,exports){
+},{"./RebindEvent":633}],632:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -53666,7 +53843,7 @@ var CoreStitchServiceClientImpl = (function () {
 }());
 exports.default = CoreStitchServiceClientImpl;
 
-},{"../../auth/internal/AuthEvent":575,"../../internal/common/Base64":612,"../../internal/net/Method":622,"../../internal/net/StitchAuthDocRequest":627,"../../internal/net/StitchAuthRequest":628,"./RebindEvent":636,"bson":377}],636:[function(require,module,exports){
+},{"../../auth/internal/AuthEvent":572,"../../internal/common/Base64":609,"../../internal/net/Method":619,"../../internal/net/StitchAuthDocRequest":624,"../../internal/net/StitchAuthRequest":625,"./RebindEvent":633,"bson":377}],633:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var RebindEvent = (function () {
@@ -53680,7 +53857,7 @@ var RebindEventType;
     RebindEventType[RebindEventType["AUTH_EVENT"] = 0] = "AUTH_EVENT";
 })(RebindEventType = exports.RebindEventType || (exports.RebindEventType = {}));
 
-},{}],637:[function(require,module,exports){
+},{}],634:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var StitchRoutes_1 = require("../../internal/net/StitchRoutes");
@@ -53693,7 +53870,7 @@ var StitchServiceRoutes = (function () {
 }());
 exports.default = StitchServiceRoutes;
 
-},{"../../internal/net/StitchRoutes":633}],638:[function(require,module,exports){
+},{"../../internal/net/StitchRoutes":630}],635:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var OperationType;
@@ -53720,7 +53897,7 @@ function operationTypeFromRemote(type) {
 }
 exports.operationTypeFromRemote = operationTypeFromRemote;
 
-},{}],639:[function(require,module,exports){
+},{}],636:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var RemoteInsertManyResult = (function () {
@@ -53735,7 +53912,7 @@ var RemoteInsertManyResult = (function () {
 }());
 exports.default = RemoteInsertManyResult;
 
-},{}],640:[function(require,module,exports){
+},{}],637:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -53754,7 +53931,7 @@ exports.OperationType = OperationType_1.OperationType;
 var RemoteInsertManyResult_1 = __importDefault(require("./RemoteInsertManyResult"));
 exports.RemoteInsertManyResult = RemoteInsertManyResult_1.default;
 
-},{"./OperationType":638,"./RemoteInsertManyResult":639,"./internal/CoreRemoteMongoClientImpl":641,"./internal/CoreRemoteMongoCollectionImpl":642,"./internal/CoreRemoteMongoDatabaseImpl":643,"./internal/CoreRemoteMongoReadOperation":644}],641:[function(require,module,exports){
+},{"./OperationType":635,"./RemoteInsertManyResult":636,"./internal/CoreRemoteMongoClientImpl":638,"./internal/CoreRemoteMongoCollectionImpl":639,"./internal/CoreRemoteMongoDatabaseImpl":640,"./internal/CoreRemoteMongoReadOperation":641}],638:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -53772,7 +53949,7 @@ var CoreRemoteMongoClientImpl = (function () {
 }());
 exports.default = CoreRemoteMongoClientImpl;
 
-},{"./CoreRemoteMongoDatabaseImpl":643}],642:[function(require,module,exports){
+},{"./CoreRemoteMongoDatabaseImpl":640}],639:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -53976,7 +54153,7 @@ var CoreRemoteMongoCollectionImpl = (function () {
 }());
 exports.default = CoreRemoteMongoCollectionImpl;
 
-},{"./CoreRemoteMongoReadOperation":644,"./ResultDecoders":645,"bson":377}],643:[function(require,module,exports){
+},{"./CoreRemoteMongoReadOperation":641,"./ResultDecoders":642,"bson":377}],640:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -53995,7 +54172,7 @@ var CoreRemoteMongoDatabaseImpl = (function () {
 }());
 exports.default = CoreRemoteMongoDatabaseImpl;
 
-},{"./CoreRemoteMongoCollectionImpl":642}],644:[function(require,module,exports){
+},{"./CoreRemoteMongoCollectionImpl":639}],641:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var CoreRemoteMongoReadOperation = (function () {
@@ -54036,7 +54213,7 @@ var CoreRemoteMongoReadOperation = (function () {
 }());
 exports.default = CoreRemoteMongoReadOperation;
 
-},{}],645:[function(require,module,exports){
+},{}],642:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -54233,13 +54410,120 @@ var ResultDecoders = (function () {
 }());
 exports.default = ResultDecoders;
 
-},{"../OperationType":638,"../RemoteInsertManyResult":639,"mongodb-stitch-core-sdk":609}],646:[function(require,module,exports){
+},{"../OperationType":635,"../RemoteInsertManyResult":636,"mongodb-stitch-core-sdk":606}],643:[function(require,module,exports){
+/**
+ * Obliterator Iterator Class
+ * ===========================
+ *
+ * Simple class representing the library's iterators.
+ */
+
+/**
+ * Iterator class.
+ *
+ * @constructor
+ * @param {function} next - Next function.
+ */
+function Iterator(next) {
+
+  // Hiding the given function
+  Object.defineProperty(this, '_next', {
+    writable: false,
+    enumerable: false,
+    value: next
+  });
+
+  // Is the iterator complete?
+  this.done = false;
+}
+
+/**
+ * Next function.
+ *
+ * @return {object}
+ */
+// NOTE: maybe this should dropped for performance?
+Iterator.prototype.next = function() {
+  if (this.done)
+    return {done: true};
+
+  var step = this._next();
+
+  if (step.done)
+    this.done = true;
+
+  return step;
+};
+
+/**
+ * If symbols are supported, we add `next` to `Symbol.iterator`.
+ */
+if (typeof Symbol !== 'undefined')
+  Iterator.prototype[Symbol.iterator] = function() {
+    return this;
+  };
+
+/**
+ * Returning an iterator of the given values.
+ *
+ * @param  {any...} values - Values.
+ * @return {Iterator}
+ */
+Iterator.of = function() {
+  var args = arguments,
+      l = args.length,
+      i = 0;
+
+  return new Iterator(function() {
+    if (i >= l)
+      return {done: true};
+
+    return {done: false, value: args[i++]};
+  });
+};
+
+/**
+ * Returning an empty iterator.
+ *
+ * @return {Iterator}
+ */
+Iterator.empty = function() {
+  var iterator = new Iterator(null);
+  iterator.done = true;
+
+  return iterator;
+};
+
+/**
+ * Returning whether the given value is an iterator.
+ *
+ * @param  {any} value - Value.
+ * @return {boolean}
+ */
+Iterator.is = function(value) {
+  if (value instanceof Iterator)
+    return true;
+
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof value.next === 'function'
+  );
+};
+
+/**
+ * Exporting.
+ */
+module.exports = Iterator;
+
+},{}],644:[function(require,module,exports){
 /**
  * Pandemonium Random Index
  * =========================
  *
  * Random index function.
  */
+var createRandom = require('./random.js').createRandom;
 
 /**
  * Creating a function returning a random index from the given array.
@@ -54248,16 +54532,19 @@ exports.default = ResultDecoders;
  * @return {function}     - The created function.
  */
 function createRandomIndex(rng) {
+  var customRandom = createRandom(rng);
+
   /**
    * Random function.
    *
    * @param  {array|number}  array - Target array or length of the array.
    * @return {number}
    */
-  return function (length) {
-    if (typeof length !== 'number') length = length.length;
+  return function(length) {
+    if (typeof length !== 'number')
+      length = length.length;
 
-    return Math.floor(rng() * length);
+    return customRandom(0, length - 1);
   };
 }
 
@@ -54272,7 +54559,46 @@ var randomIndex = createRandomIndex(Math.random);
 randomIndex.createRandomIndex = createRandomIndex;
 module.exports = randomIndex;
 
-},{}],647:[function(require,module,exports){
+},{"./random.js":645}],645:[function(require,module,exports){
+/**
+ * Pandemonium Random
+ * ===================
+ *
+ * Random function.
+ */
+
+/**
+ * Creating a function returning a random integer such as a <= N <= b.
+ *
+ * @param  {function} rng - RNG function returning uniform random.
+ * @return {function}     - The created function.
+ */
+function createRandom(rng) {
+
+  /**
+   * Random function.
+   *
+   * @param  {number} a - From.
+   * @param  {number} b - To.
+   * @return {number}
+   */
+  return function(a, b) {
+    return a + Math.floor(rng() * (b - a + 1));
+  };
+}
+
+/**
+ * Default random using `Math.random`.
+ */
+var random = createRandom(Math.random);
+
+/**
+ * Exporting.
+ */
+random.createRandom = createRandom;
+module.exports = random;
+
+},{}],646:[function(require,module,exports){
 "use strict";
 var core = require("@pixi/core"), filterAlpha = require("@pixi/filter-alpha"), filterBlur = require("@pixi/filter-blur"), filterColorMatrix = require("@pixi/filter-color-matrix"), filterDisplacement = require("@pixi/filter-displacement"), filterFxaa = require("@pixi/filter-fxaa"), filterNoise = require("@pixi/filter-noise");
 const filters = {
@@ -54336,7 +54662,7 @@ Object.entries(filters).forEach(([key, FilterClass]) => {
 exports.filters = filters;
 
 
-},{"@pixi/core":117,"@pixi/filter-alpha":211,"@pixi/filter-blur":216,"@pixi/filter-color-matrix":219,"@pixi/filter-displacement":223,"@pixi/filter-fxaa":227,"@pixi/filter-noise":229}],648:[function(require,module,exports){
+},{"@pixi/core":117,"@pixi/filter-alpha":211,"@pixi/filter-blur":216,"@pixi/filter-color-matrix":219,"@pixi/filter-displacement":223,"@pixi/filter-fxaa":227,"@pixi/filter-noise":229}],647:[function(require,module,exports){
 "use strict";
 require("@pixi/mixin-cache-as-bitmap");
 require("@pixi/mixin-get-child-by-name");
@@ -54553,7 +54879,7 @@ Object.keys(textHtml).forEach(function(k) {
 });
 
 
-},{"./filters.js":647,"@pixi/accessibility":6,"@pixi/app":9,"@pixi/assets":30,"@pixi/compressed-textures":63,"@pixi/core":117,"@pixi/display":194,"@pixi/events":205,"@pixi/extract":208,"@pixi/filter-alpha":211,"@pixi/filter-blur":216,"@pixi/filter-color-matrix":219,"@pixi/filter-displacement":223,"@pixi/filter-fxaa":227,"@pixi/filter-noise":229,"@pixi/graphics":235,"@pixi/mesh":273,"@pixi/mesh-extras":268,"@pixi/mixin-cache-as-bitmap":276,"@pixi/mixin-get-child-by-name":277,"@pixi/mixin-get-global-position":278,"@pixi/particle-container":282,"@pixi/prepare":289,"@pixi/sprite":310,"@pixi/sprite-animated":300,"@pixi/sprite-tiling":303,"@pixi/spritesheet":312,"@pixi/text":339,"@pixi/text-bitmap":322,"@pixi/text-html":334}],649:[function(require,module,exports){
+},{"./filters.js":646,"@pixi/accessibility":6,"@pixi/app":9,"@pixi/assets":30,"@pixi/compressed-textures":63,"@pixi/core":117,"@pixi/display":194,"@pixi/events":205,"@pixi/extract":208,"@pixi/filter-alpha":211,"@pixi/filter-blur":216,"@pixi/filter-color-matrix":219,"@pixi/filter-displacement":223,"@pixi/filter-fxaa":227,"@pixi/filter-noise":229,"@pixi/graphics":235,"@pixi/mesh":273,"@pixi/mesh-extras":268,"@pixi/mixin-cache-as-bitmap":276,"@pixi/mixin-get-child-by-name":277,"@pixi/mixin-get-global-position":278,"@pixi/particle-container":282,"@pixi/prepare":289,"@pixi/sprite":310,"@pixi/sprite-animated":300,"@pixi/sprite-tiling":303,"@pixi/spritesheet":312,"@pixi/text":339,"@pixi/text-bitmap":322,"@pixi/text-html":334}],648:[function(require,module,exports){
 
 module.exports = function () {
   var selection = document.getSelection();
@@ -54594,7 +54920,7 @@ module.exports = function () {
   };
 };
 
-},{}],650:[function(require,module,exports){
+},{}],649:[function(require,module,exports){
 (function (global){(function (){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -55255,11 +55581,11 @@ module.exports = function () {
 })));
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],651:[function(require,module,exports){
+},{}],650:[function(require,module,exports){
 arguments[4][376][0].apply(exports,arguments)
-},{"dup":376}],652:[function(require,module,exports){
+},{"dup":376}],651:[function(require,module,exports){
 
-},{}],653:[function(require,module,exports){
+},{}],652:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -57040,7 +57366,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":651,"buffer":653,"ieee754":674}],654:[function(require,module,exports){
+},{"base64-js":650,"buffer":652,"ieee754":673}],653:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -57057,7 +57383,7 @@ module.exports = function callBoundIntrinsic(name, allowMissing) {
 	return intrinsic;
 };
 
-},{"./":655,"get-intrinsic":667}],655:[function(require,module,exports){
+},{"./":654,"get-intrinsic":666}],654:[function(require,module,exports){
 'use strict';
 
 var bind = require('function-bind');
@@ -57094,7 +57420,7 @@ if ($defineProperty) {
 	module.exports.apply = applyBind;
 }
 
-},{"es-define-property":657,"es-errors/type":663,"function-bind":666,"get-intrinsic":667,"set-function-length":684}],656:[function(require,module,exports){
+},{"es-define-property":656,"es-errors/type":662,"function-bind":665,"get-intrinsic":666,"set-function-length":683}],655:[function(require,module,exports){
 'use strict';
 
 var $defineProperty = require('es-define-property');
@@ -57152,7 +57478,7 @@ module.exports = function defineDataProperty(
 	}
 };
 
-},{"es-define-property":657,"es-errors/syntax":662,"es-errors/type":663,"gopd":668}],657:[function(require,module,exports){
+},{"es-define-property":656,"es-errors/syntax":661,"es-errors/type":662,"gopd":667}],656:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -57170,49 +57496,49 @@ if ($defineProperty) {
 
 module.exports = $defineProperty;
 
-},{"get-intrinsic":667}],658:[function(require,module,exports){
+},{"get-intrinsic":666}],657:[function(require,module,exports){
 'use strict';
 
 /** @type {import('./eval')} */
 module.exports = EvalError;
 
-},{}],659:[function(require,module,exports){
+},{}],658:[function(require,module,exports){
 'use strict';
 
 /** @type {import('.')} */
 module.exports = Error;
 
-},{}],660:[function(require,module,exports){
+},{}],659:[function(require,module,exports){
 'use strict';
 
 /** @type {import('./range')} */
 module.exports = RangeError;
 
-},{}],661:[function(require,module,exports){
+},{}],660:[function(require,module,exports){
 'use strict';
 
 /** @type {import('./ref')} */
 module.exports = ReferenceError;
 
-},{}],662:[function(require,module,exports){
+},{}],661:[function(require,module,exports){
 'use strict';
 
 /** @type {import('./syntax')} */
 module.exports = SyntaxError;
 
-},{}],663:[function(require,module,exports){
+},{}],662:[function(require,module,exports){
 'use strict';
 
 /** @type {import('./type')} */
 module.exports = TypeError;
 
-},{}],664:[function(require,module,exports){
+},{}],663:[function(require,module,exports){
 'use strict';
 
 /** @type {import('./uri')} */
 module.exports = URIError;
 
-},{}],665:[function(require,module,exports){
+},{}],664:[function(require,module,exports){
 'use strict';
 
 /* eslint no-invalid-this: 1 */
@@ -57298,14 +57624,14 @@ module.exports = function bind(that) {
     return bound;
 };
 
-},{}],666:[function(require,module,exports){
+},{}],665:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
 
 module.exports = Function.prototype.bind || implementation;
 
-},{"./implementation":665}],667:[function(require,module,exports){
+},{"./implementation":664}],666:[function(require,module,exports){
 'use strict';
 
 var undefined;
@@ -57666,7 +57992,7 @@ module.exports = function GetIntrinsic(name, allowMissing) {
 	return value;
 };
 
-},{"es-errors":659,"es-errors/eval":658,"es-errors/range":660,"es-errors/ref":661,"es-errors/syntax":662,"es-errors/type":663,"es-errors/uri":664,"function-bind":666,"has-proto":670,"has-symbols":671,"hasown":673}],668:[function(require,module,exports){
+},{"es-errors":658,"es-errors/eval":657,"es-errors/range":659,"es-errors/ref":660,"es-errors/syntax":661,"es-errors/type":662,"es-errors/uri":663,"function-bind":665,"has-proto":669,"has-symbols":670,"hasown":672}],667:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -57684,7 +58010,7 @@ if ($gOPD) {
 
 module.exports = $gOPD;
 
-},{"get-intrinsic":667}],669:[function(require,module,exports){
+},{"get-intrinsic":666}],668:[function(require,module,exports){
 'use strict';
 
 var $defineProperty = require('es-define-property');
@@ -57708,7 +58034,7 @@ hasPropertyDescriptors.hasArrayLengthDefineBug = function hasArrayLengthDefineBu
 
 module.exports = hasPropertyDescriptors;
 
-},{"es-define-property":657}],670:[function(require,module,exports){
+},{"es-define-property":656}],669:[function(require,module,exports){
 'use strict';
 
 var test = {
@@ -57725,7 +58051,7 @@ module.exports = function hasProto() {
 		&& !(test instanceof $Object);
 };
 
-},{}],671:[function(require,module,exports){
+},{}],670:[function(require,module,exports){
 'use strict';
 
 var origSymbol = typeof Symbol !== 'undefined' && Symbol;
@@ -57740,7 +58066,7 @@ module.exports = function hasNativeSymbols() {
 	return hasSymbolSham();
 };
 
-},{"./shams":672}],672:[function(require,module,exports){
+},{"./shams":671}],671:[function(require,module,exports){
 'use strict';
 
 /* eslint complexity: [2, 18], max-statements: [2, 33] */
@@ -57784,7 +58110,7 @@ module.exports = function hasSymbols() {
 	return true;
 };
 
-},{}],673:[function(require,module,exports){
+},{}],672:[function(require,module,exports){
 'use strict';
 
 var call = Function.prototype.call;
@@ -57794,7 +58120,7 @@ var bind = require('function-bind');
 /** @type {import('.')} */
 module.exports = bind.call(call, $hasOwn);
 
-},{"function-bind":666}],674:[function(require,module,exports){
+},{"function-bind":665}],673:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -57881,7 +58207,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],675:[function(require,module,exports){
+},{}],674:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -57904,7 +58230,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],676:[function(require,module,exports){
+},{}],675:[function(require,module,exports){
 (function (global){(function (){
 var hasMap = typeof Map === 'function' && Map.prototype;
 var mapSizeDescriptor = Object.getOwnPropertyDescriptor && hasMap ? Object.getOwnPropertyDescriptor(Map.prototype, 'size') : null;
@@ -58435,7 +58761,7 @@ function arrObjKeys(obj, inspect) {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./util.inspect":652}],677:[function(require,module,exports){
+},{"./util.inspect":651}],676:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -58621,7 +58947,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],678:[function(require,module,exports){
+},{}],677:[function(require,module,exports){
 (function (global){(function (){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -59158,7 +59484,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],679:[function(require,module,exports){
+},{}],678:[function(require,module,exports){
 'use strict';
 
 var replace = String.prototype.replace;
@@ -59183,7 +59509,7 @@ module.exports = {
     RFC3986: Format.RFC3986
 };
 
-},{}],680:[function(require,module,exports){
+},{}],679:[function(require,module,exports){
 'use strict';
 
 var stringify = require('./stringify');
@@ -59196,7 +59522,7 @@ module.exports = {
     stringify: stringify
 };
 
-},{"./formats":679,"./parse":681,"./stringify":682}],681:[function(require,module,exports){
+},{"./formats":678,"./parse":680,"./stringify":681}],680:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -59489,7 +59815,7 @@ module.exports = function (str, opts) {
     return utils.compact(obj);
 };
 
-},{"./utils":683}],682:[function(require,module,exports){
+},{"./utils":682}],681:[function(require,module,exports){
 'use strict';
 
 var getSideChannel = require('side-channel');
@@ -59842,7 +60168,7 @@ module.exports = function (object, opts) {
     return joined.length > 0 ? prefix + joined : '';
 };
 
-},{"./formats":679,"./utils":683,"side-channel":685}],683:[function(require,module,exports){
+},{"./formats":678,"./utils":682,"side-channel":684}],682:[function(require,module,exports){
 'use strict';
 
 var formats = require('./formats');
@@ -60109,7 +60435,7 @@ module.exports = {
     merge: merge
 };
 
-},{"./formats":679}],684:[function(require,module,exports){
+},{"./formats":678}],683:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -60153,7 +60479,7 @@ module.exports = function setFunctionLength(fn, length) {
 	return fn;
 };
 
-},{"define-data-property":656,"es-errors/type":663,"get-intrinsic":667,"gopd":668,"has-property-descriptors":669}],685:[function(require,module,exports){
+},{"define-data-property":655,"es-errors/type":662,"get-intrinsic":666,"gopd":667,"has-property-descriptors":668}],684:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -60284,7 +60610,7 @@ module.exports = function getSideChannel() {
 	return channel;
 };
 
-},{"call-bind/callBound":654,"es-errors/type":663,"get-intrinsic":667,"object-inspect":676}],686:[function(require,module,exports){
+},{"call-bind/callBound":653,"es-errors/type":662,"get-intrinsic":666,"object-inspect":675}],685:[function(require,module,exports){
 /*
  * Copyright Joyent, Inc. and other Node contributors.
  *
@@ -61062,4 +61388,4 @@ exports.format = urlFormat;
 
 exports.Url = Url;
 
-},{"punycode":678,"qs":680}]},{},[3]);
+},{"punycode":677,"qs":679}]},{},[3]);
