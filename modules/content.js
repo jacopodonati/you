@@ -144,12 +144,14 @@ function scrappeFriends (userData, isFriends) {
         struct.mutual = num
       } else if ((/\/profile.php\?id=(\d+)/).test(linkFriends)) {
         struct.nid = linkFriends.match(/\/profile.php\?id=(\d+)/)[1]
-        struct.nfriends = num
+        struct.mutual = num
+        struct.nfriends = num // FIXME: perché per alcuni sono nfriends, per altri mutual?
       } else if ((/\/friends_mutual$/).test(linkFriends)) {
         struct.sid = linkFriends.match(/facebook.com\/(.*)\/friends_mutual$/)[1]
         struct.mutual = num
       } else if ((/\/friends$/).test(linkFriends)) {
         struct.sid = linkFriends.match(/facebook.com\/(.*)\/friends$/)[1]
+        struct.mutual = num
         struct.nfriends = num
       } else {
         throw new Error('friends link of a scrapped friend not understood:', linkFriends)

@@ -6,6 +6,7 @@ class FNetwork {
   constructor () {
     this.anonCount = 0
     this.anonNames = {} // { name: id }
+    this.anonPrefix = 'inactive-'
     this.membersNotFound = []
     this.restart()
   }
@@ -16,7 +17,7 @@ class FNetwork {
       net.graph = new Graph()
       if (typeof data.net === 'undefined') {
         net.graph.setAttribute('preclude', [])
-        net.anonString = 'inactive-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + '-'
+        net.anonString = this.anonPrefix + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + '-'
         net.graph.setAttribute('anonString', net.anonString)
       } else {
         net.graph.import(data.net)
@@ -93,6 +94,7 @@ class FNetwork {
         this.graph.addNode(id, a)
       }
       if (!this.graph.hasEdge(this.lastId, id)) {
+        console.log(`adding ${this.lastId}, ${id}`)
         this.graph.addUndirectedEdge(this.lastId, id)
       }
     })
@@ -142,12 +144,15 @@ class FNetwork {
         nid: a.nid,
         sid: a.sid,
         scrapped: a.scrapped,
-        id: n
+        id: n,
+        mutual: a.mutual
       })
     })
     let url
     nodeIds.some(i => {
-      if (!i.scrapped) {
+      if (!i.scrapped && (i.mutual === undefined)) {
+        this.graph.setNodeAttribute(i.id, 'scrapped', this.round)
+      } else if (!i.scrapped) {
         if (i.nid !== undefined) url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
         else url = `https://www.facebook.com/${i.sid}/friends_mutual`
         // url = `https://www.facebook.com/browse/mutual_friends/?uid=${i.nid}`  // old
@@ -158,7 +163,9 @@ class FNetwork {
     })
     if (!url) {
       nodeIds.some(i => {
-        if (i.scrapped < this.round) {
+        if (i.mutual === undefined) {
+          this.graph.setNodeAttribute(i.id, 'scrapped', this.round)
+        } else if ((i.scrapped < this.round)) {
           // url = `https://www.facebook.com/browse/mutual_friends/?uid=${i.nid}` // old
           url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
           this.lastId = i.id
