@@ -266,8 +266,12 @@ function scrapeFacebookRelatioships () {
   const url = fnet.getNextURL()
   console.log({ url })
   chrome.tabs.create({ url }).then(r => {
-    currentTabId = r.id
+    if (currentTabId !== undefined) {
+      chrome.tabs.remove(currentTabId).then(() => {
+      })
+    }
     currentStep = 'scrappeFriendships'
+    currentTabId = r.id
   })
   // visitCount = 1
 }
