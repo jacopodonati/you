@@ -14,10 +14,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case 'login':
       loginFacebook()
       break
-    case 'scrappeFriends':
+    case 'scrapeFriends':
       scrapeFacebookFriends()
       break
-    case 'scrappeFriendships':
+    case 'scrapeFriendships':
       scrapeFacebookRelatioships()
       break
     case 'seeNetwork':
@@ -42,7 +42,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 })
 
 function loginFacebook () {
-  chrome.storage.sync.set({ lastScrapped: new Date().toJSON() }, () => {
+  chrome.storage.sync.set({ lastScraped: new Date().toJSON() }, () => {
     chrome.windows.create({ url: 'https://www.facebook.com/profile.php' }).then(r => {
       currentTabId = r.tabs[0].id
       currentStep = 'login'
@@ -61,7 +61,7 @@ function scrapeFacebookFriends () {
     }
     chrome.tabs.create({ url }).then(r => {
       currentTabId = r.id
-      currentStep = 'scrappeFriends'
+      currentStep = 'scrapeFriends'
     })
   })
 }
@@ -74,7 +74,7 @@ function scrapeFacebookRelatioships () {
       chrome.tabs.remove(currentTabId).then(() => {
       })
     }
-    currentStep = 'scrappeFriendships'
+    currentStep = 'scrapeFriendships'
     currentTabId = r.id
   })
   // visitCount = 1
@@ -101,7 +101,7 @@ function absorbNetwork (request) {
   chrome.storage.sync.set({
     nfriends: fnet.graph.order,
     nfriendships: fnet.graph.size,
-    nscrapped: fnet.nScrapped()
+    nScraped: fnet.nScraped()
   }, () => {
     console.log('friends(ships) absorbed in network, and their number written to storage:', { structs })
     // check if we've scraped friends or mutual friends

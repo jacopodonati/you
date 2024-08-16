@@ -29,7 +29,7 @@ class FNetwork {
   defineRound () {
     const rounds = []
     this.graph.forEachNode((n, a) => {
-      if (a.nid) rounds.push(a.scrapped)
+      if (a.nid) rounds.push(a.scraped)
     })
     if (rounds.length === 0) {
       this.round = 1
@@ -97,7 +97,7 @@ class FNetwork {
         this.graph.addUndirectedEdge(this.lastId, id)
       }
     })
-    this.graph.setNodeAttribute(this.lastId, 'scrapped', this.round)
+    this.graph.setNodeAttribute(this.lastId, 'scraped', this.round)
   }
 
   getIds () {
@@ -142,16 +142,16 @@ class FNetwork {
       nodeIds.push({
         nid: a.nid,
         sid: a.sid,
-        scrapped: a.scrapped,
+        scraped: a.scraped,
         id: n,
         mutual: a.mutual
       })
     })
     let url
     nodeIds.some(i => {
-      if (!i.scrapped && (i.mutual === undefined)) {
-        this.graph.setNodeAttribute(i.id, 'scrapped', this.round)
-      } else if (!i.scrapped) {
+      if (!i.scraped && (i.mutual === undefined)) {
+        this.graph.setNodeAttribute(i.id, 'scraped', this.round)
+      } else if (!i.scraped) {
         if (i.nid !== undefined) url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
         else url = `https://www.facebook.com/${i.sid}/friends_mutual`
         // url = `https://www.facebook.com/browse/mutual_friends/?uid=${i.nid}`  // old
@@ -163,8 +163,8 @@ class FNetwork {
     if (!url) {
       nodeIds.some(i => {
         if (i.mutual === undefined) {
-          this.graph.setNodeAttribute(i.id, 'scrapped', this.round)
-        } else if ((i.scrapped < this.round)) {
+          this.graph.setNodeAttribute(i.id, 'scraped', this.round)
+        } else if ((i.scraped < this.round)) {
           // url = `https://www.facebook.com/browse/mutual_friends/?uid=${i.nid}` // old
           url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
           this.lastId = i.id
@@ -175,15 +175,15 @@ class FNetwork {
     return url
   }
 
-  nScrapped () { // calculate scraped in the round and not ever, update in popup
+  nScraped () { // calculate scraped in the round and not ever, update in popup
     let count = 0
-    this.graph.forEachNode((n, a) => { count += Boolean(a.scrapped) })
+    this.graph.forEachNode((n, a) => { count += Boolean(a.scraped) })
     return count
   }
 
   info () {
     return {
-      scrapped: this.nScrapped(),
+      scraped: this.nScraped(),
       order: this.graph.order,
       size: this.graph.size
     }

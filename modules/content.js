@@ -90,11 +90,11 @@ function loginFB () {
 function getFriends (isFriends) { // if isFriends is false, getting friendships
   scrollTillEnd(() => chrome.storage.sync.get(
     ['userData'],
-    ({ userData }) => scrappeFriends(userData, isFriends)
+    ({ userData }) => scrapeFriends(userData, isFriends)
   ), true)
 }
 
-function scrappeFriends (userData, isFriends) {
+function scrapeFriends (userData, isFriends) {
   let elements = getElementsByXPath('//*/li/div[1]/div[1]/div[2]/div[1]/div[2]') // mutual friends
   if (elements.length === 0) { // maybe users' friends:
     elements = getElementsByXPath('//*/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div/div[2]').filter(c => c.children[0] !== undefined)
@@ -154,14 +154,14 @@ function scrappeFriends (userData, isFriends) {
         struct.mutual = num
         struct.nfriends = num
       } else {
-        throw new Error('friends link of a scrapped friend not understood:', linkFriends)
+        throw new Error('friends link of a scraped friend not understood:', linkFriends)
       }
     }
     return struct
   })
   console.log({ structs })
   chrome.runtime.sendMessage({ command: 'absorb', background: true, structs }, () => {
-    console.log('friends(ships) scrapped and sent to background:', structs.length)
+    console.log('friends(ships) scraped and sent to background:', structs.length)
     if (isFriends) {
       window.alert('friends registered.')
     } else {
@@ -177,9 +177,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (command === 'login') {
     console.log('lets get this login data!')
     loginFB()
-  } if (command === 'scrappeFriends') {
+  } if (command === 'scrapeFriends') {
     getFriends(true)
-  } if (command === 'scrappeFriendships') {
+  } if (command === 'scrapeFriendships') {
     getFriends(false)
   }
 })
