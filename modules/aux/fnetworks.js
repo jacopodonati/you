@@ -97,6 +97,9 @@ class FNetwork {
         this.graph.addUndirectedEdge(this.lastId, id)
       }
     })
+    if (struct.length !== this.lastMutual) {
+      console.warn(`Expected ${this.lastMutual} friends for ${this.lastId}, but ${struct.length} found.`)
+    }
     this.graph.setNodeAttribute(this.lastId, 'scraped', this.round)
   }
 
@@ -157,6 +160,7 @@ class FNetwork {
         // url = `https://www.facebook.com/browse/mutual_friends/?uid=${i.nid}`  // old
         // url = `https://www.facebook.com/profile.php?id=${i.nid}&sk=friends_mutual`
         this.lastId = i.id
+        this.lastMutual = parseInt(i.mutual)
       }
       return Boolean(url)
     })

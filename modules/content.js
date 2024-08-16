@@ -159,13 +159,13 @@ function scrapeFriends (userData, isFriends) {
     }
     return struct
   })
-  console.log({ structs })
+  console.log('scraped data:', structs)
   chrome.runtime.sendMessage({ command: 'absorb', background: true, structs }, () => {
-    console.log('friends(ships) scraped and sent to background:', structs.length)
     if (isFriends) {
+      console.log('friends scraped and sent to background:', structs.length)
       window.alert('friends registered.')
     } else {
-      console.log('friendships registered for 1 more friend.')
+      console.log('friendships scraped and sent to background:', structs.length)
     }
   })
 }
