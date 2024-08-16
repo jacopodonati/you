@@ -105,6 +105,9 @@ class You {
 
   plot (socialNetwork, app) {
     let net = new Graph()
+    if (socialNetwork === undefined) {
+      return undefined
+    }
     net.import(socialNetwork)
     net = this.getLargestComponent(net, true)
     netdegree.assign(net)
