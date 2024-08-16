@@ -43,8 +43,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 
 function loginFacebook () {
   chrome.storage.sync.set({ lastScraped: new Date().toJSON() }, () => {
-    chrome.windows.create({ url: 'https://www.facebook.com/profile.php' }).then(r => {
-      currentTabId = r.tabs[0].id
+    chrome.tabs.create({ url: 'https://www.facebook.com/profile.php' }).then(r => {
+      currentTabId = r.id
       currentStep = 'login'
     })
   })
