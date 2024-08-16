@@ -37,17 +37,17 @@ function setFacebook () {
   }
 
   chrome.storage.sync.get(
-    ['userData', 'nfriends', 'nfriendships', 'nscrapped', 'metaData', 'lastScrapped', 'sround'],
-    ({ userData, nfriends, nfriendships, nscrapped, metaData, lastScrapped, sround }) => {
-      console.log({ userData, nfriends, metaData, lastScrapped, sround })
+    ['userData', 'nfriends', 'nfriendships', 'nScraped', 'metaData', 'lastScraped', 'sround'],
+    ({ userData, nfriends, nfriendships, nScraped, metaData, lastScraped, sround }) => {
+      console.log({ userData, nfriends, metaData, lastScraped, sround })
       userData = userData || {}
 
       setField('name', userData)
       setField('id', userData)
       setField('friends', nfriends)
       setField('friendships', nfriendships)
-      setField('scraped', nscrapped)
-      setField('last-scrape', formatDate(lastScrapped))
+      setField('scraped', nScraped)
+      setField('last-scrape', formatDate(lastScraped))
       setField('round', sround)
 
       metaData = metaData || {}
@@ -57,7 +57,7 @@ function setFacebook () {
       loginButton.textContent = command
       loginButton.addEventListener('click', function () {
         if (command === 'logout') {
-          chrome.storage.sync.remove(['userData', 'lastScrapped', 'nfriends', 'nfriendships', 'nscrapped'], () => {
+          chrome.storage.sync.remove(['userData', 'lastScraped', 'nfriends', 'nfriendships', 'nScraped'], () => {
             console.log('yeah, logged out')
             setTimeout(() => window.close(), 1000)
           })
@@ -74,16 +74,16 @@ function setFacebook () {
       getFriendsButton.disabled = userData.id === undefined
       getFriendsButton.addEventListener('click', function () {
         chrome.runtime.sendMessage({
-          command: 'scrappeFriends',
+          command: 'scrapeFriends',
           background: true
         })
       })
 
       const getFriendshipsButton = section.querySelector('.get-friendships')
-      getFriendshipsButton.disabled = (nfriends === undefined || nfriends === nscrapped)
+      getFriendshipsButton.disabled = (nfriends === undefined || nfriends === nScraped)
       getFriendshipsButton.addEventListener('click', function () {
         chrome.runtime.sendMessage({
-          command: 'scrappeFriendships',
+          command: 'scrapeFriendships',
           background: true
         })
       })

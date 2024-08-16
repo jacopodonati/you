@@ -326,9 +326,11 @@ class You {
     chrome.storage.local.get(['net'], (net) => {
       this.net = net
       const pfm = window.pfm = this.plot(net.net, this.app)
-      const dn = new ParticleNet2(this.app, pfm.net, pfm.atlas, true, true)
-      pfm.dn = dn
-      this.setup()
+      if (pfm !== undefined) {
+        const dn = new ParticleNet2(this.app, pfm.net, pfm.atlas, true, true)
+        pfm.dn = dn
+        this.setup()
+      }
     })
     // if (u('id') || u('cid') || u('fid')) {
     //   let prom
@@ -368,6 +370,9 @@ class You {
 
   plot (socialNetwork, app) {
     let net = new Graph()
+    if (socialNetwork === undefined) {
+      return undefined
+    }
     net.import(socialNetwork)
     net = this.getLargestComponent(net, true)
     netdegree.assign(net)
