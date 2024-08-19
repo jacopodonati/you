@@ -13,7 +13,7 @@ function getElementsByXPath (xpath, element) {
 
 function monload (work) {
   if (document.readyState !== 'complete') {
-    window.addEventListener('load', (event) => {
+    window.addEventListener('load', () => {
       work()
     })
   } else {
@@ -22,7 +22,7 @@ function monload (work) {
 }
 const scrollDelayInMilliSeconds = 300
 const scrollMagnitude = 1000
-const scrollTillEnd = (call, isFriends = false) => {
+const scrollTillEnd = (call) => {
   const curUrl = document.location.href
   let criterion
   if (curUrl.match(/\?uid=(\d+)/)) { // special numeric mutual friends page:
